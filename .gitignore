@@ -1,2 +1,3 @@
-/test_connect/test_connect.sln
-/connecttest/package.json
+/back/*.sln
+/front/package.json
+/back/.vs
