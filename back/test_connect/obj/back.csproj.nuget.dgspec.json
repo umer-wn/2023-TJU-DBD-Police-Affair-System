@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\back.csproj": {}
+    "D:\\college\\second_semester\\数据库课设\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\back.csproj": {}
   },
   "projects": {
-    "D:\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\back.csproj": {
+    "D:\\college\\second_semester\\数据库课设\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\back.csproj",
+        "projectUniqueName": "D:\\college\\second_semester\\数据库课设\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\back.csproj",
         "projectName": "back",
-        "projectPath": "D:\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\back.csproj",
-        "packagesPath": "C:\\Users\\14474\\.nuget\\packages\\",
-        "outputPath": "D:\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\obj\\",
+        "projectPath": "D:\\college\\second_semester\\数据库课设\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\back.csproj",
+        "packagesPath": "C:\\Users\\LuoZQ\\.nuget\\packages\\",
+        "outputPath": "D:\\college\\second_semester\\数据库课设\\2023-TJU-DBD-Police-Affair-System\\back\\test_connect\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\14474\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\LuoZQ\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
