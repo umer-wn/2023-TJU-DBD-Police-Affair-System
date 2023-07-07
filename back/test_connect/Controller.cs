@@ -1,23 +1,76 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
-using System.Collections.Generic;
+using System.Security.Claims;
+using web1.DTO;
 
-public class MyRequestData
-{
-    public string InputText { get; set; }
-}
-
-[Route("api/query")]
 [ApiController]
-public class MyController : ControllerBase
+[Authorize] // 添加Authorize特性，表示需要进行身份验证
+public class DataController : ControllerBase
 {
-    [HttpPost]
-    public IActionResult HandleEndpoint(MyRequestData requestData)
-    {
-        string inputText = requestData.InputText; // 从请求的JSON数据中获取输入的字符串
-        // 在这里处理接收到的字符串
+    private readonly OracleConnection _connection;
 
-        return Ok(inputText);
+    public DataController(OracleConnection connection)
+    {
+        _connection = connection;
+    }
+
+    [HttpGet("api/data")]
+    public ActionResult<IEnumerable<Police>> GetStudents()
+    {
+        var policemen = new List<Police>();
+        var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+        if (userRole == "0")
+        {
+            try
+            {
+                _connection.Open();
+                string sql = "SELECT * FROM POLICEMEN";
+                OracleCommand command = new OracleCommand(sql, _connection);
+
+                using (OracleDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var policeman = new Police
+                        {
+                            Policenumber = reader.GetString(reader.GetOrdinal("POLICE_NUMBER")),
+                            Policename = reader.GetString(reader.GetOrdinal("POLICE_NAME")),
+                            ID = reader.GetString(reader.GetOrdinal("ID_NUMBER")),
+                            Gender = reader.GetString(reader.GetOrdinal("GENDER"))
+                        };
+
+                        policemen.Add(policeman);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"查询数据时发生错误: {ex.Message}");
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return Ok(policemen);
+
+        }
+        else
+            return Unauthorized();
+    }
+
+    [HttpPost("api/data")]
+    public ActionResult<string> ProcessInput(Request request)
+    {
+        try
+        {
+            string response = request.input + " hello_world";
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"处理输入时发生错误: {ex.Message}");
+        }
     }
 }
-
