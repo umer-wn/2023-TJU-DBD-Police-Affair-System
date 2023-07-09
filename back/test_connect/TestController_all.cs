@@ -2,20 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
 using System.Security.Claims;
-using web1.DTO;
+using web.DTO_group2;
 
 [ApiController]
 [Authorize] // 添加Authorize特性，表示需要进行身份验证
-public class DataController : ControllerBase
+public class TestController_all : ControllerBase
 {
     private readonly OracleConnection _connection;
 
-    public DataController(OracleConnection connection)
+    public TestController_all(OracleConnection connection)
     {
         _connection = connection;
     }
 
-    [HttpGet("api/data")]
+    [HttpGet("api/test")]
     public ActionResult<IEnumerable<Police>> GetStudents()
     {
         var policemen = new List<Police>();
@@ -34,10 +34,10 @@ public class DataController : ControllerBase
                     {
                         var policeman = new Police
                         {
-                            Policenumber = reader.GetString(reader.GetOrdinal("POLICE_NUMBER")),
-                            Policename = reader.GetString(reader.GetOrdinal("POLICE_NAME")),
-                            ID = reader.GetString(reader.GetOrdinal("ID_NUMBER")),
-                            Gender = reader.GetString(reader.GetOrdinal("GENDER"))
+                            police_number = reader.GetString(reader.GetOrdinal("POLICE_NUMBER")),
+                            police_name = reader.GetString(reader.GetOrdinal("POLICE_NAME")),
+                            ID_number = reader.GetString(reader.GetOrdinal("ID_NUMBER")),
+                            gender = reader.GetString(reader.GetOrdinal("GENDER"))
                         };
 
                         policemen.Add(policeman);
@@ -60,7 +60,7 @@ public class DataController : ControllerBase
             return Unauthorized();
     }
 
-    [HttpPost("api/data")]
+    [HttpPost("api/test")]
     public ActionResult<string> ProcessInput(Request request)
     {
         try

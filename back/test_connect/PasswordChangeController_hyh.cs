@@ -1,22 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
-using web1.Helpers;
+using web.Helpers;
+using web.DTO_group2;
 
-public class PasswordChangeRequest
-{
-    public string PoliceNumber { get; set; }
-    public string IdNumber { get; set; }
-}
+
 
 namespace PasswordChangeController
 {
     [ApiController]
     [Route("api/reset-password")]
-    public class PasswordChangeController : ControllerBase
+    public class PasswordChangeController_hyh : ControllerBase
     {
         private readonly OracleConnection _connection;
 
-        public PasswordChangeController(OracleConnection connection)
+        public PasswordChangeController_hyh(OracleConnection connection)
         {
             _connection = connection;
         }

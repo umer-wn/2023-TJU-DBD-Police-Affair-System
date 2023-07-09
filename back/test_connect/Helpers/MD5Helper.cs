@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace web1.Helpers
+namespace web.Helpers
 {
     public static class MD5Helper
     {

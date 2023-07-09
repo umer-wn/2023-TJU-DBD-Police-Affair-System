@@ -1,26 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
+using web.DTO_group2;
 using System.Collections.Generic;
 using System.Data.Common;
 
 
-public class notification
-{
-    public string temp { get; set; }  
-}
-
 
 [ApiController]
-public class DataController : ControllerBase
+public class SearchController_fhl : ControllerBase
 {
     private readonly OracleConnection _connection;
 
-    public DataController(OracleConnection connection)
+    public SearchController_fhl(OracleConnection connection)
     {
         _connection = connection;
     }
     [HttpPost]
-    [Route("api/data")]
+    [Route("api/search")]
     
     public ActionResult<string> ChangePermission(notification notice)
     {
@@ -71,11 +67,4 @@ public class DataController : ControllerBase
     
 }
 
-public class Police
-{
-    public string police_number { get; set; }
-    public string police_name { get; set; }
-    public string ID_number { get; set; }
-    public string phone_number { get; set; }
 
-}

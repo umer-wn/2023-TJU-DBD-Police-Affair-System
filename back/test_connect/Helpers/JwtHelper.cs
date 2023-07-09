@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace web1.Helpers
+namespace web.Helpers
 {
     public class JwtHelper
     {
@@ -12,7 +12,7 @@ namespace web1.Helpers
         /// 创建一个JWT令牌
         /// </summary>
         /// <param name="policeNo">警号</param>
-        /// <param name="role">用户等级，参考Entities.Student注释</param>
+        /// <param name="role">用户等级</param>
         /// <param name="expiresIn">有效期（单位：分钟）</param>
         /// <returns>一个签发的JWT令牌</returns>
         public static string CreateToken(string policeNo, string role, int expiresIn)

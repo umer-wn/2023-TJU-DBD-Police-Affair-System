@@ -1,27 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data.Common;
+using web.DTO_group2;
 
-
-public class permit
-{
-    public string s_number { get; set; }
-    public string h_number { get; set; }
-    public string level { get; set; }
-}
 
 
 namespace WebApplication1
 {
     [ApiController]
     [Route("api/permit")]
-    public class changePermissionController:ControllerBase
+    public class ChangePermissionController_hyh:ControllerBase
     {
         private  OracleConnection _connection;
 
         
-        public changePermissionController(OracleConnection connection)
+        public ChangePermissionController_hyh(OracleConnection connection)
         {
             _connection = connection;
         }

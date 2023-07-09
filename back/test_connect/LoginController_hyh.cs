@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
-using web1.Helpers;
+using web.Helpers;
+using web.DTO_group2;
 
-public class LoginRequest
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
-}
+
 
 namespace LoginController
 {
@@ -14,12 +11,12 @@ namespace LoginController
     [Route("api/login")]
 
 
-    public class LoginController : ControllerBase
+    public class LoginController_hyh : ControllerBase
     {
         private readonly OracleConnection _connection;
 
 
-        public LoginController(OracleConnection connection)
+        public LoginController_hyh(OracleConnection connection)
         {
             _connection = connection;
 
@@ -35,18 +32,22 @@ namespace LoginController
             {
 
                 _connection.Open();
-                string authority;
+                // 用户权限的表示，后面会加入Token
+                string authority;    
+                // 进行相应的权限查询，这里的前提是 用户的账号密码已经核验通过
                 using (OracleCommand command = _connection.CreateCommand())
                 {
                     command.CommandText = "SELECT AUTHORITY FROM POLICE_ACCOUNT WHERE POLICE_NUMBER = :PoliceNumber";
                     command.Parameters.Add(new OracleParameter("PoliceNumber", request.Username));
                     authority = command.ExecuteScalar()?.ToString() ?? string.Empty;
                 }
+                //查询完毕，关闭连接
                 _connection.Close();
                 return Ok(new { success = true, message = "登录成功", token = JwtHelper.CreateToken(request.Username, authority, 600) });
             }
             else
             {
+                // 账号密码对应不上或者根本没有
                 return Ok(new { success = false, error = "登录失败", message = "登录失败" });
             }
         }
