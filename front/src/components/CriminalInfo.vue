@@ -1,44 +1,52 @@
 <template>
 <div>
   <!-- 显示图片 -->
-  <div class="contrl" @mousemove="onMouseMove" :style="{backgroundColor:`hsl(${x}, 80%, 50%)`}">
+  <div class="contrl">
+    <!-- @mousemove="onMouseMove" :style="{backgroundColor:`hsl(${x}, 80%, 50%)`}" -->
     <div class="overlay">
-    <img v-bind:src="imgUrl" class="imgctrl" @mouseover="showText" @mouseout="hideText">
-    <div class="text" v-if="showText">姓名：葛蕾<br>年龄：25<br>罪名：杀人<br>刑期：无期徒刑</div>
+      <img v-bind:src="imgUrl" class="imgctrl" @mouseover="showText" @mouseleave="hideText">
+      <div class="text" v-if="show">
+        姓名：{{item.Name}}<br>身份证号：{{item.ID}}<br>性别：{{item.gender}}<br>关系：{{content.items[2][i]}}<br>罪名:
+        <ul>
+          <li v-for="(type) in item.crimeType" :key="type">
+            {{type}}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-  
 </div>
 </template>
 
-
-
-
 <script>
+import FamilyCrime from './FamilyCrime.vue'
 export default {
+  components: {
+    FamilyCrime
+  },
   data() {
     return {
-      showText: false,
-      x:0
+      show: false,
+      hide: true
+      // x: 0
     }
   },
-  props:['imgUrl'],
+  props: ['imgUrl', 'content', 'items', 'item', 'i'],
   methods: {
     showText() {
-    this.showText = true
+      this.show = true
+      this.hide = false
     },
     hideText() {
-    this.showText = false
+      this.show = false
+      this.hide = true
     },
-    onMouseMove(e){
-        this.x=e.clientX;
-    }
-    }
+    // onMouseMove(e) {
+    //   this.x=e.clientX;
+    // }
+  }
 }
 </script>
-
-
-
 
 <style>
 .overlay {
@@ -47,7 +55,7 @@ export default {
 .contrl{
     width:250px;
     height:200px;
-    background-color: rgba(66, 164, 255, 0.447);
+    background-color: grey;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,11 +66,12 @@ export default {
 }
 .text{
     position: absolute;
+    width: 50%;
     top: 50%;
-    left: 120%; /* 将文字初始位置设置在图片右侧，可以根据需要调整 */
+    left: 80%; /* 将文字初始位置设置在图片右侧，可以根据需要调整 */
     transform: translate(-50%, -50%);
     opacity: 1;
-    transition: opacity 0.3s ease, left 0.3s ease;
+    transition: opacity 1s ease, left 1s ease;
 }
 .imgctrl{
     width: 50%; /* 根据需要调整图片宽度 */
