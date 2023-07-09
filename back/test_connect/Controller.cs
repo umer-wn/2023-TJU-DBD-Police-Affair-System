@@ -35,7 +35,6 @@ public struct result
         relationship=new List<string>();
     }
 }
-
 [Route("api/queryFamily")]
 [ApiController]
 public class FamilyController : ControllerBase
@@ -45,7 +44,7 @@ public class FamilyController : ControllerBase
     {
         _connection = connection;
     }
-    public bool notExist(string type,List<string> types)
+    private bool notExist(string type,List<string> types)
     {
         foreach (string i in types)
         {
@@ -54,7 +53,7 @@ public class FamilyController : ControllerBase
         }
         return true;
     }
-    public void searchParent(ref result output,string targetID)
+    private void searchParent(ref result output,string targetID)
     {
         string sql = "select ID_num,citizen_name,gender,case_type " +
             "from citizen natural join related natural join cases " +
@@ -119,7 +118,7 @@ public class FamilyController : ControllerBase
             return;
         }
     }
-    public void searchChild(ref result output, string targetID)
+    private void searchChild(ref result output, string targetID)
     {
         string sql = "select ID_num,citizen_name,gender,case_type " +
             "from citizen natural join related natural join cases " +
@@ -172,9 +171,9 @@ public class FamilyController : ControllerBase
             return;
         }
     }
-    
+
     [HttpPost]
-    public ActionResult<IEnumerable<result>> HandleFamily(MyRequestData requestData)
+    public ActionResult HandleFamily(MyRequestData requestData)
     {
         string inputText = requestData.InputText; // 从请求的JSON数据中获取输入的字符串                                
         result queryResult = new result();
@@ -183,10 +182,10 @@ public class FamilyController : ControllerBase
             "from citizen natural join related natural join cases" +
             "where ID_num=" + inputText + " and related_type=" + "'犯人' " +
             "order by case_type";
-        _connection.Open();
-        // 创建Oracle命令对象
         try
         {
+            _connection.Open();
+            // 创建Oracle命令对象
             OracleCommand command = new OracleCommand(query, _connection);
             OracleDataReader reader = command.ExecuteReader();
             if (reader.HasRows==false)

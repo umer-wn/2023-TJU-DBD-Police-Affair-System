@@ -9,7 +9,7 @@
             </div>
             <div v-else-if="item==content.items[1]">
                 <ul>
-                    <li v-for="(item, i) in content.items[1]" :key="item.ID">
+                    <li v-for="(item) in content.items[1]" :key="item.ID">
                         <CriminalInfo :imgUrl="imageUrl" class="imgControl"/>
                     </li>
                 </ul>
@@ -39,12 +39,12 @@ export default{
   },
   methods: {
     query() {
-      axios.post('http://localhost:7078/api/data', { InputText : this.inputID_num })
+      axios.post('http://localhost:7078/api/queryFamily', { InputText : this.inputID_num })
       .then(response => {
         this.content = []
-        // this.content = {
-        //     items: response.data
-        // }
+            this.content = {
+                items: response.data
+            }
         if (this.content) {
           this.x = 1
         }
