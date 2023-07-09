@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view></router-view>
+<P>HGVGV</P>
   </div>
 </template>
 
