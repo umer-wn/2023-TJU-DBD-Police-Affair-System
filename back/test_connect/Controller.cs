@@ -9,12 +9,31 @@ public class MyRequestData
 {
     public string InputText { get; set; }
 }
+public struct Info
+{
+    public string name { get; set; }
+    public string gender { get; set; }
+    public string ID { get; set; }
+    public List<string> crimeType { get; set; }
+    public Info()
+    {
+        name = "";
+        gender = "";
+        ID = "";
+        crimeType = new List<string>();
+    }
+}
 public struct result
 {
-    public int level;
-    public string name;
-    public string ID;
-    public string gender;
+    public Info centerMan;
+    public List<Info> relatePeople;
+    public List<string> relationship;
+    public result()
+    {
+        centerMan=new Info();
+        relatePeople=new List<Info>();
+        relationship=new List<string>();
+    }
 }
 
 [Route("api/queryFamily")]
@@ -26,134 +45,184 @@ public class FamilyController : ControllerBase
     {
         _connection = connection;
     }
-    /*
-     若有重复内容，返回false
-     */
-    private bool checkRepeated(string ID_num,List<result> myresult)
+    public bool notExist(string type,List<string> types)
     {
-        foreach (result i in myresult)
+        foreach (string i in types)
         {
-            if (i.ID == ID_num)
+            if (type == i)
                 return false;
         }
         return true;
     }
-    /**
-     父母递归树
-     **/
-    public void searchParent(ref List<result> output,int curLevel,string curID)
+    public void searchParent(ref result output,string targetID)
     {
-        curLevel++;
-        string query = "select ID_num,citizen_name,gender " +
-            "from citizen natural join related " +
-            "where related_type='犯人'" + " and " + "ID_num in (" +
+        string sql = "select ID_num,citizen_name,gender,case_type " +
+            "from citizen natural join related natural join cases " +
+            "where ID_num in (" +
             "select father_ID " +
             "from citizen " +
-            "where ID_num=" + curID + " " +
-            "union " +
+            "where ID_num=" + targetID + ") " +
+            "order by case_type";
+        try
+        {
+            OracleCommand command = new OracleCommand(sql, _connection);
+            OracleDataReader reader = command.ExecuteReader();
+            Info tmp = new Info();
+            while (reader.Read())
+            {
+                tmp.ID = reader.GetString("ID_num");
+                tmp.name = reader.GetString("citizen_name");
+                tmp.gender = reader.GetString("gender");
+                string readyType = reader.GetString("case_type");
+                if (notExist(readyType,tmp.crimeType))
+                {
+                    tmp.crimeType.Add(readyType);
+                }
+
+            }
+            output.relatePeople.Add(tmp);
+            output.relationship.Add("父亲");
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
+        sql ="select ID_num,citizen_name,gender,case_type " +
+            "from citizen natural join related natural join cases " +
+            "where ID_num in (" +
             "select mother_ID " +
             "from citizen " +
-            "where ID_num=" + curID + ");";
-        using (OracleCommand command = new OracleCommand(query, _connection))
+            "where ID_num=" + targetID + ") " +
+            "order by case_type";
+        try
         {
-            result temp;
-            // 执行查询
-            using (OracleDataReader reader = command.ExecuteReader())
+            OracleCommand command = new OracleCommand(sql, _connection);
+            OracleDataReader reader = command.ExecuteReader();
+            Info tmp = new Info();
+            while (reader.Read())
             {
-                // 处理查询结果
-                while (reader.Read())
+                tmp.ID = reader.GetString("ID_num");
+                tmp.name = reader.GetString("citizen_name");
+                tmp.gender = reader.GetString("gender");
+                string readyType = reader.GetString("case_type");
+                if (notExist(readyType, tmp.crimeType))
                 {
-                    // 从reader中获取查询结果的字段值
-                    temp.level = curLevel;
-                    temp.ID = reader.GetString("ID_num");
-                    temp.name = reader.GetString("citizen_name");
-                    temp.gender = reader.GetString("gender");
-                    if (checkRepeated(temp.ID,output))
-                    { // 无重复，加入结果集
-                        output.Add(temp);
-                        search(ref output, curLevel, curID);
+                    tmp.crimeType.Add(readyType);
+                }
 
-                    }
-                    // 否则跳过
-                }
             }
+            output.relatePeople.Add(tmp);
+            output.relationship.Add("母亲");
         }
-    }
-    /**
-     子孙递归树
-     **/
-    public void searchChild(ref List<result> output, int curLevel,string curID)
-    {
-        curLevel--;
-        string query = "select ID_num,citizen_name,gender " +
-            "from citizen natural join related " +
-            "where related_type='犯人'" +
-            "and (father_ID=" + curID + " or mother_ID=" + curID + ")";
-        using (OracleCommand command = new OracleCommand(query, _connection))
+        catch (Exception ex)
         {
-            result temp;
-            // 执行查询
-            using (OracleDataReader reader = command.ExecuteReader())
-            {
-                // 处理查询结果
-                while (reader.Read())
-                {
-                    // 从reader中获取查询结果的字段值
-                    temp.level = curLevel;
-                    temp.ID = reader.GetString("ID_num");
-                    temp.name = reader.GetString("citizen_name");
-                    temp.gender = reader.GetString("gender");
-                    if (checkRepeated(temp.ID, output))
-                    { // 无重复，加入结果集
-                        output.Add(temp);
-                        search(ref output, curLevel, curID);
-                    }
-                    // 否则跳过
-                }
-            }
+            return;
         }
     }
-    /**
-     根节点递归树，前序-左父母树
-     ref return: output
-     **/
-    public void search(ref List<result> output, int curLevel, string curID)
+    public void searchChild(ref result output, string targetID)
     {
-        searchParent(ref output, curLevel, curID); // 左父母树搜索
-        searchChild(ref output, curLevel, curID); // 子孙树搜索
+        string sql = "select ID_num,citizen_name,gender,case_type " +
+            "from citizen natural join related natural join cases " +
+            "where mother_ID=" + targetID + " or " + "father_ID=" + targetID + " " +
+            "order by ID_num,case_type;";
+        
+        try
+        {
+            OracleCommand command = new OracleCommand(sql, _connection);
+            OracleDataReader reader = command.ExecuteReader();
+            Info[] tmp = new Info[2]; // 0留存行，1读取行
+            if (reader.Read())
+            {
+                tmp[0].ID = reader.GetString("ID_num");
+                tmp[0].name = reader.GetString("citizen_name");
+                tmp[0].gender = reader.GetString("gender");
+                tmp[0].crimeType.Add(reader.GetString("case_type"));
+            }
+            while (reader.Read())
+            {
+                tmp[1].ID = reader.GetString("ID_num");
+                tmp[1].name = reader.GetString("citizen_name");
+                tmp[1].gender = reader.GetString("gender");
+                string readyType = reader.GetString("case_type");
+                if (tmp[0].ID == tmp[1].ID)
+                {
+                    // 还是同一个人
+                    if (notExist(readyType, tmp[0].crimeType))
+                    {
+                        // 出现新犯罪类型，添加
+                        tmp[0].crimeType.Add(readyType);
+                    }
+                }
+                else
+                {
+                    // 换人
+                    output.relatePeople.Add(tmp[0]);
+                    output.relationship.Add(tmp[0].gender == "F" ? "女儿" : "儿子");
+                    // 先存储信息到结果，再挪信息
+                    tmp[0] = tmp[1];
+                    tmp[0].crimeType.Add(readyType);
+                }
+            }
+            // 全部读完以后，最后一个人在[0]，未写入
+            output.relatePeople.Add(tmp[0]);
+            output.relationship.Add(tmp[0].gender == "F" ? "女儿" : "儿子");
+        }
+        catch ( Exception ex )
+        {
+            return;
+        }
     }
+    
     [HttpPost]
     public ActionResult<IEnumerable<result>> HandleFamily(MyRequestData requestData)
     {
         string inputText = requestData.InputText; // 从请求的JSON数据中获取输入的字符串                                
-        List<result> queryResult = new List<result>();
-        int curLevel = 0;
-        string query = "select ID_num,citizen_name,gender " +
-            "from citizen natural join related " +
-            "where ID_num=" + inputText + " and related_type=" + "'犯人'" + ";";
+        result queryResult = new result();
+
+        string query = "select ID_num,citizen_name,gender,case_type " +
+            "from citizen natural join related natural join cases" +
+            "where ID_num=" + inputText + " and related_type=" + "'犯人' " +
+            "order by case_type";
         _connection.Open();
         // 创建Oracle命令对象
-        using (OracleCommand command = new OracleCommand(query, _connection))
+        try
         {
-            result temp;
-            // 执行查询
-            using (OracleDataReader reader = command.ExecuteReader())
+            OracleCommand command = new OracleCommand(query, _connection);
+            OracleDataReader reader = command.ExecuteReader();
+            if (reader.HasRows==false)
             {
-                // 处理查询结果
+                return Ok(new result());
+            }
+            else
+            {
+                Info tmp=new Info();
                 while (reader.Read())
-                {
-                    // 从reader中获取查询结果的字段值
-                    temp.level = curLevel;
-                    temp.ID = reader.GetString("ID_num");
-                    temp.name = reader.GetString("citizen_name");
-                    temp.gender = reader.GetString("gender");
-                    queryResult.Add(temp);
+                { // 必然只有一个人
+                    tmp.name = reader.GetString("citizen_name");
+                    tmp.ID = reader.GetString("ID_num");
+                    tmp.gender = reader.GetString("gender");
+                    string readyType = reader.GetString("case_type");
+                    if (notExist(readyType,tmp.crimeType))
+                    {
+                        // 类型不重复
+                        tmp.crimeType.Add(readyType);
+                    }
                 }
+                queryResult.centerMan = tmp;
+                searchParent(ref queryResult, queryResult.centerMan.ID);
+                searchChild(ref queryResult, queryResult.centerMan.ID);
             }
         }
-        search(ref queryResult, curLevel, inputText); // 必然只能查到一个人，所以直接进递归
-        _connection.Close();
+        catch(Exception ex)
+        {
+            return Ok(new result());
+        }
+        finally
+        {
+            _connection.Close();   
+        }
         return Ok(queryResult);
+
     }
 }
 
