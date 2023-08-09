@@ -6,7 +6,11 @@
     <div class="overlay">
       <img v-bind:src="imgUrl" class="imgctrl" @mouseover="showText" @mouseleave="hideText">
       <div class="text" v-if="show">
-        姓名：{{item.Name}}<br>身份证号：{{item.ID}}<br>性别：{{item.gender}}<br>关系：{{content.items[2][i]}}<br>罪名:
+        姓名：{{item.Name}}<br>身份证号：{{item.ID}}<br>性别：{{item.gender}}<br>
+        <div v-if="item == content.items[1][i]">
+          关系：{{content.items[2][i]}}<br>
+        </div>
+        罪名:
         <ul>
           <li v-for="(type) in item.crimeType" :key="type">
             {{type}}
@@ -24,7 +28,7 @@ export default {
   components: {
     FamilyCrime
   },
-  data() {
+  data () {
     return {
       show: false,
       hide: true
@@ -33,14 +37,14 @@ export default {
   },
   props: ['imgUrl', 'content', 'items', 'item', 'i'],
   methods: {
-    showText() {
+    showText () {
       this.show = true
       this.hide = false
     },
-    hideText() {
+    hideText () {
       this.show = false
       this.hide = true
-    },
+    }
     // onMouseMove(e) {
     //   this.x=e.clientX;
     // }
