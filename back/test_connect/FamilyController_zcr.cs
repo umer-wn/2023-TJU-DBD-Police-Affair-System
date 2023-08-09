@@ -4,6 +4,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data;
 using System.Numerics;
+using web.DTO_group2;
 
 
 public struct Info
@@ -120,7 +121,7 @@ public class FamilyController_zcr : ControllerBase
         string sql = "select ID_num,citizen_name,gender,case_type " +
             "from citizen natural join related natural join cases " +
             "where mother_ID=" + targetID + " or " + "father_ID=" + targetID + " " +
-            "order by ID_num,case_type;";
+            "order by ID_num,case_type";
         
         try
         {
@@ -175,15 +176,17 @@ public class FamilyController_zcr : ControllerBase
         string inputText = requestData.InputText; // 从请求的JSON数据中获取输入的字符串                                
         result queryResult = new result();
 
-        string query = "select ID_num,citizen_name,gender,case_type " +
-            "from citizen natural join related natural join cases" +
-            "where ID_num=" + inputText + " and related_type=" + "'犯人' " +
+        string query = "select ID_num,citizen_name,gender,case_type "+
+            "from citizen natural join related natural join cases " +
+            "where ID_num=:temp and related_type='犯人' "+
             "order by case_type";
+
         try
         {
             _connection.Open();
             // 创建Oracle命令对象
             OracleCommand command = new OracleCommand(query, _connection);
+            command.Parameters.Add(new OracleParameter("temp", inputText));
             OracleDataReader reader = command.ExecuteReader();
             if (reader.HasRows==false)
             {
@@ -211,14 +214,12 @@ public class FamilyController_zcr : ControllerBase
         }
         catch(Exception ex)
         {
-            Console.WriteLine(ex.ToString());
             return Ok(new result());
         }
         finally
         {
             _connection.Close();   
         }
-        Console.WriteLine(queryResult.centerMan.name);
         return Ok(queryResult);
 
     }
