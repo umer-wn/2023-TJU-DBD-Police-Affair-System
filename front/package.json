@@ -2,7 +2,7 @@
   "name": "testp",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "Tianming Yun <1447489091@qq.com>",
+  "author": "zhaoyihui233 <1289374376@qq.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -17,7 +17,7 @@
     "axios": "^1.4.0",
     "element-ui": "^2.15.13",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.6.5"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
