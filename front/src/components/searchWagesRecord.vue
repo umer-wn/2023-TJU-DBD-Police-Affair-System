@@ -22,6 +22,7 @@
       </div>
 
 
+
       <div>&nbsp;</div>
       <lable style="position: relative;display: block;"><div class="ssqinputtext">输入警号</div><input class="ssqinputinfobox" type="text" v-model="inputId" placeholder="输入警号"/><span class="ssqpoptip">仅支持字母、数字组合!</span></lable>
       <div>&nbsp;</div>
