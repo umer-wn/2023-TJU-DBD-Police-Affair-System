@@ -263,4 +263,5 @@ export default {
   opacity: 0;
   transform: translateY(100%) scale(0); /* 添加最终的缩放效果 */
 }
+
 </style>
