@@ -33,6 +33,10 @@ public struct result
         relationship=new List<string>();
     }
 }
+public struct MyRequestData
+{
+    public string InputText { get; set; }
+}
 [Route("api/queryFamily")]
 [ApiController]
 public class FamilyController_zcr : ControllerBase
