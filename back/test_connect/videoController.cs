@@ -6,7 +6,7 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 
 //前后端进行数据交流的数据结构
-public class videoInfo
+public class videoInfoZYH
 {
     public string videoID { get; set; }
     public string videoType { get; set; }
@@ -15,7 +15,7 @@ public class videoInfo
     public string principleID { get; set; }
 }
 
-public class inputVideoInfo
+public class inputVideoInfoZYH
 {
     public string videoID { get; set; }
     public string videoType { get; set; }
@@ -24,19 +24,19 @@ public class inputVideoInfo
 
 [ApiController]
 [Route("api/videoInfo")]
-public class videoInfoController : ControllerBase
+public class videoInfoControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
 
-    public videoInfoController(OracleConnection connection)
+    public videoInfoControllerZYH(OracleConnection connection)
     {
         _connection = connection;
     }
 
     [HttpPost]
-    public IActionResult HandleEndpoint(inputVideoInfo inputInfo) //接收前端的数据
+    public IActionResult HandleEndpoint(inputVideoInfoZYH inputInfo) //接收前端的数据
     {
-        List<videoInfo> videos = new List<videoInfo>();
+        List<videoInfoZYH> videos = new List<videoInfoZYH>();
         Console.WriteLine($"查询数据为:{inputInfo.videoID}\t{inputInfo.videoType}\t{inputInfo.principleID}");
         try
         {
@@ -77,7 +77,7 @@ public class videoInfoController : ControllerBase
                 {
                     while (reader.Read())
                     {
-                        videoInfo video = new videoInfo
+                        videoInfoZYH video = new videoInfoZYH
                         {
                             videoID = reader.GetString(reader.GetOrdinal("VIDEO_id")),
                             videoType = reader.GetString(reader.GetOrdinal("VIDEO_TYPE")),

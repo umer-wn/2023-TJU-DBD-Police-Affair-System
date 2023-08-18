@@ -6,7 +6,7 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 
 //前后端进行数据交流的数据结构
-public class caseInfo
+public class caseInfoZYH
 {
     public string caseID { get; set; }
     public string caseType { get; set; }
@@ -16,7 +16,7 @@ public class caseInfo
     public string ranking { get; set; }
 }
 
-public class inputCaseInfo
+public class inputCaseInfoZYH
 {
     public string caseID { get; set; }
     public string caseType { get; set; }
@@ -27,19 +27,19 @@ public class inputCaseInfo
 
 [ApiController]
 [Route("api/caseInfo")]
-public class caseInfoController : ControllerBase
+public class caseInfoControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
 
-    public caseInfoController(OracleConnection connection)
+    public caseInfoControllerZYH(OracleConnection connection)
     {
         _connection = connection;
     }
 
     [HttpPost]
-    public IActionResult HandleEndpoint(inputCaseInfo inputInfo) //接收前端的数据
+    public IActionResult HandleEndpoint(inputCaseInfoZYH inputInfo) //接收前端的数据
     {
-        List<caseInfo> cases = new List<caseInfo>();
+        List<caseInfoZYH> cases = new List<caseInfoZYH>();
         Console.WriteLine($"查询数据为:{inputInfo.caseID}\t{inputInfo.caseType}\t{inputInfo.status}\t{inputInfo.address}\t{inputInfo.ranking}");
         try
         {
@@ -91,7 +91,7 @@ public class caseInfoController : ControllerBase
                 {
                     while (reader.Read())
                     {
-                        caseInfo Case = new caseInfo
+                        caseInfoZYH Case = new caseInfoZYH
                         {
                             caseID = reader.GetString(reader.GetOrdinal("CASE_ID")),
                             caseType = reader.GetString(reader.GetOrdinal("CASE_TYPE")),
@@ -120,14 +120,12 @@ public class caseInfoController : ControllerBase
     }
 }
 
-
-
-public class inputCaseID
+public class inputCaseIDZYH
 {
     public string caseID { get; set; }
 }
 
-public class caseDetails
+public class caseDetailsZYH
 {
     public string phone { get; set; }
     public DateTime callsTime { get; set; }
@@ -144,19 +142,19 @@ public class caseDetails
 
 [ApiController]
 [Route("api/caseDetails")]
-public class caseDetailsController : ControllerBase
+public class caseDetailsControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
 
-    public caseDetailsController(OracleConnection connection)
+    public caseDetailsControllerZYH(OracleConnection connection)
     {
         _connection = connection;
     }
 
     [HttpPost]
-    public IActionResult HandleEndpoint(inputCaseID inputID) //接收前端的数据
+    public IActionResult HandleEndpoint(inputCaseIDZYH inputID) //接收前端的数据
     {
-        List<caseDetails> cases = new List<caseDetails>();
+        List<caseDetailsZYH> cases = new List<caseDetailsZYH>();
         Console.WriteLine($"查询数据为:{inputID.caseID}");
         try
         {
@@ -177,7 +175,7 @@ public class caseDetailsController : ControllerBase
                 {
                     while (reader.Read())
                     {
-                        caseDetails Case = new caseDetails
+                        caseDetailsZYH Case = new caseDetailsZYH
                         {
                             phone = reader.GetString(reader.GetOrdinal("PHONE_NUMBER")),
                             callsTime = reader.GetDateTime(reader.GetOrdinal("CALLS_TIME")),
