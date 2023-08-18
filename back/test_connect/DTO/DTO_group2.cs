@@ -42,4 +42,29 @@
         public string level { get; set; } = "";
     }
 
+    public class phoneNum   //用于修改密码时传输验证码
+    {
+        public string phone_number { get; set; } = "";
+
+    }
+    public class changedPassword  // 用于 修改密码 的各种信息
+    {
+        public string police_number { get; set; } = "";
+        public string phone_number { get; set; } = "";
+        public string verificationCode { get; set; } = "";
+        public string newPassword { get; set; } = "";
+    }
+
+    public class searchByName
+    {
+        public string name { get; set; } = "";
+        public string gender { get; set; } = "";
+    }
+
+    public class searchByID
+    {
+        public string ID { get; set; } = "";    
+    }
+
+
 }

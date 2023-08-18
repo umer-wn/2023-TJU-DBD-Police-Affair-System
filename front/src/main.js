@@ -11,7 +11,6 @@ Vue.prototype.$http = axios
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

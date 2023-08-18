@@ -4,6 +4,8 @@ using Oracle.ManagedDataAccess.Client;
 using System.Security.Claims;
 using web.DTO_group2;
 
+
+
 [ApiController]
 [Authorize] // 添加Authorize特性，表示需要进行身份验证
 public class TestController_all : ControllerBase

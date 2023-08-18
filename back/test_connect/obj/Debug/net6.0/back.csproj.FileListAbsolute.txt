@@ -63,3 +63,4 @@ C:\Works\GitWare\2023-TJU-DBD-Police-Affair-System\back\test_connect\obj\Debug\n
 C:\Works\GitWare\2023-TJU-DBD-Police-Affair-System\back\test_connect\obj\Debug\net6.0\back.pdb
 C:\Works\GitWare\2023-TJU-DBD-Police-Affair-System\back\test_connect\obj\Debug\net6.0\back.genruntimeconfig.cache
 C:\Works\GitWare\2023-TJU-DBD-Police-Affair-System\back\test_connect\obj\Debug\net6.0\ref\back.dll
+C:\Works\GitWare\2023-TJU-DBD-Police-Affair-System\back\test_connect\bin\Debug\net6.0\Newtonsoft.Json.dll
