@@ -5,44 +5,23 @@ using System.Data.Common;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
-//前后端进行数据交流的数据结构
-public class PolicemenInfo
-{
-    public string policemenNumber { get; set; }
-    public string policemenName { get; set; }
-    public string IDNumber { get; set; }
-    public string birthday { get; set; }
-    public string gender { get; set; }
-    public string nation { get; set; }
-    public string phoneNumber { get; set; }
-    public string policemenStatus { get; set; }
-    public string policemenPosition { get; set; }
-    public string salary { get; set; }
-}
 
-public class inputPolicemenInfo
-{
-    public string policemenNumber { get; set; }
-    public string policemenName { get; set; }
-    public string policemenStatus { get; set; }
-    public string policemenPosition { get; set; }
-}
 
 [ApiController]
 [Route("api/policemenInfo")]
-public class PolicemenInfoController : ControllerBase
+public class PolicemenInfoControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
 
-    public PolicemenInfoController(OracleConnection connection)
+    public PolicemenInfoControllerZYH(OracleConnection connection)
     {
         _connection = connection;
     }
 
     [HttpPost]
-    public IActionResult HandleEndpoint(inputPolicemenInfo inputInfo) //接收前端的数据
+    public IActionResult HandleEndpoint(inputPolicemenInfoZYH inputInfo) //接收前端的数据
     {
-        List<PolicemenInfo> policemen = new List<PolicemenInfo>();
+        List<PolicemenInfoZYH> policemen = new List<PolicemenInfoZYH>();
         Console.WriteLine($"查询数据为:{inputInfo.policemenNumber}\t{inputInfo.policemenName}\t{inputInfo.policemenStatus}\t{inputInfo.policemenPosition}");
         try
         {
@@ -89,7 +68,7 @@ public class PolicemenInfoController : ControllerBase
                 {
                     while (reader.Read())
                     {
-                        PolicemenInfo policeman = new PolicemenInfo
+                        PolicemenInfoZYH policeman = new PolicemenInfoZYH
                         {
                             policemenNumber = reader.GetString(reader.GetOrdinal("POLICE_NUMBER")),
                             policemenName = reader.GetString(reader.GetOrdinal("POLICE_NAME")),

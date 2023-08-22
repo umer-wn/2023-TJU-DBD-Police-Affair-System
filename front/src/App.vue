@@ -5,93 +5,43 @@
     </div>
 
     <div>
-      <div>案件信息</div>
+      <div>警局信息</div>
     </div>
     <!-- 此处为返回首页按钮，还没加链接 -->
     <div>返回首页</div>
 
     <div>
       <!-- 输入框中默认提示为警局id -->
-      <input type="text" v-model="caseID" placeholder="案件ID" />
-      <select v-model="caseType">
-        <option selected value="全部">全部案件类型</option>
-        <option value="强奸">强奸</option>
-        <option value="抢劫">抢劫</option>
-        <option value="故意伤害">故意伤害</option>
-        <option value="盗窃">盗窃</option>
-        <option value="诈骗">诈骗</option>
-        <option value="谋杀">谋杀</option>
-      </select>
-      <select v-model="status">
-        <option selected value="全部">全部案件状态</option>
-        <option value="立案">立案</option>
-        <option value="结案">结案</option>
-        <option value="调查">调查</option>
-      </select>
-      <input type="text" v-model="address" placeholder="案发地点" />
-      <select v-model="ranking">
-        <option selected value="全部">全部等级</option>
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-      </select>
-      <button @click="fetchCaseInfo">查询</button>
+      <input type="text" v-model="stationID" placeholder="警局ID" />
+      <input type="text" v-model="stationName" placeholder="警局名称" />
+      <input type="text" v-model="city" placeholder="警局城市" />
+      <input type="text" v-model="address" placeholder="警局地址" />
+      <input type="number" v-model="budget" placeholder="警局预算" />
+      <button @click="fetchStationInfo">查询</button>
     </div>
-    <!-- 表格显示获取的警员信息 -->
-    <table v-if="caseInfo.length > 0 && !isGotoDetail">
+    <!-- 表格显示获取的警局信息 -->
+    <table v-if="stationInfo.length > 0">
       <thead>
         <tr>
-          <th>案件ID</th>
-          <th>案件类型</th>
-          <th>案件状态</th>
-          <th>登记时间</th>
-          <th>案发地点</th>
-          <th>案件等级</th>
+          <th>警局ID</th>
+          <th>警局名称</th>
+          <th>警局城市</th>
+          <th>警局地址</th>
+          <th>警局预算</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item of caseInfo" :key="item.caseID">
-          <td>{{ item.caseID }}</td>
-          <td>{{ item.caseType }}</td>
-          <td>{{ item.status }}</td>
-          <td>{{ item.registerTime }}</td>
-          <td>{{ item.address }}</td>
-          <td>{{ item.ranking }}</td>
-          <td>
-            <button @click="goToDetails(item)">详情</button>
-          </td>
+        <tr v-for="station in stationInfo" :key="station.stationID">
+          <td>{{ station.stationID }}</td>
+          <td>{{ station.stationName }}</td>
+          <td>{{ station.city }}</td>
+          <td>{{ station.address }}</td>
+          <td>{{ station.budget }}</td>
         </tr>
       </tbody>
     </table>
     <!-- 错误提示 -->
-    <div v-else-if="!isGotoDetail"></div>
-    <div v-if="isGotoDetail">
-      <button @click="backDetails()">返回</button>
-      <table>
-        <caption>案件概况</caption>
-        <thead>
-          <tr>
-            <th>案件ID</th>
-            <th>案件类型</th>
-            <th>案件状态</th>
-            <th>登记时间</th>
-            <th>案发地点</th>
-            <th>案件等级</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ overview.caseID }}</td>
-            <td>{{ overview.caseType }}</td>
-            <td>{{ overview.status }}</td>
-            <td>{{ overview.registerTime }}</td>
-            <td>{{ overview.address }}</td>
-            <td>{{ overview.ranking }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div v-else>{{ boxContent }}</div>
   </div>
 </template>
 
@@ -101,56 +51,32 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      caseID: '',
-      caseType: '全部',
-      status: '全部',
+      stationID: '',
+      stationName: '',
+      city: '',
       address: '',
-      ranking: '全部',
-      caseInfo: [],
-      err: '录像不存在！',
-      isGotoDetail: false,
-      overview: null,
-      caseDetails: [],
+      budget: null, // 修改为null，确保初始值为null
+      stationInfo: [],
+      err: '警局不存在！'
     }
   },
   methods: {
-    fetchCaseInfo() {
-      axios.post('http://localhost:7078/api/caseInfo', {
-        caseID: this.caseID,
-        caseType: this.caseType,
-        status: this.status,
+    fetchStationInfo() {
+      axios.post('http://localhost:7078/api/stationInfo', {
+        stationID: this.stationID,
+        stationName: this.stationName,
+        city: this.city,
         address: this.address,
-        ranking: this.ranking
+        budget: this.budget === '' ? null : this.budget
       })
         .then((res) => {
-          this.caseInfo = res.data
+          this.stationInfo = res.data
           console.log(res.data)
         })
         .catch((err) => {
           this.boxContent = this.err
           console.log(err)
         })
-    },
-    goToDetails(item) {
-      // 在这里处理点击详情按钮的逻辑，item 就是点击的案件信息对象
-      this.overview = item;
-      axios.post('http://localhost:7078/api/caseDetails', {
-        caseID: item.caseID
-      })
-        .then((res) => {
-          this.caseDetails = res.data;
-          console.log(res.data);
-        })
-        .catch((err) => {
-          this.boxContent = this.err;
-          console.log(err);
-        })
-
-
-      this.isGotoDetail = true;
-    },
-    backDetails() {
-      this.isGotoDetail = false;
     }
   }
 }

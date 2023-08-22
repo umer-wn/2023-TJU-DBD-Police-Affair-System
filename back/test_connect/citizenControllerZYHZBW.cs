@@ -1,46 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
 using System.Text;
-
-using Microsoft.AspNetCore.Mvc;
-using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Reflection.PortableExecutable;
-using System.Text;
 
-//前后端进行数据交流的数据结构
-public class citizenInfo
-{
-    public string IDNum { get; set; }
-    public string citizenName { get; set; }
-    public string gender { get; set; }
-    public string fatherID { get; set; }
-    public string motherID { get; set; }
-}
-
-public class inputCitizenInfo
-{
-    public string IDNum { get; set; }
-    public string citizenName { get; set; }
-    public string gender { get; set; }
-}
 
 [ApiController]
 [Route("api/citizenInfo")]
-public class citizenInfoController : ControllerBase
+public class citizenInfoControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
 
-    public citizenInfoController(OracleConnection connection)
+    public citizenInfoControllerZYH(OracleConnection connection)
     {
         _connection = connection;
     }
 
     [HttpPost]
-    public IActionResult HandleEndpoint(inputCitizenInfo inputInfo) //接收前端的数据
+    public IActionResult HandleEndpoint(inputCitizenInfoZYH inputInfo) //接收前端的数据
     {
-        List<citizenInfo> citizens = new List<citizenInfo>();
+        List<citizenInfoZYH> citizens = new List<citizenInfoZYH>();
         Console.WriteLine($"查询数据为:{inputInfo.IDNum}\t{inputInfo.citizenName}\t{inputInfo.gender}");
         try
         {
@@ -84,7 +64,7 @@ public class citizenInfoController : ControllerBase
                 {
                     while (reader.Read())
                     {
-                        citizenInfo citizen = new citizenInfo
+                        citizenInfoZYH citizen = new citizenInfoZYH
                         {
                             IDNum = reader.GetString(reader.GetOrdinal("ID_NUM")),
                             citizenName = reader.GetString(reader.GetOrdinal("CITIZEN_NAME")),

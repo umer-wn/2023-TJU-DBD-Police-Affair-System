@@ -5,22 +5,6 @@ using System.Data.Common;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
-//前后端进行数据交流的数据结构
-public class videoInfoZYH
-{
-    public string videoID { get; set; }
-    public string videoType { get; set; }
-    public DateTime recordTime { get; set; }
-    public DateTime uploadTime { get; set; }
-    public string principleID { get; set; }
-}
-
-public class inputVideoInfoZYH
-{
-    public string videoID { get; set; }
-    public string videoType { get; set; }
-    public string principleID { get; set; }
-}
 
 [ApiController]
 [Route("api/videoInfo")]

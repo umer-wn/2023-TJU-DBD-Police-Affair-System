@@ -4,31 +4,21 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 
-//前后端进行数据交流的数据结构
-public class StationInfo
-{
-    public string stationID { get; set; }
-    public string stationName { get; set; }
-    public string city { get; set; }
-    public string address { get; set; }
-    public int? budget { get; set; }
-}
-
 [ApiController]
 [Route("api/stationInfo")]
-public class StationInfoController : ControllerBase
+public class StationInfoControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
 
-    public StationInfoController(OracleConnection connection)
+    public StationInfoControllerZYH(OracleConnection connection)
     {
         _connection = connection;
     }
 
     [HttpPost]
-    public IActionResult HandleEndpoint(StationInfo inputStation)
+    public IActionResult HandleEndpoint(StationInfoZYH inputStation)
     {
-        List<StationInfo> stations = new List<StationInfo>();
+        List<StationInfoZYH> stations = new List<StationInfoZYH>();
         Console.WriteLine($"查询数据为:{inputStation.stationID}\t{inputStation.stationName}\t{inputStation.city}\t{inputStation.address}\t{inputStation.budget}\t");
         try
         {
@@ -78,7 +68,7 @@ public class StationInfoController : ControllerBase
 
                     while (reader.Read())
                     {
-                        StationInfo station = new StationInfo
+                        StationInfoZYH station = new StationInfoZYH
                         {
                             stationID = reader.GetString(reader.GetOrdinal("station_ID")),
                             stationName = reader.GetString(reader.GetOrdinal("station_Name")),

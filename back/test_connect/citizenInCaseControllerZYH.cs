@@ -5,47 +5,23 @@ using System.Data.Common;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
-//前后端进行数据交流的数据结构
-public class citizenInCaseInfo
-{
-    public string caseID { get; set; }
-    public string caseType { get; set; }
-    public string status { get; set; }
-    public DateTime registerTime { get; set; }
-    public string address { get; set; }
-    public string ranking { get; set; }
-    public string IDNum { get; set; }
-    public string relatedType { get; set; }
-    public string citizenName { get; set; }
-    public string gender { get; set; }
-}
 
-public class inputCitizenInCaseInfo
-{
-    public string caseID { get; set; }
-    public string caseType { get; set; }
-    public string status { get; set; }
-    public string address { get; set; }
-    public string ranking { get; set; }
-    public string IDNum { get; set; }
-    public string relatedType { get; set; }
-}
 
 [ApiController]
 [Route("api/citizenInCaseInfo")]
-public class citizenInCaseInfoController : ControllerBase
+public class citizenInCaseInfoControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
 
-    public citizenInCaseInfoController(OracleConnection connection)
+    public citizenInCaseInfoControllerZYH(OracleConnection connection)
     {
         _connection = connection;
     }
 
     [HttpPost]
-    public IActionResult HandleEndpoint(inputCitizenInCaseInfo inputInfo) //接收前端的数据
+    public IActionResult HandleEndpoint(inputCitizenInCaseInfoZYH inputInfo) //接收前端的数据
     {
-        List<citizenInCaseInfo> cases = new List<citizenInCaseInfo>();
+        List<citizenInCaseInfoZYH> cases = new List<citizenInCaseInfoZYH>();
         
         try
         {
@@ -107,7 +83,7 @@ public class citizenInCaseInfoController : ControllerBase
                 {
                     while (reader.Read())
                     {
-                        citizenInCaseInfo Case = new citizenInCaseInfo
+                        citizenInCaseInfoZYH Case = new citizenInCaseInfoZYH
                         {
                             caseID = reader.GetString(reader.GetOrdinal("CASE_ID")),
                             caseType = reader.GetString(reader.GetOrdinal("CASE_TYPE")),
