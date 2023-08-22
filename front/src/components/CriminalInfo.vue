@@ -1,5 +1,6 @@
 <template>
-  <div>
+<div>
+  <transition name="all">
     <div class="container">
       <div
         class="textCtrlL"
@@ -34,7 +35,8 @@
         </transition>
       </div>
     </div>
-  </div>
+  </transition>
+</div>
 </template>
 
 <script>
@@ -63,6 +65,18 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+.all-enter-active,
+.all-leave-active {
+  transition: opacity 1s ease;
+}
+.all-enter-from,
+.all-leave-to {
+  opacity: 0;
+}
+.all-enter-to,
+.all-leave-from {
+  opacity: 1;
 }
 .circleBack {
   width: 150px;

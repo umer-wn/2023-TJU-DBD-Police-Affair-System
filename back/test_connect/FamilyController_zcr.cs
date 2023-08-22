@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor.Infrastructure;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
@@ -23,13 +24,11 @@ public struct Info
 }
 public struct result
 {
-    public Info centerMan { get; set; }
-    public List<Info> relatePeople { get; set; }
-    public List<string> relationship { get; set; }
+    public List<Info> people { get; set; } // 每个人
+    public List<string> relationship { get; set; } // 每个人和中心人的关系
     public result()
     {
-        centerMan=new Info();
-        relatePeople=new List<Info>();
+        people=new List<Info>();   
         relationship=new List<string>();
     }
 }
@@ -62,11 +61,12 @@ public class FamilyController_zcr : ControllerBase
             "where ID_num in (" +
             "select father_ID " +
             "from citizen " +
-            "where ID_num=" + targetID + ") " +
+            "where ID_num=:temp) " +
             "order by case_type";
         try
         {
             OracleCommand command = new OracleCommand(sql, _connection);
+            command.Parameters.Add(new OracleParameter("temp", targetID));
             OracleDataReader reader = command.ExecuteReader();
             Info tmp = new Info();
             while (reader.Read())
@@ -81,7 +81,7 @@ public class FamilyController_zcr : ControllerBase
                 }
 
             }
-            output.relatePeople.Add(tmp);
+            output.people.Add(tmp);
             output.relationship.Add("父亲");
         }
         catch (Exception ex)
@@ -93,11 +93,12 @@ public class FamilyController_zcr : ControllerBase
             "where ID_num in (" +
             "select mother_ID " +
             "from citizen " +
-            "where ID_num=" + targetID + ") " +
+            "where ID_num=:temp) " +
             "order by case_type";
         try
         {
             OracleCommand command = new OracleCommand(sql, _connection);
+            command.Parameters.Add(new OracleParameter("temp", targetID));
             OracleDataReader reader = command.ExecuteReader();
             Info tmp = new Info();
             while (reader.Read())
@@ -112,7 +113,7 @@ public class FamilyController_zcr : ControllerBase
                 }
 
             }
-            output.relatePeople.Add(tmp);
+            output.people.Add(tmp);
             output.relationship.Add("母亲");
         }
         catch (Exception ex)
@@ -124,14 +125,17 @@ public class FamilyController_zcr : ControllerBase
     {
         string sql = "select ID_num,citizen_name,gender,case_type " +
             "from citizen natural join related natural join cases " +
-            "where mother_ID=" + targetID + " or " + "father_ID=" + targetID + " " +
+            "where mother_ID=:target or " + "father_ID=:target " +
             "order by ID_num,case_type";
         
         try
         {
             OracleCommand command = new OracleCommand(sql, _connection);
+            command.Parameters.Add(new OracleParameter(":target", targetID));
             OracleDataReader reader = command.ExecuteReader();
-            Info[] tmp = new Info[2]; // 0留存行，1读取行
+            Info[] tmp=new Info[2]; // 0留存行，1读取行
+            tmp[0] = new Info();
+            tmp[1] = new Info();
             if (reader.Read())
             {
                 tmp[0].ID = reader.GetString("ID_num");
@@ -157,7 +161,7 @@ public class FamilyController_zcr : ControllerBase
                 else
                 {
                     // 换人
-                    output.relatePeople.Add(tmp[0]);
+                    output.people.Add(tmp[0]);
                     output.relationship.Add(tmp[0].gender == "F" ? "女儿" : "儿子");
                     // 先存储信息到结果，再挪信息
                     tmp[0] = tmp[1];
@@ -165,8 +169,11 @@ public class FamilyController_zcr : ControllerBase
                 }
             }
             // 全部读完以后，最后一个人在[0]，未写入
-            output.relatePeople.Add(tmp[0]);
-            output.relationship.Add(tmp[0].gender == "F" ? "女儿" : "儿子");
+            if (tmp[0].name != null)
+            {
+                output.people.Add(tmp[0]);
+                output.relationship.Add(tmp[0].gender == "F" ? "女儿" : "儿子");
+            }
         }
         catch ( Exception ex )
         {
@@ -211,9 +218,10 @@ public class FamilyController_zcr : ControllerBase
                         tmp.crimeType.Add(readyType);
                     }
                 }
-                queryResult.centerMan = tmp;
-                searchParent(ref queryResult, queryResult.centerMan.ID);
-                searchChild(ref queryResult, queryResult.centerMan.ID);
+                queryResult.people.Add(tmp);
+                queryResult.relationship.Add("");
+                searchParent(ref queryResult, tmp.ID);
+                searchChild(ref queryResult, tmp.ID);
             }
         }
         catch(Exception ex)
