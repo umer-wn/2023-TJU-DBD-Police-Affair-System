@@ -147,7 +147,12 @@
         <el-button
           type="primary"
           style="margin-left: 16px"
-          @click="drawer2 = true"
+          @click="
+            {
+              drawer2 = true;
+              console.log(containerHeight);
+            }
+          "
         >
           with footer
         </el-button>
@@ -156,7 +161,7 @@
     </el-container>
   </el-container>
 
-  账户信息展示
+  <!-- 账户信息展示 -->
   <el-drawer v-model="drawer2" :direction="direction">
     <template #header>
       <h4>set title by slot</h4>
@@ -172,9 +177,9 @@
 <script lang="js" setup>
 import { ref } from "vue";
 
-let containerHeight= 1500 // 初始化容器高度
-let minHeight= 1500 // 最小高度
-let maxScrollHeight= 3000 // 最大滚动高度，控制界面的延伸
+const containerHeight= ref(1500) // 初始化容器高度
+const minHeight= ref(1500) // 最小高度
+const maxScrollHeight= ref(3000) // 最大滚动高度，控制界面的延伸
 // const mytitle= "注册"
 
 const drawer2 = ref(false);
@@ -186,13 +191,13 @@ const password = ref("44554");
 function handleScroll(event) {
       if (event.deltaY > 0) {
         // 向下滚动
-        if (containerHeight < maxScrollHeight) {
-          containerHeight += 50;
+        if (containerHeight.value < maxScrollHeight.value) {
+          containerHeight.value += 50;
         }
       } else {
         // 向上滚动
-        if (containerHeight > minHeight) {
-          containerHeight -= 50;
+        if (containerHeight.value > minHeight.value) {
+          containerHeight.value -= 50;
         }
       }
     }
