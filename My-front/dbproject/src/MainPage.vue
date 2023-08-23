@@ -2,7 +2,7 @@
   <div class="body">
     <div class="headpic">
       <div class="header1">
-        <!-- <img class="logo" src="@/assets/police-logo.png" /> -->
+        <img class="logo" src="@/assets/police-logo.png" />
         <div class="title">&nbsp;&nbsp;警务处理系统</div>
       </div>
     </div>

@@ -14,7 +14,7 @@ const routes = [
     {
         path: '/mainMenu',
         component: () => import('../components/Menu/MainMenu.vue'),
-        // redirect: '/mainMenu/Register',
+        redirect: '/mainMenu/Register',
         
         children: [
             {
@@ -28,8 +28,118 @@ const routes = [
 
             },
             {
+                path: 'PayrollManagement',
+                component: () => import('../components/PoliceManagement/PayrollManagement.vue')
+
+            },
+            {
+                path: 'PoliceAssessment',
+                component: () => import('../components/PoliceManagement/PoliceAssessment.vue')
+
+            },
+            {
                 path: 'PoliceStationInfoManagement',
                 component: () => import('../components/PoliceManagement/PoliceStationInfoManagement.vue')
+
+            },
+            {
+                path: 'PoliceOfficerInfoManagement',
+                component: () => import('../components/PoliceManagement/PoliceOfficerInfoManagement.vue')
+
+            },
+            {
+                path: 'AttendanceManagement',
+                component: () => import('../components/PoliceManagement/AttendanceManagement.vue')
+
+            },
+            {
+                path: 'VideoManagement',
+                component: () => import('../components/PoliceManagement/VideoManagement.vue')
+
+            },
+            {
+                path: 'AlarmResponseRecordManagement',
+                component: () => import('../components/PoliceManagement/AlarmResponseRecordManagement.vue')
+
+            },
+            {
+                path: 'EvidenceManagement',
+                component: () => import('../components/CaseManagement/EvidenceManagement.vue')
+
+            },
+            {
+                path: 'SuspectInfoManagement',
+                component: () => import('../components/CaseManagement/SuspectInfoManagement.vue')
+
+            },
+            {
+                path: 'CriminalRecordManagement',
+                component: () => import('../components/CaseManagement/CriminalRecordManagement.vue')
+
+            },
+            {
+                path: 'VictimInfoManagement',
+                component: () => import('../components/CaseManagement/VictimInfoManagement.vue')
+
+            },
+            {
+                path: 'CaseClassificationManagement',
+                component: () => import('../components/CaseManagement/CaseClassificationManagement.vue')
+
+            },
+            {
+                path: 'CrimeDataStatistics',
+                component: () => import('../components/CaseManagement/CrimeDataStatistics.vue')
+
+            },
+            {
+                path: 'KeyIndividualsManagement',
+                component: () => import('../components/CaseManagement/KeyIndividualsManagement.vue')
+
+            },
+            {
+                path: 'PoliceVehicleManagement',
+                component: () => import('../components/EquipmentManagement/PoliceVehicleManagement.vue')
+
+            },
+            {
+                path: 'PoliceEquipmentManagement',
+                component: () => import('../components/EquipmentManagement/PoliceEquipmentManagement.vue')
+
+            },
+            {
+                path: 'CitizenInfoManagement',
+                component: () => import('../components/UrbanResidentmanagement/CitizenInfoManagement.vue')
+
+            },
+            {
+                path: 'UrbanZoningManagement',
+                component: () => import('../components/UrbanResidentmanagement/UrbanZoningManagement.vue')
+
+            },
+            {
+                path: 'RegionalDispatch',
+                component: () => import('../components/UrbanResidentmanagement/RegionalDispatch.vue')
+
+            },
+            {
+                path: 'DataQualityManagement',
+                component: () => import('../components/DataQualityManagemen.vue')
+
+            },
+            {
+                path: 'SystemLogManagement',
+                component: () => import('../components/SystemLogManagement.vue')
+
+            },
+            {
+                path: 'FamilybgCheck',
+                component: () => import('../components/UrbanResidentmanagement/FamilybgCheck.vue')
+
+            },
+            {
+                path: 'CaseInvestigation',
+                component: () => import('../components/CaseInvestigation.vue')
 
             },
         ]

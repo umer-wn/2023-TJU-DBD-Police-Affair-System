@@ -1,3 +1,3 @@
 <template>
-  <div>3333</div>
+  <div>警局信息管理</div>
 </template>
