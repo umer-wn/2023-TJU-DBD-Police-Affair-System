@@ -1,9 +1,17 @@
 <template>
   <div class="body">
-    <div class="headpic">
-      <img class="logo" src="../src/assets/image-2.png" />
-      <div class="title">&nbsp;&nbsp;警务处理系统</div>
-    </div>
+    <el-header
+      style="height: 70px; padding: 0; text-align: justify; hyphens: auto"
+    >
+      <div class="headpic">
+        <div class="header1">
+          <img class="logo" src="../src/assets/image-2.png" />
+          <div class="title">&nbsp;&nbsp;警务处理系统</div>
+          <!-- <div class="footer1">返回首页</div> -->
+        </div>
+      </div>
+    </el-header>
+
     <div class="main">
       <span></span>
       <span></span>
@@ -11,7 +19,7 @@
         <p class="date">{{ date }}</p>
         <p class="time">{{ time }}</p>
         <p class="welcome-text">&nbsp;欢迎进入警务处理系统&nbsp;</p>
-        <button class="loginbutton" @click="login">登&nbsp;录</button>
+        <button class="loginbutton" @click="login">登录</button>
       </div>
     </div>
   </div>
@@ -35,7 +43,7 @@ export default {
   },
   methods: {
     login() {
-      this.$router.push("mainMenu");
+      this.$router.push("/login");
     },
     updateTime() {
       var cd = new Date();
@@ -66,15 +74,27 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
+.body {
+  display: flex;
+  height: 110vh;
+  width: 100vw;
+  overflow: hidden;
+  flex-direction: column;
+  background-image: url("assets/hellopolice.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .main {
   overflow: auto;
   border-radius: 4px;
   background-color: rgba(84, 141, 240, 0.1);
-  width: auto;
-  height: auto;
-  align-items: center;
-  justify-content: center;
-  margin-top: 50px;
+  width: 90%;
+  height: 75%;
+  margin-top: 10vh;
+  margin-left: 5vw;
   backdrop-filter: blur(6px);
   text-shadow: 0 1px 1px hsla(0, 0%, 100%, 0.3);
   box-shadow: 0 0 0 1px hsla(0, 0%, 100%, 0.3) inset,
@@ -147,19 +167,6 @@ export default {
   }
 }
 
-.body {
-  display: flex;
-  height: 110vh;
-  overflow: hidden;
-  align-items: center;
-  flex-direction: column;
-  background-image: url("assets/hellopolice.jpg");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 #clock {
   font-family: "Share Tech Mono", monospace;
   text-align: center;
@@ -170,32 +177,40 @@ export default {
   font-weight: bold;
   .time {
     letter-spacing: 0.05em;
-    font-size: 80px;
+    font-size: 5em;
   }
   .date {
-    margin-top: 30px;
+    margin-top: 5%;
     letter-spacing: 0.1em;
-    font-size: 40px;
+    font-size: 3em;
   }
   .welcome-text {
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
     text-align: center;
-    font-size: 90px; /* 字号大小 */
+    font-size: 5em; /* 字号大小 */
   }
   .loginbutton {
-    margin-bottom: 30px;
+    letter-spacing: 5px;
+    text-align: center;
     background-color: #1890ff;
-    padding: 10px 20px;
+    padding: 0.2em 0.4em;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 3em;
     font-weight: bold;
   }
 }
 
 .headpic {
+  background: #ffffff;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.header1 {
   background: #1f2cdf;
   background-image: url("assets/hdtest.jpg"); /* 替换为你的背景图路径 */
   background-size: contain;
@@ -203,24 +218,17 @@ export default {
   background-repeat: no-repeat;
   width: 100%;
   height: 70px;
-  overflow: hidden;
   position: relative;
   left: 0;
   display: flex;
   align-items: center;
   padding-left: 20px;
-  .logo {
-    width: 70px;
-    height: 70px;
-    position: relative;
-    top: 2px;
-    left: 0px;
-  }
-  .title {
-    color: #ffffff;
-    text-align: left;
-    font: 400 36px "Inter", sans-serif;
-    display: inline-block;
-  }
+}
+
+.title {
+  color: #ffffff;
+  text-align: left;
+  font: 400 36px "Inter", sans-serif;
+  display: inline-block;
 }
 </style>

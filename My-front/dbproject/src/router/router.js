@@ -5,12 +5,20 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
     {
         path: '/',
-        component: () => import('../MainPage.vue')
+        component: () => import('../WelcomePage.vue')
     },
-    // {
-    //     path: '/login',
-    //     component: () => import('../components/log-in.vue')
-    // },
+    {
+        path: '/login',
+        component: () => import('../components/login/Login.vue')
+    },
+    {
+        path: '/changepassword',
+        component: () => import('../components/login/ChangePassword.vue')
+    },
+    {
+        path: '/ForPassword',
+        component: () => import('../components/login/ForPassword.vue')
+    },
     {
         path: '/mainMenu',
         component: () => import('../components/Menu/MainMenu.vue'),
