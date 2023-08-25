@@ -200,7 +200,6 @@ export default {
       let month = birthInfo.slice(4, 6);
       let day = birthInfo.slice(6, 8);
       this.signinInfo.birthday = year + "-" + month + "-" + day;
-      console.log(this.signinInfo.birthday);
     },
     checkLegal(queryType, queryContent) {
       axios
@@ -221,7 +220,6 @@ export default {
             if (response.data === "ok") {
               this.ID_number_message = "✔";
               this.ID_number_color = "green";
-              console.log(Number(this.signinInfo.ID_number[16]) % 2 == 1);
               this.signinInfo.gender =
                 Number(this.signinInfo.ID_number[16]) % 2 == 1 ? "男" : "女";
               this.calcBirthday(this.signinInfo.ID_number.slice(6, 14));
@@ -247,9 +245,6 @@ export default {
         this.police_number_color = "blue";
         this.checkLegal("police_number", val);
       }
-    },
-    "signinInfo.birthday": function (val) {
-      console.log(val);
     },
     "signinInfo.ID_number": function (val) {
       if (val.length != 18) {

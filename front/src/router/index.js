@@ -2,15 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import FamilybgCheck from '@/components/FamilybgCheck'
 import Register from '@/components/Register'
+import Investigation from '@/components/Investigation'
 Vue.use(Router)
 
 const routes = [
-    // {
-    //     path: '/',
-    //     name: 'FamilyCrime',
-    //     component: FamilyCrime,
-    //     props: true
-    // },
     {
         path: '/FamilybgCheck',
         name: 'FamilybgCheck',
@@ -21,7 +16,10 @@ const routes = [
         path:'/',
         name:'Register',
         component: Register,
-        path: '/',
+        props: true,
+    },
+    {
+        path: '/Investigation',
         name: 'Investigation',
         component: Investigation,
         props: true

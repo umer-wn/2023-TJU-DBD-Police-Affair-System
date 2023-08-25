@@ -1,23 +1,5 @@
 <template>
 <div>
-<<<<<<< HEAD
-  <!-- 显示图片 -->
-  <div class="contrl">
-    <!-- @mousemove="onMouseMove" :style="{backgroundColor:`hsl(${x}, 80%, 50%)`}" -->
-    <div class="overlay">
-      <img v-bind:src="imgUrl" class="imgctrl" @mouseover="showText" @mouseleave="hideText">
-      <div class="text" v-if="show">
-        姓名：{{item.Name}}<br>身份证号：{{item.ID}}<br>性别：{{item.gender}}<br>
-        <div v-if="item == content.items[1][i]">
-          关系：{{content.items[2][i]}}<br>
-        </div>
-        罪名:
-        <ul>
-          <li v-for="(type) in item.crimeType" :key="type">
-            {{type}}
-          </li>
-        </ul>
-=======
   <transition name="all">
     <div class="container">
       <div
@@ -51,7 +33,6 @@
             {{ content.gender == "M" ? "男" : "女" }}<br />
           </div>
         </transition>
->>>>>>> group4
       </div>
     </div>
   </transition>
@@ -60,41 +41,18 @@
 
 <script>
 export default {
-<<<<<<< HEAD
-  components: {
-    FamilyCrime
-  },
-  data () {
-=======
   data() {
->>>>>>> group4
     return {
       isShow: false,
     };
   },
   props: ["imgUrl", "content"],
   methods: {
-<<<<<<< HEAD
-    showText () {
-      this.show = true
-      this.hide = false
-    },
-    hideText () {
-      this.show = false
-      this.hide = true
-    }
-    // onMouseMove(e) {
-    //   this.x=e.clientX;
-    // }
-  }
-}
-=======
     changeTextStatus() {
       this.isShow = !this.isShow;
     },
   },
 };
->>>>>>> group4
 </script>
 
 <style scoped>

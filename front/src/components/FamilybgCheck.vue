@@ -1,29 +1,5 @@
 <template>
   <div class="container">
-<<<<<<< HEAD
-    <p>家族背景调查</p>
-    <input type="text" v-model="inputID_num" placeholder="请输入居民身份证号">
-    <button @click="query">查询</button>
-    <p>{{x}}</p>
-    <ul v-if="content.items != '{}' && x == 1">
-        <li v-for="(item) in content.items" :key="item.ID">
-            <div v-if="item==content.items[0]">
-                <CriminalInfo :imgUrl="imageUrl" class="imgControl"/>
-            </div>
-            <div v-else-if="item==content.items[1]">
-                <ul>
-                    <li v-for="(item, i) in content.items[1]" :key="item.ID">
-                        <CriminalInfo :imgUrl="imageUrl" class="imgControl"/>
-                        {{ i }}
-                    </li>
-                </ul>
-            </div>
-        </li>
-    </ul>
-    <ul v-else-if="content.items == '{}' && x == 0">
-      无结果！
-    </ul>
-=======
     <!-- main window -->
     <!-- element:query inputbox and confirm button-->
     <div
@@ -69,7 +45,6 @@
       </transitionGroup>
 
     </div>
->>>>>>> group4
   </div>
 </template>
 
@@ -117,25 +92,6 @@ export default {
     },
   },
   methods: {
-<<<<<<< HEAD
-    query () {
-      axios.post('http://localhost:7078/api/queryFamily', { InputText: this.inputID_num })
-        .then(response => {
-          this.content = []
-          this.content = { items: response.data }
-          if (this.content.items) {
-            this.x = 1
-          } else {
-            this.x = 0
-          }
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
-  }
-}
-=======
     getPos(index) {
       let width = this.$el.offsetWidth;
       let height = this.$el.offsetHeight;
@@ -204,7 +160,6 @@ export default {
   },
   mounted() {},
 };
->>>>>>> group4
 </script>
 
 <style scoped>
