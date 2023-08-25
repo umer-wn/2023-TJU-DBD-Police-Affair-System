@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import CaseStatistic from '../components/caseStatistics/caseStatisticsController.vue'
 
 // Vue.use(Router)
 
@@ -26,17 +26,11 @@ Vue.use(Router)
 // 创建路由实例
 const router = new Router({
   routes: [
-
-    // {
-    //   path: '/',
-    //   name: 'HelloWorld',
-    //   component: HelloWorld
-    // },
     {
-      path: '/',
-      name: 'con',
-      component: () => import('../Controller/caseController.vue')
-    }
+      path: '/caseStatistic',
+      name: 'CaseStatistic',
+      component: CaseStatistic
+    },
   ]
 })
 

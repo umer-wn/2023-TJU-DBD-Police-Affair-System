@@ -1,7 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 
 // 赵毅辉编写使用
-// caseStatisticsController.cs使用了本类
+// crimeDataStatisticsController.cs使用了本类
 // 用于统计各项犯罪数据
 public class CaseStatisticsZYH
 {
@@ -42,7 +42,7 @@ public class CaseStatisticsZYH
         cityCount = new Dictionary<string, int>();
         numCityYearMonth = new Dictionary<int, Dictionary<int, int>>();
     }
-    public void getStatusStatistics()
+    public void getStatusCityDateStatistics(string city, string year, string month)
     {
         try
         {
@@ -51,18 +51,51 @@ public class CaseStatisticsZYH
             {
                 connection.Open();
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE STATUS = '立案'", connection))
+                string addiCondition = "1=1";
+
+                if (year != "全部")
+                    addiCondition += " AND EXTRACT(YEAR FROM REGISTER_TIME) = :year";
+
+                if (month != "全部")
+                    addiCondition += " AND EXTRACT(MONTH FROM REGISTER_TIME) = :month";
+
+                if (city != "全部")
+                    addiCondition += " AND ADDRESS LIKE '%' || :city || '%'";
+
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE STATUS = '立案' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numFiling = Convert.ToInt32(command.ExecuteScalar());
                 }
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE STATUS = '调查'", connection))
+                // 类似地生成查询“调查”和“结案”的代码
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE STATUS = '调查' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numInvestigating = Convert.ToInt32(command.ExecuteScalar());
                 }
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE STATUS = '结案'", connection))
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE STATUS = '结案' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numClose = Convert.ToInt32(command.ExecuteScalar());
                 }
 
@@ -72,11 +105,11 @@ public class CaseStatisticsZYH
         catch (Exception ex)
         {
             // 处理异常
-            Console.WriteLine("CaseStatisticsZYH类的getStatusStatistics函数发生异常：" + ex.Message);
+            Console.WriteLine("CaseStatisticsZYH类的getStatusCityDateStatistics函数发生异常：" + ex.Message);
             throw;
         }
     }
-    public void getTypeStatistics()
+    public void getTypeCityDateStatistics(string city, string year, string month)
     {
         try
         {
@@ -85,33 +118,86 @@ public class CaseStatisticsZYH
             {
                 connection.Open();
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '强奸'", connection))
+                string addiCondition = "1=1";
+
+                if (year != "全部")
+                    addiCondition += " AND EXTRACT(YEAR FROM REGISTER_TIME) = :year";
+
+                if (month != "全部")
+                    addiCondition += " AND EXTRACT(MONTH FROM REGISTER_TIME) = :month";
+
+                if (city != "全部")
+                    addiCondition += " AND ADDRESS LIKE '%' || :city || '%'";
+
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '强奸' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numRape = Convert.ToInt32(command.ExecuteScalar());
                 }
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '抢劫'", connection))
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '抢劫' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numRobbery = Convert.ToInt32(command.ExecuteScalar());
                 }
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '故意伤害'", connection))
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '故意伤害' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numInjury = Convert.ToInt32(command.ExecuteScalar());
                 }
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '盗窃'", connection))
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '盗窃' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numTheft = Convert.ToInt32(command.ExecuteScalar());
                 }
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '诈骗'", connection))
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '诈骗' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numFraud = Convert.ToInt32(command.ExecuteScalar());
                 }
 
-                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '谋杀'", connection))
+                using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE CASE_TYPE = '谋杀' AND " + addiCondition, connection))
                 {
+                    if (year != "全部")
+                        command.Parameters.Add(new OracleParameter("year", OracleDbType.Varchar2) { Value = year });
+                    if (month != "全部")
+                        command.Parameters.Add(new OracleParameter("month", OracleDbType.Varchar2) { Value = month });
+                    if (city != "全部")
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
                     numMurder = Convert.ToInt32(command.ExecuteScalar());
                 }
 
@@ -121,7 +207,7 @@ public class CaseStatisticsZYH
         catch (Exception ex)
         {
             // 处理异常
-            Console.WriteLine("CaseStatisticsZYH类的getTypeStatistics函数发生异常：" + ex.Message);
+            Console.WriteLine("CaseStatisticsZYH类的getTypeCityDateStatistics函数发生异常：" + ex.Message);
             throw;
         }
     }
@@ -225,41 +311,6 @@ public class CaseStatisticsZYH
         {
             // 处理异常
             Console.WriteLine("CaseStatisticsZYH类的getCityStatistics函数发生异常：" + ex.Message);
-            throw;
-        }
-    }
-    public string[] getCityName()
-    {
-        try
-        {
-            string connectionString = "User ID=C##police;Password=police;Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
-            using (OracleConnection connection = new OracleConnection(connectionString))
-            {
-                connection.Open();
-
-                using (OracleCommand command = new OracleCommand("SELECT DISTINCT SUBSTR(ADDRESS, 1, INSTR(ADDRESS, '市')-1) AS CITY FROM CASES", connection))
-                {
-                    using (OracleDataReader reader = command.ExecuteReader())
-                    {
-                        List<string> cities = new List<string>();
-
-                        while (reader.Read())
-                        {
-                            string city = reader["CITY"].ToString();
-                            cities.Add(city);
-                        }
-
-                        return cities.ToArray();
-                    }
-                }
-
-                connection.Close();
-            }
-        }
-        catch (Exception ex)
-        {
-            // 处理异常
-            Console.WriteLine("AddressStatistics类的getCityName函数发生异常：" + ex.Message);
             throw;
         }
     }
@@ -442,4 +493,98 @@ public class inputVideoInfoZYH
     public string videoID { get; set; }
     public string videoType { get; set; }
     public string principleID { get; set; }
+}
+
+// 赵毅辉编写使用
+// keyIndividualsControllerZYH.cs使用了本类
+// 用于实现查询重点人员的方法
+public class keyIndividualsZYH
+{
+    public List<string> repeatOffendersName;
+    public List<Dictionary<string, string>> repeatOffendersInfo;
+    public keyIndividualsZYH()
+    {
+        repeatOffendersName = new List<string>();
+        repeatOffendersInfo = new List<Dictionary<string, string>>();
+    }
+    public void getRepeatOffenderNameStatistics()
+    {
+        string connectionString = "User ID=C##police;Password=police;Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
+        using (OracleConnection connection = new OracleConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT ID_NUM FROM RELATED WHERE RELATED_TYPE = '犯人' GROUP BY ID_NUM HAVING COUNT(*) > 1";
+
+            using (OracleCommand command = new OracleCommand(query, connection))
+            {
+                using (OracleDataReader reader = command.ExecuteReader())
+                {
+                    repeatOffendersName = new List<string>();
+
+                    while (reader.Read())
+                    {
+                        string idNum = reader.GetString(reader.GetOrdinal("ID_NUM"));
+                        repeatOffendersName.Add(idNum);
+                    }
+                }
+            }
+            connection.Close();
+        }              
+    }
+    public void getRepeatOffenderInfoStatistics()
+    {
+        getRepeatOffenderNameStatistics();
+
+        string connectionString = "User ID=C##police;Password=police;Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
+        using (OracleConnection connection = new OracleConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT ID_NUM, CITIZEN_NAME, GENDER FROM CITIZEN WHERE ID_NUM = :IDNum";
+
+            using (OracleCommand command = new OracleCommand(query, connection))
+            {
+                OracleParameter parameter = new OracleParameter(":IDNum", OracleDbType.Varchar2);
+
+                foreach (string idNum in repeatOffendersName)
+                {
+                    parameter.Value = idNum;
+                    command.Parameters.Add(parameter);
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string idNumValue = reader.GetString(reader.GetOrdinal("ID_NUM"));
+                            string citizenName = reader.GetString(reader.GetOrdinal("CITIZEN_NAME"));
+                            string gender = reader.GetString(reader.GetOrdinal("GENDER"));
+
+                            // 转换GENDER字段的值为"女"和"男"
+                            if (gender == "F")
+                            {
+                                gender = "女";
+                            }
+                            else if (gender == "M")
+                            {
+                                gender = "男";
+                            }
+
+                            Dictionary<string, string> result = new Dictionary<string, string>
+                            {
+                                { "身份证号", idNumValue },
+                                { "姓名", citizenName },
+                                { "性别", gender }
+                            };
+
+                            repeatOffendersInfo.Add(result);
+                        }
+                    }
+
+                    // 清除参数，以便下一次循环使用相同的 command 对象
+                    command.Parameters.Clear();
+                }
+            }
+
+            connection.Close();
+        }
+    }
 }
