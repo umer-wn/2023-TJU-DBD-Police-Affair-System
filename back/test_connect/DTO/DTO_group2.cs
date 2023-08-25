@@ -1,4 +1,4 @@
-﻿namespace web.DTO_group2
+namespace web.DTO_group2
 {
     // all   作用: testController 测试请求
     public class Request
@@ -45,4 +45,37 @@
         public string status { get; set; } = "待处理";
         public string reason { get; set; } = "";
     }
+
+    public class phoneNum   //用于修改密码时传输验证码
+    {
+        public string phone_number { get; set; } = "";
+
+    }
+    public class changedPassword  // 用于 修改密码 的各种信息
+    {
+        public string police_number { get; set; } = "";
+        public string phone_number { get; set; } = "";
+        public string verificationCode { get; set; } = "";
+        public string newPassword { get; set; } = "";
+    }
+
+    public class searchByName
+    {
+        public string name { get; set; } = "";
+        public string gender { get; set; } = "";
+    }
+
+    public class searchByID
+    {
+        public string ID { get; set; } = "";    
+    }
+
+    public class salaryInfo
+    {
+        public string police_number_receive { get; set; } = "";
+        public string basic_amount { get; set; } = "";
+        public string reward_amount { get; set; } = "";
+        public string description { get; set; } = "";
+    }
+
 }

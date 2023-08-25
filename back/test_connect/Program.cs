@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Oracle.ManagedDataAccess.Client;
 using System.Text;
+using web.Helpers;
 
 public class Program
 {
@@ -42,6 +43,7 @@ public class Program
                         });
                     });
 
+                    SerialnumHelper.FormSeqTest_Load();
                     // ����JWT
                     services.AddAuthentication(options =>
                     {
@@ -110,7 +112,6 @@ public class Program
 
                     app.UseAuthentication();
                     app.UseAuthorization();
-
 
 
                     app.UseSwagger();
