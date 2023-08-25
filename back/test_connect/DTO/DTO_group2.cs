@@ -6,7 +6,7 @@
         public string input { get; set; } = "";
     }
 
-    // fhl  作用：未填写
+    // fhl  作用：被修改人权限的警号
     public class notification
     {
         public string temp { get; set; } = "";
@@ -34,12 +34,15 @@
         public string PoliceNumber { get; set; } = "";
         public string IdNumber { get; set; } = "";
     }
-    //fhl    作用: 未填写
+    //fhl    作用: 用于修改权限 1.被修改警员的警号 2.修改人警号  3.原权限等级 4.修改权限 5.修改原因
     public class permit
     {
-        public string s_number { get; set; } = "";
+        
         public string h_number { get; set; } = "";
-        public string level { get; set; } = "";
+        public string s_number { get; set; } = "";
+        public string F_level { get; set; } = "";
+        public string L_level { get; set; } = "";
+        public string status { get; set; } = "待处理";
+        public string reason { get; set; } = "";
     }
-
 }
