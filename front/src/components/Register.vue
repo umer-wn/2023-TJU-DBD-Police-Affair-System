@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="title">添加新用户</div>
+    <!-- 以下为添加新用户的表单 -->
     <div class="content">
+      <!-- 每个输入栏由inputContainer组合，内含标题inputTitle、输入框input、可能含错误提示message -->
+      <!-- police_number -->
       <div class="inputContainer">
         <div class="inputTitle">警号</div>
         <input
@@ -14,6 +17,7 @@
           :style="{color:this.police_number_color}"
         >{{this.police_number_message}}</div>
       </div>
+      <!-- police_name -->
       <div class="inputContainer">
         <div class="inputTitle">姓名</div>
         <input
@@ -21,6 +25,7 @@
           v-model="signinInfo.police_name"
         />
       </div>
+      <!-- ID_number -->
       <div class="inputContainer">
         <div class="inputTitle">身份证号</div>
         <input
@@ -34,10 +39,15 @@
         >
           {{this.ID_number_message}}</div>
       </div>
+      <!-- birthday -->
       <div class="inputContainer">
         <div class="inputTitle">出生日期</div>
-        <el-date-picker v-model="signinInfo.birthday">this.signinInfo.birthday</el-date-picker>
+        <el-date-picker
+          v-model="signinInfo.birthday"
+          :disabled="true"
+        >this.signinInfo.birthday</el-date-picker>
       </div>
+      <!-- gender -->
       <div class="inputContainer">
         <div class="inputTitle">性别</div>
         <input
@@ -46,6 +56,7 @@
           v-model="signinInfo.gender"
         />
       </div>
+      <!-- nation -->
       <div class="inputContainer">
         <div class="inputTitle">民族</div>
         <input
@@ -58,6 +69,7 @@
           :style="{color:this.nation_color}"
         >{{this.nation_message}}</div>
       </div>
+      <!-- phone_number -->
       <div class="inputContainer">
         <div class="inputTitle">联系方式</div>
         <input
@@ -65,6 +77,7 @@
           v-model="signinInfo.phone_number"
         />
       </div>
+      <!-- email -->
       <div class="inputContainer">
         <div class="inputTitle">邮箱</div>
         <input
@@ -79,6 +92,7 @@
           {{this.email_message}}
         </div>
       </div>
+      <!-- status -->
       <div class="inputContainer">
         <div class="inputTitle">状态</div>
         <select
@@ -90,6 +104,7 @@
           <option>离职</option>
         </select>
       </div>
+      <!-- position -->
       <div class="inputContainer">
         <div class="inputTitle">职务</div>
         <select
@@ -104,6 +119,7 @@
           <option>总警监</option>
         </select>
       </div>
+      <!-- 确定按钮 -->
       <button
         class="button"
         @click="addNewUser"
@@ -147,26 +163,50 @@ export default {
   methods: {
     // 添加新用户
     addNewUser() {
+      for (let key in this.signinInfo) {
+        if (this.signinInfo[key] === "") {
+          alert("请填写完整信息");
+          return;
+        }
+      }
+      if (
+        this.police_number_color !== "green" ||
+        this.ID_number_color !== "green" ||
+        this.nation_color !== "green" ||
+        this.email_color !== "green"
+      ) {
+        alert("请填写正确信息");
+        return;
+      }
+      if (this.signinInfo.gender === "男") this.signinInfo.gender = "M";
+      else this.signinInfo.gender = "F";
+      console.log(this.signinInfo);
       axios
-        .put("http://localhost:7078/api/addNewUser", { Input: this.signinInfo })
+        .put("http://localhost:7078/api/Register", this.signinInfo)
         .then((response) => {
           if (response.data == "success") {
             alert("添加成功");
           } else {
-            alert("添加失败");
+            alert("网络错误，请重试");
           }
         })
         .catch((error) => {
           console.error(error);
         });
     },
+    // 根据身份证号计算出生日期
+    calcBirthday(birthInfo) {
+      let year = birthInfo.slice(0, 4);
+      let month = birthInfo.slice(4, 6);
+      let day = birthInfo.slice(6, 8);
+      this.signinInfo.birthday = year + "-" + month + "-" + day;
+      console.log(this.signinInfo.birthday);
+    },
     checkLegal(queryType, queryContent) {
       axios
-        .get("http://localhost:7078/api/addNewUser", {
-          LegalJudgeMessage: {
-            queryType,
-            queryContent,
-          },
+        .post("http://localhost:7078/api/Register", {
+          queryType,
+          queryContent,
         })
         .then((response) => {
           if (queryType == "police_number") {
@@ -181,13 +221,18 @@ export default {
             if (response.data === "ok") {
               this.ID_number_message = "✔";
               this.ID_number_color = "green";
+              console.log(Number(this.signinInfo.ID_number[16]) % 2 == 1);
               this.signinInfo.gender =
-                this.signinInfo.ID_number[16] % 2 == 0 ? "F" : "M";
+                Number(this.signinInfo.ID_number[16]) % 2 == 1 ? "男" : "女";
+              this.calcBirthday(this.signinInfo.ID_number.slice(6, 14));
             } else {
               this.ID_number_message = "该身份证号已注册过";
               this.ID_number_color = "red";
             }
           }
+        })
+        .catch((error) => {
+          console.error(error);
         });
     },
   },
@@ -202,10 +247,6 @@ export default {
         this.police_number_color = "blue";
         this.checkLegal("police_number", val);
       }
-    },
-    "signinInfo.gender": function (val) {
-      if (val === "男") this.signinInfo.gender = "M";
-      else this.signinInfo.gender = "F";
     },
     "signinInfo.birthday": function (val) {
       console.log(val);
@@ -280,6 +321,7 @@ export default {
   justify-content: flex-start;
   align-items: center;
   margin: 16px;
+  padding: 16px;
 
   border-radius: 5px;
   box-shadow: #9a9a9a 0px 0px 6px;

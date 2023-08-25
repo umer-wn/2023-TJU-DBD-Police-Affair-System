@@ -131,7 +131,7 @@ export default {
     query() {
       this.curLevel = -1;
       axios
-        .post("http://localhost:7078/api/queryFamily", {
+        .post("http://localhost:7078/api/FamilybgCheck", {
           InputText: this.inputID,
         })
         .then((response) => {

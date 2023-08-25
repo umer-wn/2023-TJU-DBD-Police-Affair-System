@@ -7,7 +7,7 @@ using System.Data;
 using System.Numerics;
 using web.DTO_group2;
 
-namespace FamilyController_zcr
+namespace FamilybgCheck
 {
     public struct Info
     {
@@ -37,12 +37,12 @@ namespace FamilyController_zcr
     {
         public string InputText { get; set; }
     }
-    [Route("api/queryFamily")]
+    [Route("api/FamilybgCheck")]
     [ApiController]
-    public class FamilyController_zcr : ControllerBase
+    public class FamilybgCheck : ControllerBase
     {
         private readonly OracleConnection _connection;
-        public FamilyController_zcr(OracleConnection connection)
+        public FamilybgCheck(OracleConnection connection)
         {
             _connection = connection;
         }

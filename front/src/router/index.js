@@ -1,27 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import FamilyCrime from '@/components/FamilyCrime'
-import Investigation from '@/components/Investigation'
-import AddNewUser from '@/components/AddNewUser'
+import FamilybgCheck from '@/components/FamilybgCheck'
+import Register from '@/components/Register'
 Vue.use(Router)
 
 const routes = [
     {
-        path: '/familyCrime',
-        name: 'FamilyCrime',
-        component: FamilyCrime,
-        props: true
-    },
-    {
-        path: '/investigation',
-        name: 'Investigation',
-        component: Investigation,
+        path: '/FamilybgCheck',
+        name: 'FamilybgCheck',
+        component: FamilybgCheck,
         props: true
     },
     {
         path:'/',
-        name:'AddNewUser',
-        component: AddNewUser,
+        name:'Register',
+        component: Register,
         props: true
     }
 ]
