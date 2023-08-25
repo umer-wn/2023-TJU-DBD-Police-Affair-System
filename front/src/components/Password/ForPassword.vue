@@ -1,82 +1,85 @@
 <template>
-  <div class="change-password-page">
+  <div class="body">
     <div class="headpic">
       <div class="header1">
         <img class="logo" src="@/assets/police-logo.png" />
         <div class="title">&nbsp;&nbsp;警务处理系统</div>
       </div>
     </div>
-    <div class="change-password-container">
-      <p class="forget-text">忘记密码</p>
-      <p class="setnew-text">设置新密码</p>
-      <form @submit.prevent="submitForm">
-        <div class="input-container">
-          <input
-            id="phoneNumber"
-            type="text"
-            v-model="phoneNumber"
-            autocomplete="off"
-            @focus="handleFocus1"
-            @blur="handleBlur1"
-            required
-          />
-          <div class="Tip" :class="{ TipA: isFocused1 }">
-            手机号:
+
+    <div class="change-password-page">
+      <div class="change-password-container">
+        <p class="forget-text">忘记密码</p>
+        <p class="setnew-text">设置新密码</p>
+        <form @submit.prevent="submitForm">
+          <div class="input-container">
+            <input
+              id="phoneNumber"
+              type="text"
+              v-model="phoneNumber"
+              autocomplete="off"
+              @focus="handleFocus1"
+              @blur="handleBlur1"
+              required
+            />
+            <div class="Tip" :class="{ TipA: isFocused1 }">
+              手机号:
+            </div>
           </div>
-        </div>
-        <div class="input-container">
-          <input
-            id="code-input"
-            type="text"
-            v-model="verificationCode"
-            autocomplete="off"
-            @focus="handleFocus2"
-            @blur="handleBlur2"
-            required
-          />
-          <div class="Tip" :class="{ TipA: isFocused2 }">
-            手机验证码:
+          <div class="input-container">
+            <input
+              id="code-input"
+              type="text"
+              v-model="verificationCode"
+              autocomplete="off"
+              @focus="handleFocus2"
+              @blur="handleBlur2"
+              required
+            />
+            <div class="Tip" :class="{ TipA: isFocused2 }">
+              手机验证码:
+            </div>
           </div>
-        </div>
-        <div>
-          <button
-            type="button"
-            @click="sendVerificationCode"
-            :disabled="isSendingCode"
-          >
-            {{ isSendingCode ? "发送中..." : "发送验证码" }}
-          </button>
-        </div>
-        <div class="input-container">
-          <input
-            id="newPassword"
-            type="password"
-            v-model="newPassword"
-            autocomplete="off"
-            @focus="handleFocus3"
-            @blur="handleBlur3"
-            required
-          />
-          <div class="Tip" :class="{ TipA: isFocused3 }">
-            新密码:
+          <div>
+            <button
+              type="button"
+              @click="sendVerificationCode"
+              :disabled="isSendingCode"
+            >
+              {{ isSendingCode ? "发送中..." : "发送验证码" }}
+            </button>
           </div>
-        </div>
-        <div class="input-container">
-          <input
-            id="confirmPassword"
-            type="password"
-            v-model="confirmPassword"
-            autocomplete="off"
-            @focus="handleFocus4"
-            @blur="handleBlur4"
-            required
-          />
-          <div class="Tip" :class="{ TipA: isFocused4 }">
-            确认密码:
+          <div class="input-container">
+            <input
+              id="newPassword"
+              type="password"
+              v-model="newPassword"
+              autocomplete="off"
+              @focus="handleFocus3"
+              @blur="handleBlur3"
+              required
+            />
+            <div class="Tip" :class="{ TipA: isFocused3 }">
+              新密码:
+            </div>
           </div>
-        </div>
-        <button type="submit" class="confirm-button">确认</button>
-      </form>
+          <div class="input-container">
+            <input
+              id="confirmPassword"
+              type="password"
+              v-model="confirmPassword"
+              autocomplete="off"
+              @focus="handleFocus4"
+              @blur="handleBlur4"
+              required
+            />
+            <div class="Tip" :class="{ TipA: isFocused4 }">
+              确认密码:
+            </div>
+          </div>
+          <button type="submit" class="confirm-button">确认</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -203,7 +206,19 @@ export default {
 }
 
 </script>
+
+
 <style scoped>
+.body {
+  background-image: url("../../assets/hellopolice.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 120vh;
+  overflow: auto;
+}
+
 .headpic {
   background: #fff;
   width: 100%;
@@ -237,14 +252,6 @@ export default {
   display: inline-block;
 }
 
-.change-password-page {
-  flex-direction: column;
-  display: flex;
-  background-image: url("../../assets/login-bg.jpg");
-  background-size: cover;
-  height: 1000px;
-  align-items: center;
-}
 .change-password-container {
   flex-direction: column;
   display: flex;

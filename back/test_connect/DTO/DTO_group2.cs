@@ -66,5 +66,12 @@
         public string ID { get; set; } = "";    
     }
 
+    public class salaryInfo
+    {
+        public string police_number_receive { get; set; } = "";
+        public string basic_amount { get; set; } = "";
+        public string reward_amount { get; set; } = "";
+        public string description { get; set; } = "";
+    }
 
 }

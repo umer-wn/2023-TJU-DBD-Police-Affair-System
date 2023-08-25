@@ -1,80 +1,83 @@
 <template>
-  <div class="change-password-page">
+  <div class="body">
     <div class="headpic">
       <div class="header1">
         <img class="logo" src="@/assets/police-logo.png" />
         <div class="title">&nbsp;&nbsp;警务处理系统</div>
       </div>
     </div>
-    <div class="change-password-container">
-      <p class="forget-text">忘记密码</p>
-      <p class="setnew-text">重置密码</p>
-      <form @submit.prevent="submitForm">
-        <div class="input-container">
-          <div>
-            <input
-              id="userName"
-              type="text"
-              v-model="PoliceNumber"
-              autocomplete="off"
-              @focus="handleFocus1"
-              @blur="handleBlur1"
-              required
-            />
-            <div class="Tip" :class="{ TipA: isFocused1 }">
-              请填写您需要找回的警号
+
+    <div class="change-password-page">
+      <div class="change-password-container">
+        <p class="forget-text">忘记密码</p>
+        <p class="setnew-text">重置密码</p>
+        <form @submit.prevent="submitForm">
+          <div class="input-container">
+            <div>
+              <input
+                id="userName"
+                type="text"
+                v-model="PoliceNumber"
+                autocomplete="off"
+                @focus="handleFocus1"
+                @blur="handleBlur1"
+                required
+              />
+              <div class="Tip" :class="{ TipA: isFocused1 }">
+                请填写您需要找回的警号
+              </div>
+            </div>
+
+            <p v-if="!isValidStudentNumber" class="error-message">
+              警号不满足格式
+            </p>
+            <p v-else>&nbsp;</p>
+          </div>
+          <div class="input-container">
+            <div>
+              <input
+                id="idNumber"
+                type="text"
+                v-model="idNumber"
+                autocomplete="off"
+                required
+                @focus="handleFocus2"
+                @blur="handleBlur2"
+              />
+              <div class="Tip" :class="{ TipA: isFocused2 }">
+                证件号码
+              </div>
+            </div>
+            <p v-if="!isValidIdNumber" class="error-message">
+              身份证号不满足格式
+            </p>
+            <p v-else>&nbsp;</p>
+          </div>
+
+          <div class="code-container">
+            <div>
+              <input
+                id="two-code-text"
+                v-model="formLogin"
+                autocomplete="off"
+                @focus="handleFocus3"
+                @blur="handleBlur3"
+              />
+            </div>
+            <div class="Tip" :class="{ TipA: isFocused3 }">
+              输入验证码
+            </div>
+            <div class="code-image" @click="refreshCode">
+              <!-- 验证码组件 -->
+              <SIdentify :identifyCode="identifyCode"></SIdentify>
             </div>
           </div>
 
-          <p v-if="!isValidStudentNumber" class="error-message">
-            警号不满足格式
-          </p>
-          <p v-else>&nbsp;</p>
-        </div>
-        <div class="input-container">
-          <div>
-            <input
-              id="idNumber"
-              type="text"
-              v-model="idNumber"
-              autocomplete="off"
-              required
-              @focus="handleFocus2"
-              @blur="handleBlur2"
-            />
-            <div class="Tip" :class="{ TipA: isFocused2 }">
-              证件号码
-            </div>
-          </div>
-          <p v-if="!isValidIdNumber" class="error-message">
-            身份证号不满足格式
-          </p>
-          <p v-else>&nbsp;</p>
-        </div>
-
-        <div class="code-container">
-          <div>
-            <input
-              id="two-code-text"
-              v-model="formLogin"
-              autocomplete="off"
-              @focus="handleFocus3"
-              @blur="handleBlur3"
-            />
-          </div>
-          <div class="Tip" :class="{ TipA: isFocused3 }">
-            输入验证码
-          </div>
-          <div class="code-image" @click="refreshCode">
-            <!-- 验证码组件 -->
-            <SIdentify :identifyCode="identifyCode"></SIdentify>
-          </div>
-        </div>
-
-        <button type="submit" class="confirm-button">提交</button>
-      </form>
-      <p v-if="error" class="error-message">{{ error }}</p>
-      <p v-else>&nbsp;</p>
+          <button type="submit" class="confirm-button">提交</button>
+        </form>
+        <p v-if="error" class="error-message">{{ error }}</p>
+        <p v-else>&nbsp;</p>
+      </div>
     </div>
   </div>
 </template>
@@ -216,7 +219,18 @@ export default {
 };
 </script>
 
+
 <style scoped>
+.body {
+  background-image: url("../../assets/hellopolice.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 120vh;
+  overflow: auto;
+}
+
 .headpic {
   background: #fff;
   width: 100%;
@@ -248,15 +262,6 @@ export default {
   text-align: left;
   font: 400 36px "Inter", sans-serif;
   display: inline-block;
-}
-
-.change-password-page {
-  flex-direction: column;
-  display: flex;
-  background-image: url("../../assets/login-bg.jpg");
-  background-size: cover;
-  height: 1000px;
-  align-items: center;
 }
 
 .change-password-container {

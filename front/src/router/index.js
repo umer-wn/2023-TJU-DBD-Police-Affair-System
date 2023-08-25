@@ -7,6 +7,10 @@ import ForPassword from '@/components/Password/ForPassword.vue';
 import MainPage from '@/components/MainPage.vue';
 import CPSuccess from '@/components/Password/CPSuccess.vue'  // 修改密码成功后的界面
 import civilianInfoRequest from '@/components/CivilianInfo/civilianInfoRequest.vue'
+
+import searchWagesRecord from '@/components/salary/searchWagesRecord.vue'
+import newRecord from '@/components/salary/newRecord.vue'
+import dataStatistics from '@/components/salary/dataStatistics.vue'
 Vue.use(VueRouter);
 
 const routes = [
@@ -45,7 +49,23 @@ const routes = [
     path: "/civilianInfo",
     name: "civilianInfo",
     component: civilianInfoRequest
+  },
+  {
+    path: '/searchWagesRecord',
+    name: 'searchWagesRecord',
+    component: searchWagesRecord
+  },
+  {
+    path: '/newRecord',
+    name: 'newRecord',
+    component: newRecord
+  },
+  {
+    path: '/dataStatistics',
+    name: 'dataStatistics',
+    component: dataStatistics
   }
+
 ];
 
 const router = new VueRouter({

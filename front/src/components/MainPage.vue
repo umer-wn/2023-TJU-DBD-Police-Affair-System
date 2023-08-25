@@ -1,12 +1,12 @@
 <template>
-  <div class="main-container">
+  <div class="body">
     <div class="headpic">
       <div class="header1">
         <img class="logo" src="@/assets/police-logo.png" />
         <div class="title">&nbsp;&nbsp;警务处理系统</div>
       </div>
     </div>
-    <p class="welcome-text">欢迎进入警务处理系统</p>
+    <p class="welcome-text">&nbsp;欢&nbsp;迎&nbsp;进&nbsp;入&nbsp;警&nbsp;务&nbsp;处&nbsp;理&nbsp;系&nbsp;统&nbsp;</p>
     <button class="loginbutton" @click="login">登&nbsp;&nbsp;&nbsp;录</button>
   </div>
 </template>
@@ -21,7 +21,21 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
+.body {
+  overflow: auto;
+  flex-direction: column;
+  display: flex;
+  height: 800px;
+  align-items: center;
+  background-image: url("../assets/hellopolice.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
 .headpic {
   background: #fff;
   width: 100%;
@@ -55,21 +69,14 @@ export default {
   display: inline-block;
 }
 
-.main-container {
-  overflow: auto;
-  flex-direction: column;
-  display: flex;
-  background-image: url("../assets/hello-bg.jpg");
-  background-size: cover;
-  height: 800px;
-  align-items: center;
-}
-
 .welcome-text {
+  background-color: #1890ff;
+  color: #ffffff;
   margin-top: 150px;
   text-align: center;
   font-size: 100px; /* 字号大小 */
   font-weight: bold; /* 字体加粗 */
+  border-radius: 5px;
 }
 
 .loginbutton {
