@@ -5,14 +5,14 @@ import Investigation from '@/components/Investigation'
 Vue.use(Router)
 
 const routes = [
+    // {
+    //     path: '/',
+    //     name: 'FamilyCrime',
+    //     component: FamilyCrime,
+    //     props: true
+    // },
     {
         path: '/',
-        name: 'FamilyCrime',
-        component: FamilyCrime,
-        props: true
-    },
-    {
-        path: '/investigation',
         name: 'Investigation',
         component: Investigation,
         props: true
