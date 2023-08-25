@@ -22,27 +22,27 @@ public class Program
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    // »ñÈ¡Êý¾Ý¿âÁ¬½Ó×Ö·û´®
+                    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
                     string connectionString = hostContext.Configuration.GetConnectionString("OracleConnection");
 
-                    // ×¢²áOracleÁ¬½Ó¶ÔÏóµ½ÒÀÀµ×¢ÈëÈÝÆ÷
+                    // ×¢ï¿½ï¿½Oracleï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     services.AddScoped<OracleConnection>(_ => new OracleConnection(connectionString));
 
-                    // Ìí¼Ó¿ØÖÆÆ÷
+                    // ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½
                     services.AddControllers();
 
-                    // Ìí¼Ó CORS ÅäÖÃ
+                    // ï¿½ï¿½ï¿½ï¿½ CORS ï¿½ï¿½ï¿½ï¿½
                     services.AddCors(options =>
                     {
                         options.AddDefaultPolicy(builder =>
                         {
-                            builder.WithOrigins("http://localhost:8080") // ÔÊÐíµÄÇ°¶ËÓ¦ÓÃµØÖ·
+                            builder.WithOrigins("http://localhost:8080") // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ó¦ï¿½Ãµï¿½Ö·
                                 .AllowAnyMethod()
                                 .AllowAnyHeader();
                         });
                     });
 
-                    // ÅäÖÃJWT
+                    // ï¿½ï¿½ï¿½ï¿½JWT
                     services.AddAuthentication(options =>
                     {
                         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -68,13 +68,13 @@ public class Program
                         options.SwaggerDoc("v1", new OpenApiInfo
                         {
                             Version = "v1",
-                            Title = "API±êÌâ",
-                            Description = "APIÃèÊö"
+                            Title = "APIï¿½ï¿½ï¿½ï¿½",
+                            Description = "APIï¿½ï¿½ï¿½ï¿½"
                         });
                     });
                     services.AddSwaggerGen(c =>
                     {
-                        //Ìí¼ÓJwtÑéÖ¤ÉèÖÃ,Ìí¼ÓÇëÇóÍ·ÐÅÏ¢
+                        //ï¿½ï¿½ï¿½ï¿½Jwtï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Ï¢
                         c.AddSecurityRequirement(new OpenApiSecurityRequirement
                         {
                             {
@@ -90,12 +90,12 @@ public class Program
                             }
                         });
 
-                        //·ÅÖÃ½Ó¿ÚAuthÊÚÈ¨°´Å¥
+                        //ï¿½ï¿½ï¿½Ã½Ó¿ï¿½Authï¿½ï¿½È¨ï¿½ï¿½Å¥
                         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                         {
                             Description = "Value Bearer {token}",
-                            Name = "Authorization",//jwtÄ¬ÈÏµÄ²ÎÊýÃû³Æ
-                            In = ParameterLocation.Header,//jwtÄ¬ÈÏ´æ·ÅAuthorizationÐÅÏ¢µÄÎ»ÖÃ(ÇëÇóÍ·ÖÐ)
+                            Name = "Authorization",//jwtÄ¬ï¿½ÏµÄ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                            In = ParameterLocation.Header,//jwtÄ¬ï¿½Ï´ï¿½ï¿½Authorizationï¿½ï¿½Ï¢ï¿½ï¿½Î»ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½)
                             Type = SecuritySchemeType.ApiKey
                         });
                     });
@@ -105,7 +105,7 @@ public class Program
                 {
                     app.UseRouting();
 
-                    // Ìí¼Ó CORS ÖÐ¼ä¼þ
+                    // ï¿½ï¿½ï¿½ï¿½ CORS ï¿½Ð¼ï¿½ï¿½
                     app.UseCors();
 
                     app.UseAuthentication();

@@ -6,6 +6,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 
+//引入 echarts
+import * as echarts from 'echarts'
+//注册组件
+Vue.prototype.$echarts = echarts
+
 import axios from 'axios'
 Vue.prototype.$http = axios
 
