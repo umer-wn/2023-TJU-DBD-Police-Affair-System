@@ -502,13 +502,16 @@ public class keyIndividualsZYH
 {
     public List<string> repeatOffendersName;
     public List<Dictionary<string, string>> repeatOffendersInfo;
+    public List<Dictionary<string, string>> repeatOffendersCase;
     public keyIndividualsZYH()
     {
         repeatOffendersName = new List<string>();
         repeatOffendersInfo = new List<Dictionary<string, string>>();
+        repeatOffendersCase = new List<Dictionary<string, string>>();
     }
     public void getRepeatOffenderNameStatistics()
     {
+        repeatOffendersInfo = new List<Dictionary<string, string>>();
         string connectionString = "User ID=C##police;Password=police;Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
         using (OracleConnection connection = new OracleConnection(connectionString))
         {
@@ -535,6 +538,7 @@ public class keyIndividualsZYH
     {
         getRepeatOffenderNameStatistics();
 
+        repeatOffendersInfo = new List<Dictionary<string, string>>();
         string connectionString = "User ID=C##police;Password=police;Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
         using (OracleConnection connection = new OracleConnection(connectionString))
         {
@@ -587,4 +591,174 @@ public class keyIndividualsZYH
             connection.Close();
         }
     }
+    public void getRepeatOffenderFilterStatistics(string ID, string name, string sex)
+    {
+        getRepeatOffenderNameStatistics();
+        repeatOffendersInfo = new List<Dictionary<string, string>>();
+        string connectionString = "User ID=C##police;Password=police;Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
+        using (OracleConnection connection = new OracleConnection(connectionString))
+        {
+            connection.Open();
+
+            // 第一轮筛选
+            string firstQuery = "SELECT ID_NUM, CITIZEN_NAME, GENDER FROM CITIZEN WHERE 1 = 1";
+
+            if (!string.IsNullOrEmpty(ID))
+            {
+                firstQuery += " AND ID_NUM LIKE '%' || :CID || '%'";
+            }
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                firstQuery += " AND CITIZEN_NAME LIKE '%' || :CName || '%'";
+            }
+
+            if (!string.IsNullOrEmpty(sex) && sex != "全部")
+            {
+                firstQuery += " AND GENDER = :CGender";
+            }
+
+            using (OracleCommand firstCommand = new OracleCommand(firstQuery, connection))
+            {
+                if (!string.IsNullOrEmpty(ID))
+                {
+                    OracleParameter parameterID = new OracleParameter(":CID", OracleDbType.Varchar2);
+                    parameterID.Value = ID;
+                    firstCommand.Parameters.Add(parameterID);
+                }
+
+                if (!string.IsNullOrEmpty(name))
+                {
+                    OracleParameter parameterName = new OracleParameter(":CName", OracleDbType.Varchar2);
+                    parameterName.Value = name;
+                    firstCommand.Parameters.Add(parameterName);
+                }
+
+                if (!string.IsNullOrEmpty(sex) && sex != "全部")
+                {
+                    OracleParameter parameterSex = new OracleParameter(":CGender", OracleDbType.Varchar2);
+                    parameterSex.Value = sex;
+                    firstCommand.Parameters.Add(parameterSex);
+                }
+
+                // 存储第一轮筛选结果的列表
+                List<string> filteredIdNums = new List<string>();
+
+                using (OracleDataReader firstReader = firstCommand.ExecuteReader())
+                {
+                    while (firstReader.Read())
+                    {
+                        string idNumValue = firstReader.GetString(firstReader.GetOrdinal("ID_NUM"));
+                        filteredIdNums.Add(idNumValue);
+                    }
+                }
+
+
+                // 第二轮筛选
+                string secondQuery = "SELECT ID_NUM, CITIZEN_NAME, GENDER FROM CITIZEN WHERE ID_NUM IN (:IDList)";
+
+                using (OracleCommand secondCommand = new OracleCommand(secondQuery, connection))
+                {
+                    OracleParameter parameter = new OracleParameter(":IDList", OracleDbType.Varchar2);
+                    foreach (string idNum in repeatOffendersName)
+                    {
+                        if (filteredIdNums.Contains(idNum))
+                        {
+                            parameter.Value = idNum;
+                            secondCommand.Parameters.Add(parameter);
+
+                            using (OracleDataReader secondReader = secondCommand.ExecuteReader())
+                            {
+                                while (secondReader.Read())
+                                {
+                                    string idNumValue = secondReader.GetString(secondReader.GetOrdinal("ID_NUM"));
+                                    string citizenName = secondReader.GetString(secondReader.GetOrdinal("CITIZEN_NAME"));
+                                    string gender = secondReader.GetString(secondReader.GetOrdinal("GENDER"));
+
+                                    // 转换 GENDER 字段的值为 "女" 和 "男"
+                                    if (gender == "F")
+                                    {
+                                        gender = "女";
+                                    }
+                                    else if (gender == "M")
+                                    {
+                                        gender = "男";
+                                    }
+
+                                    Dictionary<string, string> result = new Dictionary<string, string>
+                                    {
+                                        { "身份证号", idNumValue },
+                                        { "姓名", citizenName },
+                                        { "性别", gender }
+                                    };
+
+                                    repeatOffendersInfo.Add(result);
+                                }
+                            }
+
+                            // 清除参数，以便下一次循环使用相同的 command 对象
+                            secondCommand.Parameters.Clear();
+                        }
+                    }
+                    // foreach (Dictionary<string, string> dict in repeatOffendersInfo)
+                    // {
+                    // foreach (KeyValuePair<string, string> pair in dict)
+                    // {
+                    // Console.WriteLine($"{pair.Key}: {pair.Value}");
+                    // }
+                    // Console.WriteLine();
+                    // }
+                }
+            }
+
+            connection.Close();
+        }
+    }
+    public void getRepeatOffenderCaseStatistics(string id)
+    {
+        repeatOffendersCase = new List<Dictionary<string, string>>();
+
+        string connectionString = "User ID=C##police;Password=police;Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
+        using (OracleConnection connection = new OracleConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT CASES.CASE_ID, CASE_TYPE, STATUS, REGISTER_TIME, ADDRESS, RANKING FROM CASES, RELATED WHERE CASES.CASE_ID = RELATED.CASE_ID AND ID_NUM = :CID";
+
+            using (OracleCommand command = new OracleCommand(query, connection))
+            {
+                OracleParameter parameter = new OracleParameter(":CID", OracleDbType.Varchar2);
+                parameter.Value = id;
+                command.Parameters.Add(parameter);
+
+                using (OracleDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string caseId = reader.GetString(reader.GetOrdinal("CASE_ID"));
+                        string caseType = reader.GetString(reader.GetOrdinal("CASE_TYPE"));
+                        string status = reader.GetString(reader.GetOrdinal("STATUS"));
+                        DateTime registerTime = reader.GetDateTime(reader.GetOrdinal("REGISTER_TIME"));
+                        string address = reader.GetString(reader.GetOrdinal("ADDRESS"));
+                        string ranking = reader.GetString(reader.GetOrdinal("RANKING"));
+
+                        Dictionary<string, string> result = new Dictionary<string, string>
+                        {
+                            { "案件编号", caseId },
+                            { "案件类型", caseType },
+                            { "案件状态", status },
+                            { "登记时间", registerTime.ToString() },
+                            { "案发地点", address },
+                            { "案件等级", ranking }
+                        };
+
+                        repeatOffendersCase.Add(result);
+                    }
+                }
+            }
+
+            connection.Close();
+        }
+    }
+
 }
