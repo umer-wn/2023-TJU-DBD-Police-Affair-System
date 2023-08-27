@@ -1,4 +1,8 @@
 <template>
+<el-header class="sub-header">
+    <div>&nbsp;&nbsp;警员管理&nbsp;>&nbsp;注册</div>
+  </el-header>
+
   <div class="container" @wheel.passive.stop>
     <div class="title">添加新用户</div>
     <!-- 以下为添加新用户的表单 -->
@@ -43,7 +47,7 @@
       <!-- gender -->
       <div class="inputContainer">
         <div class="inputTitle">性别</div>
-        <input class="input" :disabled="true" v-model="signinInfo.gender" />
+        <input class="input"  v-model="signinInfo.gender" />
       </div>
       <!-- nation -->
       <div class="inputContainer">
@@ -255,12 +259,29 @@ export default {
 </script>
 
 <style scoped>
+.sub-header {
+  overflow: hidden;
+  display: flex;
+  position: absolute;
+  top: 70px;
+  left: 199px;
+  width: calc(100% - 199px);
+  height: 7vh;
+  min-height: 40px;
+  align-items: center; /* 文字竖直方向居中对齐 */
+ background-color: #f2dccacf;
+  color: #000;
+  font-size: 30px;
+  font-weight: bold;
+}
+
 .container {
   /* width: 80vw;
   height: 130vh;  /* width: 80vw;
   height: 130vh; */
   /* background-color: #f4f6f9; */
-
+  margin-top:10vh;
+   min-width: 700px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -277,11 +298,11 @@ export default {
 }
 .content {
   width: 38%;
+  min-width: 500px;
   height: 850px;
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
   background-color: #ffffff;
-  position: relative;
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;

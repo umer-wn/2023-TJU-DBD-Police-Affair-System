@@ -1,18 +1,21 @@
 <template>
+<el-header class="sub-header">
+    <div>&nbsp;&nbsp;警员管理&nbsp;>&nbsp;警员信息管理</div>
+  </el-header>
   <main class="main">
     <section>
       <div class="inputcontainer">
         <!-- 这里开始输入 -->
 
-        <lable style="position: relative; display: block">
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入警员ID</div>
           <input class="ssqinputinfobox" type="text" v-model="policemenNumber" placeholder="警员ID" />
-        </lable>
+        </label>
 
-        <lable style="position: relative; display: block">
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入警员姓名</div>
           <input class="ssqinputinfobox" type="text" v-model="policemenName" placeholder="警员姓名" />
-        </lable>
+        </label>
         <div class="selectcontainer">
           <div class="ssqinputtext">选择工作状态</div>
           <select class="zyhselect" v-model="policemenStatus">
@@ -77,6 +80,7 @@ export default {
       policemenPosition: "全部",
       policemenInfo: [],
       err: "警员不存在！",
+      boxContent:"",
     };
   },
   methods: {
@@ -115,8 +119,23 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-main {
-
+ .sub-header {
+  overflow: hidden;
+  display: flex;
+  position: absolute;
+  top: 70px;
+  left: 199px;
+  width: calc(100% - 199px);
+  height: 7vh;
+  min-height: 40px;
+  align-items: center; /* 文字竖直方向居中对齐 */
+ background-color: #f2dccacf;
+  color: #000;
+  font-size: 30px;
+  font-weight: bold;
+}
+.main {
+margin-top: 10vh;
   justify-content: center;
   align-content: center;
   width: 100%;

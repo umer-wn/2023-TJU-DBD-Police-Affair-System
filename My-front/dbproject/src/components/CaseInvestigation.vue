@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <el-header class="sub-header">
+    <div>&nbsp;&nbsp;警务处理系统&nbsp;>&nbsp;案件办理</div>
+  </el-header>
+
+  <div class="main">
     <h1 class="title">组成办案组</h1>
     <div>
       <div v-if="finalConfirmFlag == 0">
@@ -250,6 +254,24 @@ export default {
 </script>
 
 <style>
+.sub-header {
+  overflow: hidden;
+  display: flex;
+  position: absolute;
+  top: 70px;
+  left: 199px;
+  width: calc(100% - 199px);
+  height: 7vh;
+  min-height: 40px;
+  align-items: center; /* 文字竖直方向居中对齐 */
+  background-color: #f2dccacf;
+  color: #000;
+  font-size: 30px;
+  font-weight: bold;
+}
+.main {
+  margin-top: 10vh;
+}
 .caseContainer {
   width: 200pt;
   background-color: rgb(20, 0, 98);

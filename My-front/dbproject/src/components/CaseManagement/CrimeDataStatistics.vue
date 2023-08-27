@@ -1,6 +1,10 @@
 <!-- zyh -->
 <template>
-  <div>
+<el-header class="sub-header">
+    <div>&nbsp;&nbsp;案件管理&nbsp;>&nbsp;犯罪数据统计</div>
+  </el-header>
+
+  <div class="main">
     <h4>案件总数：{{ numCases }}</h4>
 
     <h2 style="text-align: center">案件状态统计</h2>
@@ -513,3 +517,25 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.sub-header {
+  overflow: hidden;
+  display: flex;
+  position: absolute;
+  top: 70px;
+  left: 199px;
+  width: calc(100% - 199px);
+  height: 7vh;
+  min-height: 40px;
+  align-items: center; /* 文字竖直方向居中对齐 */
+ background-color: #f2dccacf;
+  color: #000;
+  font-size: 30px;
+  font-weight: bold;
+}
+.main
+{
+  margin-top: 10vh;
+}
+</style>

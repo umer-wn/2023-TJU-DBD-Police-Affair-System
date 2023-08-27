@@ -39,7 +39,7 @@
         <el-menu
           router
           class="el-menu-vertical-demo"
-          default-active="2"
+          default-active="/mainMenu/Register"
           background-color="transparent"
           text-color="#ffffff"
           active-text-color="#ffd04b"
@@ -56,7 +56,7 @@
                 警员管理</span
               >
             </template>
-            <el-menu-item index="/mainMenu/Register">
+            <el-menu-item index="/mainMenu/Register"  @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/Register.png"
@@ -64,7 +64,7 @@
               />
               注册
             </el-menu-item>
-            <el-menu-item index="/mainMenu/ChangePermission">
+            <el-menu-item index="/mainMenu/ChangePermission" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/ChangePermission.png"
@@ -72,7 +72,7 @@
               />
               警员权限修改
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PoliceAssessment">
+            <el-menu-item index="/mainMenu/PoliceAssessment" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PoliceAssessment.png"
@@ -80,7 +80,7 @@
               />
               警员考核管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PoliceStationInfoManagement">
+            <el-menu-item index="/mainMenu/PoliceStationInfoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PoliceStationInfoManagement.png"
@@ -88,7 +88,7 @@
               />
               警局信息管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PoliceOfficerInfoManagement">
+            <el-menu-item index="/mainMenu/PoliceOfficerInfoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PoliceOfficerInfoManagement.png"
@@ -96,7 +96,7 @@
               />
               警员信息管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/AttendanceManagement">
+            <el-menu-item index="/mainMenu/AttendanceManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/AttendanceManagement.png"
@@ -104,7 +104,7 @@
               />
               警员出勤管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/VideoManagement">
+            <el-menu-item index="/mainMenu/VideoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/VideoManagement.png"
@@ -112,7 +112,7 @@
               />
               执法录像管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/AlarmResponseRecordManagement">
+            <el-menu-item index="/mainMenu/AlarmResponseRecordManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/AlarmResponseRecordManagement.png"
@@ -120,7 +120,7 @@
               />
               接警记录管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PayrollManagement">
+            <el-menu-item index="/mainMenu/PayrollManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PayrollManagement.png"
@@ -142,7 +142,7 @@
                 案件管理</span
               >
             </template>
-            <el-menu-item index="/mainMenu/EvidenceManagement">
+            <el-menu-item index="/mainMenu/EvidenceManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/EvidenceManagement.png"
@@ -150,7 +150,7 @@
               />
               证据收纳
             </el-menu-item>
-            <el-menu-item index="/mainMenu/SuspectInfoManagement">
+            <el-menu-item index="/mainMenu/SuspectInfoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/SuspectInfoManagement.png"
@@ -158,7 +158,7 @@
               />
               嫌疑人信息管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/CriminalRecordManagement">
+            <el-menu-item index="/mainMenu/CriminalRecordManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/CriminalRecordManagement.png"
@@ -166,7 +166,7 @@
               />
               犯罪记录管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/VictimInfoManagement">
+            <el-menu-item index="/mainMenu/VictimInfoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/VictimInfoManagement.png"
@@ -174,7 +174,7 @@
               />
               受害人信息管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/CaseClassificationManagement">
+            <el-menu-item index="/mainMenu/CaseClassificationManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/CaseClassificationManagement.png"
@@ -182,7 +182,7 @@
               />
               案件分类与管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/CrimeDataStatistics">
+            <el-menu-item index="/mainMenu/CrimeDataStatistics" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/CrimeDataStatistics.png"
@@ -190,7 +190,7 @@
               />
               犯罪数据统计
             </el-menu-item>
-            <el-menu-item index="/mainMenu/KeyIndividualsManagement">
+            <el-menu-item index="/mainMenu/KeyIndividualsManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/KeyIndividualsManagement.png"
@@ -210,7 +210,7 @@
               />
               <span>装备管理</span>
             </template>
-            <el-menu-item index="/mainMenu/PoliceVehicleManagement">
+            <el-menu-item index="/mainMenu/PoliceVehicleManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PoliceVehicleManagement.png"
@@ -218,7 +218,7 @@
               />
               警车管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PoliceEquipmentManagement">
+            <el-menu-item index="/mainMenu/PoliceEquipmentManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PoliceEquipmentManagement.png"
@@ -240,7 +240,7 @@
               <span>城区和居民管理</span>
             </template>
 
-            <el-menu-item index="/mainMenu/CitizenInfoManagement">
+            <el-menu-item index="/mainMenu/CitizenInfoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/CitizenInfoManagement.png"
@@ -248,7 +248,7 @@
               />
               公民户籍管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/UrbanZoningManagement">
+            <el-menu-item index="/mainMenu/UrbanZoningManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/UrbanZoningManagement.png"
@@ -256,7 +256,7 @@
               />
               城市地区管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/RegionalDispatch">
+            <el-menu-item index="/mainMenu/RegionalDispatch" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/RegionalDispatch.png"
@@ -264,7 +264,7 @@
               />
               城市调度管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/FamilybgCheck">
+            <el-menu-item index="/mainMenu/FamilybgCheck" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/FamilybgCheck.png"
@@ -274,7 +274,7 @@
             </el-menu-item>
           </el-sub-menu>
 
-          <el-menu-item index="/mainMenu/DataQualityManagement">
+          <el-menu-item index="/mainMenu/DataQualityManagement" @click="scrollToTop">
             <img
               class="nav-icon-for-menu-item"
               src="../../assets/logos/DataQualityManagement.png"
@@ -282,7 +282,7 @@
             />
             数据质量管理
           </el-menu-item>
-          <el-menu-item index="/mainMenu/CaseInvestigation">
+          <el-menu-item index="/mainMenu/CaseInvestigation" @click="scrollToTop">
             <img
               class="nav-icon-for-menu-item"
               src="../../assets/logos/CaseInvestigation.png"
@@ -293,7 +293,7 @@
 
           <!-- 系统日志 -->
 
-          <el-menu-item index="/mainMenu/SystemLogManagement">
+          <el-menu-item index="/mainMenu/SystemLogManagement" @click="scrollToTop">
             <img
               class="nav-icon-for-menu-item"
               src="../../assets/logos/SystemLogManagement.png"
@@ -350,6 +350,14 @@ function handleScroll(event) {
           containerHeight.value -= 50;
         }
       }
+    }
+
+    function scrollToTop() {
+      containerHeight.value = 1500;
+      window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+      })
     }
 </script>
 

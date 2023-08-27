@@ -1,16 +1,19 @@
 <template>
+<el-header class="sub-header">
+    <div>&nbsp;&nbsp;警员管理&nbsp;>&nbsp;执法录像管理</div>
+  </el-header>
   <main class="main">
     <section>
       <div class="inputcontainer">
-        <lable style="position: relative; display: block">
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入录像ID</div>
           <input class="ssqinputinfobox" type="text" v-model="videoID" placeholder="录像ID" />
-        </lable>
+        </label>
 
-        <lable style="position: relative; display: block">
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入涉及警员的警号</div>
           <input class="ssqinputinfobox" type="text" v-model="principleID" placeholder="涉及警员的警号" />
-        </lable>
+        </label>
 
         <div class="ssqinputtext">选择录像类别</div>
         <select class="zyhselect" v-model="videoType">
@@ -51,6 +54,7 @@ export default {
       principleID: "",
       videoInfo: [],
       err: "警员不存在！",
+      boxContent:"",
     };
   },
   methods: {
@@ -75,7 +79,23 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-main {
+ .sub-header {
+  overflow: hidden;
+  display: flex;
+  position: absolute;
+  top: 70px;
+  left: 199px;
+  width: calc(100% - 199px);
+  height: 7vh;
+  min-height: 40px;
+  align-items: center; /* 文字竖直方向居中对齐 */
+ background-color: #f2dccacf;
+  color: #000;
+  font-size: 30px;
+  font-weight: bold;
+}
+.main {
+  margin-top: 10vh;
   display: flex;
   justify-content: center;
   align-content: center;

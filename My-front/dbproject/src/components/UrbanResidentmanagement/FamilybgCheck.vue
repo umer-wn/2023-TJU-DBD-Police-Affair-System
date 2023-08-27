@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <el-header class="sub-header" v-if="showHeader">
+      <div>&nbsp;&nbsp;城区和居民管理&nbsp;>&nbsp;家族背景调查</div>
+    </el-header>
     <!-- main window -->
     <!-- element:query inputbox and confirm button-->
     <div class="queryBox" :class="{ upBox: isGraphContainerVisible }">
@@ -44,6 +47,7 @@ export default {
   },
   data() {
     return {
+      showHeader: true, // 控制 header 的显示与隐藏
       inputID: "",
       content: [],
       curLevel: -1,
@@ -109,6 +113,7 @@ export default {
       // 重置显示已有的输入内容为空
       this.inputID = "";
       this.placeholder = "不存在此犯人，请重新输入";
+      this.showHeader = true; // 查询失败则不让 header 消失
       setTimeout(() => {
         this.isError = false;
         this.inputID = "";
@@ -116,6 +121,7 @@ export default {
       }, 500);
     },
     query() {
+      this.showHeader = false; // 隐藏 header
       this.curLevel = -1;
       axios
         .post("http://localhost:7078/api/FamilybgCheck", {
@@ -150,6 +156,21 @@ export default {
 </script>
 
 <style scoped>
+.sub-header {
+  overflow: hidden;
+  display: flex;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 7vh;
+  min-height: 40px;
+  align-items: center; /* 文字竖直方向居中对齐 */
+  background-color: #f2dccacf;
+  color: #000;
+  font-size: 30px;
+  font-weight: bold;
+}
 .queryBox {
   width: 100%;
   height: 100px;
@@ -166,10 +187,11 @@ export default {
   transform: translateY(-40vh);
 }
 .container {
-  background: #ffffff;
-  width: 100%;
-  height: 100vh;
-  position: relative;
+  top: 70px;
+  left: 199px;
+  width: calc(100% - 199px);
+  height: 120vh;
+  position: absolute;
   overflow: hidden;
 
   display: flex;

@@ -1,27 +1,30 @@
 <template>
+<el-header class="sub-header">
+    <div>&nbsp;&nbsp;警员管理&nbsp;>&nbsp;警局信息管理</div>
+  </el-header>
   <main class="main">
     <section>
       <div class="inputcontainer">
-        <lable style="position: relative; display: block">
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入警局ID</div>
           <input class="ssqinputinfobox" type="text" v-model="stationID" placeholder="警局ID" />
-        </lable>
-        <lable style="position: relative; display: block">
+        </label>
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入警局名称</div>
           <input class="ssqinputinfobox" type="text" v-model="stationName" placeholder="警局名称" />
-        </lable>
-        <lable style="position: relative; display: block">
+        </label>
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入警局城市</div>
           <input class="ssqinputinfobox" type="text" v-model="city" placeholder="警局城市" />
-        </lable>
-        <lable style="position: relative; display: block">
+        </label>
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入警局地址</div>
           <input class="ssqinputinfobox" type="text" v-model="address" placeholder="警局地址" />
-        </lable>
-        <lable style="position: relative; display: block">
+        </label>
+        <label style="position: relative; display: block">
           <div class="ssqinputtext">输入警局预算</div>
           <input class="ssqinputinfobox" input type="number" v-model="budget" placeholder="警局预算" />
-        </lable>
+        </label>
         <div class="btncontainer">
           <div class="leftbtn">
             <button class="ssqbutton1" @click="fetchStationInfo" @mousemove="handleMouseMove">
@@ -66,6 +69,7 @@ export default {
       budget: null, // 修改为null，确保初始值为null
       stationInfo: [],
       err: "警局不存在！",
+      boxContent:"",
     };
   },
   methods: {
@@ -92,7 +96,23 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-main {
+ .sub-header {
+  overflow: hidden;
+  display: flex;
+  position: absolute;
+  top: 70px;
+  left: 199px;
+  width: calc(100% - 199px);
+  height: 7vh;
+  min-height: 40px;
+  align-items: center; /* 文字竖直方向居中对齐 */
+ background-color: #f2dccacf;
+  color: #000;
+  font-size: 30px;
+  font-weight: bold;
+}
+.main {
+  margin-top: 10vh;
   justify-content: center;
   align-content: center;
   width: 100%;

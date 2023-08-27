@@ -64,7 +64,7 @@
             <div class="bottombox">
               <button class="confirmlogin" type="submit">确认登录</button>
               <div class="password-link">
-                <a @click="pagechange">修改密码</a>
+                <a class="password-link-text" @click="pagechange">修改密码</a>
               </div>
             </div>
             <div class="code-feedbackbox">
@@ -184,7 +184,7 @@ export default {
             //     username: this.username,
             //   },
             // });
-            this.$router.push("/mainMenu");
+            this.$router.push('/mainMenu');
           } else {
             // 登录失败，显示错误提示
             this.refreshCode();
@@ -214,6 +214,9 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
+.password-link-text {
+   text-decoration: underline
+}
 .body {
   background-image: url("../../assets/hellopolice.jpg");
   background-attachment: fixed;
