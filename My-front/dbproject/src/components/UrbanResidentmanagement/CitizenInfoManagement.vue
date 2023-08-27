@@ -4,81 +4,43 @@
       <div class="inputcontainer">
         <lable style="position: relative; display: block">
           <div class="ssqinputtext">输入身份证号码</div>
-          <input
-            class="ssqinputinfobox"
-            type="text"
-            v-model="IDNum"
-            placeholder="身份证号码"
-          />
+          <input class="ssqinputinfobox" type="text" v-model="IDNum" placeholder="身份证号码" />
         </lable>
 
-        <lable style="position: relative; display: block"
-          ><div class="ssqinputtext">输入姓名</div>
-          <input
-            class="ssqinputinfobox"
-            type="text"
-            v-model="citizenName"
-            placeholder="姓名"
-        /></lable>
+        <lable style="position: relative; display: block">
+          <div class="ssqinputtext">输入姓名</div>
+          <input class="ssqinputinfobox" type="text" v-model="citizenName" placeholder="姓名" />
+        </lable>
 
-        
-          <div class="ssqinputtext">选择性别</div>
-          <select class="zyhselect" v-model="gender">
-            <option selected value="全部">全部性别</option>
-            <option value="M">男</option>
-            <option value="F">女</option>
-          </select>
-        
+
+        <div class="ssqinputtext">选择性别</div>
+        <select class="zyhselect" v-model="gender">
+          <option selected value="全部">全部性别</option>
+          <option value="M">男</option>
+          <option value="F">女</option>
+        </select>
+
       </div>
       <div class="btncontainer">
         <div class="leftbtn">
-          <button
-            class="ssqbutton1"
-            @click="fetchCitizenInfo"
-            @mousemove="handleMouseMove"
-          >
+          <button class="ssqbutton1" @click="fetchCitizenInfo" @mousemove="handleMouseMove">
             <span>查询</span>
           </button>
         </div>
         <div class="rightbtn">
-          <button
-            class="ssqbutton1"
-            @click="goToNewRecord"
-            @mousemove="handleMouseMove"
-          >
+          <button class="ssqbutton1" @click="goToNewRecord" @mousemove="handleMouseMove">
             <span>新建记录</span>
           </button>
         </div>
       </div>
       <!-- 表格显示获取的警员信息 -->
-      <table v-if="citizenInfo.length > 0">
-        <div class="maintable" @wheel.passive.stop>
-          <table>
-            <thead>
-              <tr>
-                <th>身份证号码</th>
-                <th>姓&nbsp;名</th>
-                <th>性&nbsp;别</th>
-                <th>父亲身份证号</th>
-                <th>母亲身份证号</th>
-              </tr>
-            </thead>
-          </table>
-          <div class="rolltable">
-            <table>
-              <tbody>
-                <tr v-for="item of citizenInfo" :key="item.IDNum">
-                  <td>{{ item.idNum }}</td>
-                  <td>{{ item.citizenName }}</td>
-                  <td>{{ item.gender }}</td>
-                  <td>{{ item.fatherID }}</td>
-                  <td>{{ item.motherID }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </table>
+      <el-table v-if="citizenInfo.length > 0" :data="citizenInfo" stripe height="450" @wheel.passive.stop>
+        <el-table-column prop="idNum" label="身份证号码" />
+        <el-table-column prop="citizenName" label="姓名" />
+        <el-table-column prop="gender" label="性别" />
+        <el-table-column prop="fatherID" label="父亲身份证号" />
+        <el-table-column prop="motherID" label="母亲身份证号" />
+      </el-table>
       <!-- 错误提示 -->
       <div v-else>{{ boxContent }}</div>
     </section>
@@ -108,7 +70,14 @@ export default {
         })
         .then((res) => {
           this.citizenInfo = res.data;
-          console.log(res.data);
+          for (var i = 0; i < this.citizenInfo.length; i++) {
+            if (this.citizenInfo[i].gender === "F") {
+              this.citizenInfo[i].gender = "女";
+            } else if (this.citizenInfo[i].gender === "M") {
+              this.citizenInfo[i].gender = "男";
+            }
+          }
+          // console.log(res.data);
         })
         .catch((err) => {
           this.boxContent = this.err;
@@ -128,11 +97,13 @@ main {
   height: 120vh;
   min-width: 800px;
 }
+
 .ssqinputinfobox {
   position: relative;
   width: 10vw;
   display: inline-block;
 }
+
 .ssqinputtext {
   text-align: center;
   margin-top: 7vh;
@@ -141,6 +112,7 @@ main {
   width: auto;
   display: inline-block;
 }
+
 input {
   margin-top: 5vh;
   display: block;
@@ -150,6 +122,7 @@ input {
   border: 1px solid #e3e3e3;
   border-radius: 2px;
 }
+
 .zyhselect {
   margin-top: 5vh;
   display: block;
@@ -163,18 +136,22 @@ input {
   margin-top: 5vh;
   margin-bottom: 8vh;
 }
+
 .inputcontainer,
 .selectcontainer {
   display: flex;
- align-content: center;
+  align-content: center;
 }
+
 .btncontainer {
   display: flex;
   justify-content: center;
 }
+
 .leftbtn {
   margin-right: 5vw;
 }
+
 .maintable {
   flex-direction: column;
   align-content: center;
@@ -190,10 +167,12 @@ table {
   width: 100%;
   border: 1px solid #ccc;
   text-align: center;
+
   tbody {
     border-collapse: separate;
     height: 100%;
   }
+
   td,
   th {
     padding: 5px;
@@ -209,8 +188,7 @@ table {
   overflow-y: scroll;
   overflow-x: hidden;
   background: linear-gradient(#fff, transparent) top / 100% 100px,
-    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top /
-      100000% 12px;
+    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top / 100000% 12px;
   background-repeat: no-repeat;
   background-attachment: local, scroll;
 }

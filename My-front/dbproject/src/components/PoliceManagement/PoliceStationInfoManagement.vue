@@ -4,102 +4,51 @@
       <div class="inputcontainer">
         <lable style="position: relative; display: block">
           <div class="ssqinputtext">输入警局ID</div>
-          <input
-            class="ssqinputinfobox"
-            type="text"
-            v-model="stationID"
-            placeholder="警局ID"
-          />
+          <input class="ssqinputinfobox" type="text" v-model="stationID" placeholder="警局ID" />
         </lable>
         <lable style="position: relative; display: block">
           <div class="ssqinputtext">输入警局名称</div>
-          <input
-            class="ssqinputinfobox"
-            type="text"
-            v-model="stationName"
-            placeholder="警局名称"
-          />
+          <input class="ssqinputinfobox" type="text" v-model="stationName" placeholder="警局名称" />
         </lable>
         <lable style="position: relative; display: block">
           <div class="ssqinputtext">输入警局城市</div>
-          <input
-            class="ssqinputinfobox"
-            type="text"
-            v-model="city"
-            placeholder="警局城市"
-          />
+          <input class="ssqinputinfobox" type="text" v-model="city" placeholder="警局城市" />
         </lable>
         <lable style="position: relative; display: block">
           <div class="ssqinputtext">输入警局地址</div>
-          <input
-            class="ssqinputinfobox"
-            type="text"
-            v-model="address"
-            placeholder="警局地址"
-          />
+          <input class="ssqinputinfobox" type="text" v-model="address" placeholder="警局地址" />
         </lable>
         <lable style="position: relative; display: block">
           <div class="ssqinputtext">输入警局预算</div>
-          <input
-            class="ssqinputinfobox"
-            input
-            type="number"
-            v-model="budget"
-            placeholder="警局预算"
-          />
+          <input class="ssqinputinfobox" input type="number" v-model="budget" placeholder="警局预算" />
         </lable>
         <div class="btncontainer">
           <div class="leftbtn">
-            <button
-              class="ssqbutton1"
-              @click="fetchStationInfo"
-              @mousemove="handleMouseMove"
-            >
+            <button class="ssqbutton1" @click="fetchStationInfo" @mousemove="handleMouseMove">
               <span>查询</span>
             </button>
           </div>
           <div class="rightbtn">
-            <button
-              class="ssqbutton1"
-              @click="goToNewRecord"
-              @mousemove="handleMouseMove"
-            >
+            <button class="ssqbutton1" @click="goToNewRecord" @mousemove="handleMouseMove">
               <span>新建记录</span>
             </button>
           </div>
         </div>
       </div>
-      <!-- 表格显示获取的警局信息 -->
-      <table v-if="stationInfo.length > 0">
-        <div class="maintable" @wheel.passive.stop>
-          <table>
-            <thead>
-              <tr>
-                <th>警局ID</th>
-                <th>警局名称</th>
-                <th>警局城市</th>
-                <th>警局地址</th>
-                <th>警局预算</th>
-              </tr>
-            </thead>
-          </table>
-          <div class="rolltable">
-            <table>
-              <tbody>
-                <tr v-for="station in stationInfo" :key="station.stationID">
-                  <td>{{ station.stationID }}</td>
-                  <td>{{ station.stationName }}</td>
-                  <td>{{ station.city }}</td>
-                  <td>{{ station.address }}</td>
-                  <td>{{ station.budget }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </table>
-      <!-- 错误提示 -->
-      <div v-else>{{ boxContent }}</div>
+      <div class="table">
+        <!-- 表格显示获取的警局信息 -->
+        <el-table v-if="stationInfo.length > 0" :data="stationInfo" stripe height="450" @wheel.passive.stop>
+          <el-table-column prop="stationID" label="警局编号" />
+          <el-table-column prop="stationName" label="警局名称" />
+          <el-table-column prop="city" label="所在城市" />
+          <el-table-column prop="address" label="警局地址" />
+          <el-table-column prop="budget" label="警局预算" />
+        </el-table>
+        <!-- 错误提示 -->
+        <div v-else>{{ boxContent }}</div>
+      </div>
+
+
     </section>
   </main>
 </template>
@@ -150,11 +99,13 @@ main {
   height: 120vh;
   min-width: 800px;
 }
+
 .ssqinputinfobox {
   position: relative;
   width: 10vw;
   display: inline-block;
 }
+
 .ssqinputtext {
   text-align: center;
   margin-top: 7vh;
@@ -163,6 +114,7 @@ main {
   width: 10vw;
   display: inline-block;
 }
+
 input {
   margin-top: 5vh;
   display: block;
@@ -172,13 +124,16 @@ input {
   border: 1px solid #e3e3e3;
   border-radius: 2px;
 }
+
 .btncontainer {
   display: flex;
   justify-content: center;
 }
+
 .leftbtn {
   margin-right: 5vw;
 }
+
 .maintable {
   flex-direction: column;
   align-content: center;
@@ -194,10 +149,12 @@ table {
   width: 100%;
   border: 1px solid #ccc;
   text-align: center;
+
   tbody {
     border-collapse: separate;
     height: 100%;
   }
+
   td,
   th {
     padding: 5px;
@@ -213,8 +170,7 @@ table {
   overflow-y: scroll;
   overflow-x: hidden;
   background: linear-gradient(#fff, transparent) top / 100% 100px,
-    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top /
-      100000% 12px;
+    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top / 100000% 12px;
   background-repeat: no-repeat;
   background-attachment: local, scroll;
 }
@@ -341,5 +297,10 @@ table {
 
 .ssqbutton1-2:hover::before {
   --size: 400px;
+}
+
+.table {
+  display: flex;
+  justify-content: center;
 }
 </style>

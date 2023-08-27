@@ -93,8 +93,7 @@ export default {
       error: "",
       //验证码
       formLogin: "",
-      //identifyCodes: "1234567890abcdefjhijklinopqrsduvwxyz", //随机串内容
-      identifyCodes: "1",
+      identifyCodes: "1234567890abcdefjhijklinopqrsduvwxyz", //随机串内容
       identifyCode: "",
       //鼠标点击
       isFocused: false,

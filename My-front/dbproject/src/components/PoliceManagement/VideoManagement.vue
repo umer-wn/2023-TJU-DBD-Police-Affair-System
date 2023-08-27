@@ -4,22 +4,13 @@
       <div class="inputcontainer">
         <lable style="position: relative; display: block">
           <div class="ssqinputtext">输入录像ID</div>
-          <input
-            class="ssqinputinfobox"
-            type="text"
-            v-model="videoID"
-            placeholder="录像ID"
-          />
+          <input class="ssqinputinfobox" type="text" v-model="videoID" placeholder="录像ID" />
         </lable>
 
-        <lable style="position: relative; display: block"
-          ><div class="ssqinputtext">输入涉及警员的警号</div>
-          <input
-            class="ssqinputinfobox"
-            type="text"
-            v-model="principleID"
-            placeholder="涉及警员的警号"
-        /></lable>
+        <lable style="position: relative; display: block">
+          <div class="ssqinputtext">输入涉及警员的警号</div>
+          <input class="ssqinputinfobox" type="text" v-model="principleID" placeholder="涉及警员的警号" />
+        </lable>
 
         <div class="ssqinputtext">选择录像类别</div>
         <select class="zyhselect" v-model="videoType">
@@ -30,44 +21,19 @@
         </select>
       </div>
       <div class="btncontainer">
-        <button
-          class="ssqbutton1"
-          @click="fetchvideoInfo"
-          @mousemove="handleMouseMove"
-        >
+        <button class="ssqbutton1" @click="fetchvideoInfo" @mousemove="handleMouseMove">
           <span>查询</span>
         </button>
       </div>
 
       <!-- 表格显示获取的警员信息 -->
-      <table v-if="videoInfo.length > 0">
-        <div class="maintable" @wheel.passive.stop>
-          <table>
-            <thead>
-              <tr>
-                <th>视频ID</th>
-                <th>记录时间</th>
-                <th>上传时间</th>
-                <th>录像类型</th>
-                <th>涉及警员的警号</th>
-              </tr>
-            </thead>
-          </table>
-          <div class="rolltable">
-            <table>
-              <tbody>
-                <tr v-for="video of videoInfo" :key="video.videoNumber">
-                  <td>{{ video.videoID }}</td>
-                  <td>{{ video.recordTime }}</td>
-                  <td>{{ video.uploadTime }}</td>
-                  <td>{{ video.videoType }}</td>
-                  <td>{{ video.principleID }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </table>
+      <el-table v-if="videoInfo.length > 0" :data="videoInfo" stripe height="450" @wheel.passive.stop>
+        <el-table-column prop="videoID" label="录像编号" />
+        <el-table-column prop="recordTime" label="记录时间" />
+        <el-table-column prop="uploadTime" label="上传时间" />
+        <el-table-column prop="videoType" label="录像类型" />
+        <el-table-column prop="principleID" label="涉及警员的警号" />
+      </el-table>
       <!-- 错误提示 -->
       <div v-else>{{ boxContent }}</div>
     </section>
@@ -117,11 +83,13 @@ main {
   height: 120vh;
   min-width: 800px;
 }
+
 .ssqinputinfobox {
   position: relative;
   width: 10vw;
   display: inline-block;
 }
+
 .ssqinputtext {
   text-align: center;
   margin-top: 7vh;
@@ -130,6 +98,7 @@ main {
   width: auto;
   display: inline-block;
 }
+
 input {
   margin-top: 5vh;
   display: block;
@@ -139,6 +108,7 @@ input {
   border: 1px solid #e3e3e3;
   border-radius: 2px;
 }
+
 .zyhselect {
   margin-top: 5vh;
   display: block;
@@ -152,18 +122,22 @@ input {
   margin-top: 5vh;
   margin-bottom: 8vh;
 }
+
 .inputcontainer,
 .selectcontainer {
   display: flex;
   align-content: center;
 }
+
 .btncontainer {
   display: flex;
   justify-content: center;
 }
+
 .leftbtn {
   margin-right: 5vw;
 }
+
 .maintable {
   flex-direction: column;
   align-content: center;
@@ -179,10 +153,12 @@ table {
   width: 100%;
   border: 1px solid #ccc;
   text-align: center;
+
   tbody {
     border-collapse: separate;
     height: 100%;
   }
+
   td,
   th {
     padding: 5px;
@@ -198,8 +174,7 @@ table {
   overflow-y: scroll;
   overflow-x: hidden;
   background: linear-gradient(#fff, transparent) top / 100% 100px,
-    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top /
-      100000% 12px;
+    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top / 100000% 12px;
   background-repeat: no-repeat;
   background-attachment: local, scroll;
 }

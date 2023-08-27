@@ -5,21 +5,16 @@
       <div class="inputcontainer">
         <lable style="position: relative; display: block">
           <div class="ssqinputtext">输入案件ID</div>
-          <input
-            class="ssqinputinfobox"
-            type="text" v-model="caseID" placeholder="案件ID"
-          />
+          <input class="ssqinputinfobox" type="text" v-model="caseID" placeholder="案件ID" />
         </lable>
-        <lable style="position: relative; display: block"
-          ><div class="ssqinputtext">输入案发地点</div>
-          <input
-            class="ssqinputinfobox"
-            type="text" v-model="address" placeholder="案发地点"
-        /></lable>
-</div>
-      
+        <lable style="position: relative; display: block">
+          <div class="ssqinputtext">输入案发地点</div>
+          <input class="ssqinputinfobox" type="text" v-model="address" placeholder="案发地点" />
+        </lable>
+      </div>
 
-<div class="inputcontainer">
+
+      <div class="inputcontainer">
         <div class="selectcontainer">
           <div class="ssqinputtext">选择案件类型</div>
           <select class="zyhselect" v-model="caseType">
@@ -42,8 +37,8 @@
             <option value="调查">调查</option>
           </select>
         </div>
- </div>
- <div class="inputcontainer">
+      </div>
+      <div class="inputcontainer">
         <div class="selectcontainer">
           <div class="ssqinputtext">选择案件等级</div>
           <select class="zyhselect" v-model="ranking">
@@ -54,52 +49,23 @@
             <option value="3">3</option>
           </select>
         </div>
-      
-</div>
+
+      </div>
       <div class="btncontainer">
-        <button
-          class="ssqbutton1"
-          @click="fetchCaseInfo"
-          @mousemove="handleMouseMove"
-        >
+        <button class="ssqbutton1" @click="fetchCaseInfo" @mousemove="handleMouseMove">
           <span>查询</span>
         </button>
       </div>
 
       <!-- 表格显示获取的警员信息 -->
-      <table v-if="caseInfo.length > 0">
-        <div class="maintable" @wheel.passive.stop>
-          <table>
-            <thead>
-                <tr>
-                    <th>案件ID</th>
-                    <th>案件类型</th>
-                    <th>案件状态</th>
-                    <th>登记时间</th>
-                    <th>案发地点</th>
-                    <th>案件等级</th>
-                </tr>
-            </thead>
-          </table>
-          <div class="rolltable">
-            <table>
-              <tbody>
-                <tr v-for="item of caseInfo" :key="item.caseID">
-                    <td>{{ item.caseID }}</td>
-                    <td>{{ item.caseType }}</td>
-                    <td>{{ item.status }}</td>
-                    <td>{{ item.registerTime }}</td>
-                    <td>{{ item.address }}</td>
-                    <td>{{ item.ranking }}</td>
-                    <td>
-                      <button @click="goToDetails(item)">详情</button>
-                    </td>
-                </tr>
-            </tbody>
-            </table>
-          </div>
-        </div>
-      </table>
+      <el-table v-if="caseInfo.length > 0" :data="caseInfo" stripe height="450" @wheel.passive.stop>
+        <el-table-column prop="caseID" label="案件编号" />
+        <el-table-column prop="caseType" label="案件类型" />
+        <el-table-column prop="status" label="案件状态" />
+        <el-table-column prop="registerTime" label="登记时间" width="200px" />
+        <el-table-column prop="address" label="案发地点" width="250px" />
+        <el-table-column prop="ranking" label="案件等级" />
+      </el-table>
       <!-- 错误提示 -->
       <div v-else>{{ boxContent }}</div>
     </section>
@@ -111,7 +77,7 @@
 import axios from 'axios'
 
 export default {
-  data () {
+  data() {
     return {
       caseID: '',
       caseType: '全部',
@@ -123,7 +89,7 @@ export default {
     }
   },
   methods: {
-    fetchCaseInfo () {
+    fetchCaseInfo() {
       axios.post('http://localhost:7078/api/caseInfo', {
         caseID: this.caseID,
         caseType: this.caseType,
@@ -152,11 +118,13 @@ main {
   height: 120vh;
   min-width: 800px;
 }
+
 .ssqinputinfobox {
   position: relative;
   width: 10vw;
   display: inline-block;
 }
+
 .ssqinputtext {
   text-align: center;
   margin-top: 7vh;
@@ -165,6 +133,7 @@ main {
   width: 10vw;
   display: inline-block;
 }
+
 input {
   margin-top: 5vh;
   display: block;
@@ -174,6 +143,7 @@ input {
   border: 1px solid #e3e3e3;
   border-radius: 2px;
 }
+
 .zyhselect {
   margin-top: 5vh;
   display: block;
@@ -186,18 +156,22 @@ input {
   margin-right: 2vw;
   margin-top: 5vh;
 }
+
 .inputcontainer,
 .selectcontainer {
   display: flex;
   align-content: center;
 }
+
 .btncontainer {
   display: flex;
   justify-content: center;
 }
+
 .leftbtn {
   margin-right: 5vw;
 }
+
 .maintable {
   flex-direction: column;
   align-content: center;
@@ -213,10 +187,12 @@ table {
   width: 100%;
   border: 1px solid #ccc;
   text-align: center;
+
   tbody {
     border-collapse: separate;
     height: 100%;
   }
+
   td,
   th {
     padding: 5px;
@@ -230,10 +206,9 @@ table {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  overflow-x:  auto;
+  overflow-x: auto;
   background: linear-gradient(#fff, transparent) top / 100% 100px,
-    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top /
-      100000% 12px;
+    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top / 100000% 12px;
   background-repeat: no-repeat;
   background-attachment: local, scroll;
 }

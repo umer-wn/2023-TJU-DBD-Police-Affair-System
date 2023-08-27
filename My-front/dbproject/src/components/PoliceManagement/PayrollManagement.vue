@@ -2,7 +2,7 @@
   <el-tabs type="border-card">
     <el-tab-pane label="查询">
       <div class="container">
-        <div class="left">
+        <div>
           <el-form
             :label-position="top"
             label-width="100px"
@@ -60,7 +60,7 @@
             <!-- <button type="submit">搜索</button> -->
           </el-form>
         </div>
-        <div class="right">
+        <div>
           <el-table
             :data="searchData.searchResults"
             style="width: 60%"
@@ -321,19 +321,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.container {
-  display: flex;
-  position: relative;
-}
-
-.left {
-  flex: 1;
-  padding: 10px;
-}
-.right {
-  flex: 1;
-  padding: 10px;
-  margin-right: 50px; /* 距离右侧的距离 */
-}
-</style>
+<style scoped></style>

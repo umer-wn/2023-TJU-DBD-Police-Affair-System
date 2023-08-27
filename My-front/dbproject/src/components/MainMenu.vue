@@ -15,19 +15,8 @@
         <div class="header1">
           <img class="logo" src="../../assets/image-2.png" />
           <div class="title">&nbsp;&nbsp;警务处理系统</div>
-          <div class="button-container">
-            <el-button
-              type="primary"
-              @click="
-                {
-                  drawer2 = true;
-                  console.log(containerHeight);
-                }
-              "
-            >
-              个人信息
-            </el-button>
-          </div>
+
+          <!-- <div class="footer1">返回首页</div> -->
         </div>
       </div>
     </el-header>
@@ -306,6 +295,18 @@
 
       <!-- 页面主体 -->
       <el-main class="background">
+        <el-button
+          type="primary"
+          style="margin-left: 16px"
+          @click="
+            {
+              drawer2 = true;
+              console.log(containerHeight);
+            }
+          "
+        >
+          with footer
+        </el-button>
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -366,7 +367,6 @@ function handleScroll(event) {
   vertical-align: middle;
   margin-right: 5px; /* Optional: Add some spacing between icon and text */
 }
-
 .home-container {
   width: 100%;
   overflow: hidden;
@@ -423,15 +423,23 @@ function handleScroll(event) {
   padding-left: 20px;
 }
 
-.button-container {
-  margin-left: auto;
-  margin-right: 20px;
-}
-
 .title {
   color: #ffffff;
   text-align: left;
   font: 400 36px "Inter", sans-serif;
   display: inline-block;
+}
+
+.nav-icon-for-sub-menu {
+  max-width: 30%;
+  max-height: 30%;
+  vertical-align: middle;
+  margin-right: 5px; /* Optional: Add some spacing between icon and text */
+}
+.nav-icon-for-menu-item {
+  max-width: 60%;
+  max-height: 60%;
+  vertical-align: middle;
+  margin-right: 5px; /* Optional: Add some spacing between icon and text */
 }
 </style>

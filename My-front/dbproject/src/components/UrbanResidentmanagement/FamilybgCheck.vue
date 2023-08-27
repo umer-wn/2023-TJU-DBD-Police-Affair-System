@@ -1,3 +1,281 @@
 <template>
-  <div>家族背景调查</div>
+  <div class="container">
+    <!-- main window -->
+    <!-- element:query inputbox and confirm button-->
+    <div class="queryBox" :class="{ upBox: isGraphContainerVisible }">
+      <input
+        type="text"
+        v-model="inputID"
+        :placeholder="placeholder"
+        @focus="changeInputStatus"
+        @blur="changeInputStatus"
+        @keydown.enter="query"
+        class="inputBox"
+        :class="{ errorAnime: isError }"
+      />
+      <button @click="query" class="button">查询</button>
+    </div>
+    <!-- element:family graph container -->
+    <!-- graph is where criminal info is shown -->
+    <div v-if="readyToRenderGraph" class="graphContainer">
+      <!-- this part is for info render,
+     step1: calc position and sequential for each info
+     step2: render by sequential -->
+      <transitionGroup name="fade" tag="ul">
+        <div
+          class="imgCtrl"
+          v-for="(item, index) in this.infoList"
+          :style="getPos(index)"
+          :key="index"
+        >
+          <CriminalInfo :imgUrl="imageUrl" :content="item" />
+        </div>
+      </transitionGroup>
+    </div>
+  </div>
 </template>
+
+<script>
+import CriminalInfo from "./CriminalInfo.vue";
+import axios from "axios";
+export default {
+  components: {
+    CriminalInfo,
+  },
+  data() {
+    return {
+      inputID: "",
+      content: [],
+      curLevel: -1,
+      imageUrl: require("../../assets/criminal.png"),
+      placeholder: "请输入居民身份证号",
+      isGraphContainerVisible: false,
+      readyToRenderGraph: false,
+      isError: false, // 控制错误动画
+      // 以下为渲染信息相关
+      curInfo: 0, // 当前加载位置
+      infoList: [], // 用于存储渲染的信息
+    };
+  },
+  watch: {
+    content: {
+      handler() {
+        this.infoList = [];
+        this.curInfo = 0;
+        setTimeout(() => {
+          this.readyToRenderGraph = true;
+          setInterval(() => {
+            if (this.curLevel < 2) this.curLevel++;
+          }, 500);
+        }, 500);
+        // 设置infoList
+        setInterval(() => {
+          if (this.curInfo < this.content.people.length) {
+            this.infoList.push(this.content.people[this.curInfo]);
+            this.curInfo++;
+          }
+        }, 300);
+      },
+    },
+  },
+  methods: {
+    getPos(index) {
+      let width = this.$el.offsetWidth;
+      let height = this.$el.offsetHeight;
+      let top = "0%";
+      let left = "0%";
+      if (index == 0) {
+        // 中心人物
+        top = `${(height / 4) * 2 - 100}px`;
+        left = `${width / 2 - 250}px`;
+      } else if (index == 1 || index == 2) {
+        // 父母
+        top = `${height / 4 - 100 - 50}px`;
+        left = `${(width / 100) * index * 30 - 200}px`;
+      } else {
+        // 孩子关系
+        let leftChild = this.content.people.length - 3;
+        top = `${(height / 4) * 3 - 80}px`;
+        left = `${(width / (leftChild + 1)) * (index - 2) - 200}px`;
+        console.log(leftChild, index, left);
+      }
+      return {
+        top,
+        left,
+      };
+    },
+    startErrorAnime() {
+      this.isError = true;
+      // 重置显示已有的输入内容为空
+      this.inputID = "";
+      this.placeholder = "不存在此犯人，请重新输入";
+      setTimeout(() => {
+        this.isError = false;
+        this.inputID = "";
+        this.placeholder = "";
+      }, 500);
+    },
+    query() {
+      this.curLevel = -1;
+      axios
+        .post("http://localhost:7078/api/FamilybgCheck", {
+          InputText: this.inputID,
+        })
+        .then((response) => {
+          if (response.data.people.length !== 0) {
+            // 有数据
+            this.content = response.data;
+            this.isGraphContainerVisible = true;
+            this.isError = false;
+          } else {
+            this.startErrorAnime();
+            this.readyToRenderGraph = false;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          this.startErrorAnime();
+        });
+    },
+    changeInputStatus() {
+      if (this.placeholder === "") {
+        this.placeholder = "请输入居民身份证号";
+      } else {
+        this.placeholder = "";
+      }
+    },
+  },
+  mounted() {},
+};
+</script>
+
+<style scoped>
+.queryBox {
+  width: 100%;
+  height: 100px;
+  position: relative;
+  top: 40vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease;
+}
+
+.upBox {
+  transform: translateY(-40vh);
+}
+.container {
+  background: #ffffff;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.inputBox {
+  width: 250px;
+  height: 50px;
+  text-align: center;
+  border-radius: 16px;
+  font-size: 16px;
+  background: #ffffff;
+  padding: 3px;
+}
+.inputBox:focus {
+  outline: none;
+  border: 3px rgba(25, 167, 255, 0.644) solid;
+  box-shadow: 0 0 6px rgba(25, 167, 255, 0.644);
+}
+.inputBox:not(:focus) {
+  outline: none;
+  border: 1px rgba(158, 158, 158, 0.943) solid;
+  box-shadow: 0 0 0px rgba(158, 158, 158, 0.943);
+}
+.inputBox:hover:not(:focus) {
+  outline: none;
+  border: 1px rgba(158, 158, 158, 0.943) solid;
+  box-shadow: 0 0 5px rgba(214, 214, 214, 0.943);
+}
+.button {
+  width: 70px;
+  height: 55px;
+  text-align: center;
+  margin-left: 12px;
+  border-radius: 16px;
+  font-size: 16px;
+  color: #ffffff;
+  background: #00aeff;
+}
+.imgCtrl {
+  width: 400px;
+  height: 160px;
+  position: absolute;
+}
+.graphContainer {
+  width: 100%;
+  /* 高度：填满剩余屏幕 */
+  height: calc(100% - 100px);
+  position: relative; /* 子元素相对于父元素绝对位置 */
+  top: 9px;
+  overflow: hidden;
+}
+
+.imgAnime-enter-active {
+  transition: opacity 0.5s ease, transform 0.5s ease, width 0.5s ease,
+    height 0.5s ease; /* 添加宽度和高度的过渡效果 */
+}
+.imgAnime-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease, width 0.5s ease,
+    height 0.5s ease; /* 添加宽度和高度的过渡效果 */
+}
+.imgAnime-enter {
+  opacity: 0;
+  transform: translateY(100%) scale(0); /* 添加初始的缩放效果 */
+}
+.imgAnime-leave-to {
+  opacity: 0;
+  transform: translateY(100%) scale(0); /* 添加最终的缩放效果 */
+}
+
+/* animation for shaking */
+.errorAnime {
+  outline: none;
+  border: 3px rgba(255, 56, 56, 0.943) solid !important;
+  animation: shake 0.2s infinite;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* animation for info show */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/* 2. 声明进入和离开的状态 */
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01) translate(30px, 0);
+}
+</style>
