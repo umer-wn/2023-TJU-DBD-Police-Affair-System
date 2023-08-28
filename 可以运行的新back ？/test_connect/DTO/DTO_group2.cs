@@ -1,4 +1,4 @@
-namespace web.DTO_group2
+﻿namespace web.DTO_group2
 {
     // all   作用: testController 测试请求
     public class Request
@@ -20,6 +20,7 @@ namespace web.DTO_group2
         public string ID_number { get; set; } = "";
         public string phone_number { get; set; } = "";
         public string gender { get; set; } = "";
+        public string position { get; set; } = "";
 
     }
     //hyh    作用: LoginController里用于接收前端填写的 1.登录账户 2. 登录密码
@@ -67,7 +68,7 @@ namespace web.DTO_group2
 
     public class searchByID
     {
-        public string ID { get; set; } = "";    
+        public string ID { get; set; } = "";
     }
 
     public class salaryInfo
@@ -77,5 +78,4 @@ namespace web.DTO_group2
         public string reward_amount { get; set; } = "";
         public string description { get; set; } = "";
     }
-
 }

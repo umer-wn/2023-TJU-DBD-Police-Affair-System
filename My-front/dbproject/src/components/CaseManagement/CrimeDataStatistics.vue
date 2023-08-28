@@ -1,66 +1,72 @@
 <!-- zyh -->
 <template>
-<el-header class="sub-header"  @mousemove="handleMouseMove">
+  <el-header class="sub-header"  @mousemove="handleMouseMove">
     <div>&nbsp;&nbsp;案件管理&nbsp;>&nbsp;犯罪数据统计</div>
   </el-header>
 
   <div class="main">
-    <h4>案件总数：{{ numCases }}</h4>
+    <el-tabs v-model="anv" class="demo-tabs">
+      <el-tab-pane label="案件状态统计饼图" name="1">
+        <h4>案件总数：{{ numCases }}</h4>
+        <h2 style="text-align: center">案件状态统计饼图</h2>
+        <select v-model="selectedCity1">
+          <option value="全部" selected>全部城市</option>
+          <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
+        </select>
+        <select v-model="selectedYear1">
+          <option selected value="全部">全部年份</option>
+          <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
+        </select>
+        <select v-model="selectedMonth1">
+          <option selected value="全部">全部月份</option>
+          <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
+          </option>
+        </select>
+        <div id="statusPieChart" style="width: 400px; height: 400px; margin-left: auto; margin-right: auto"></div>
+      </el-tab-pane>
 
-    <h2 style="text-align: center">案件状态统计</h2>
-    <select v-model="selectedCity1">
-      <option value="全部" selected>全部城市</option>
-      <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
-    </select>
-    <select v-model="selectedYear1">
-      <option selected value="全部">全部年份</option>
-      <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
-    </select>
-    <select v-model="selectedMonth1">
-      <option selected value="全部">全部月份</option>
-      <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
-      </option>
-    </select>
-    <div id="statusPieChart" style="width: 400px; height: 400px; margin-left: auto; margin-right: auto"></div>
+      <el-tab-pane label="案件类型统计饼图" name="2">
+        <h4>案件总数：{{ numCases }}</h4>
+        <h2 style="text-align: center">案件类型统计饼图</h2>
+        <select v-model="selectedCity2">
+          <option value="全部" selected>全部城市</option>
+          <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
+        </select>
+        <select v-model="selectedYear2">
+          <option selected value="全部">全部年份</option>
+          <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
+        </select>
+        <select v-model="selectedMonth2">
+          <option selected value="全部">全部月份</option>
+          <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
+          </option>
+        </select>
+        <div id="typePieChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
+      </el-tab-pane>
 
-    <h2 style="text-align: center; margin-top: 120px">案件类型统计</h2>
-    <select v-model="selectedCity2">
-      <option value="全部" selected>全部城市</option>
-      <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
-    </select>
-    <select v-model="selectedYear2">
-      <option selected value="全部">全部年份</option>
-      <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
-    </select>
-    <select v-model="selectedMonth2">
-      <option selected value="全部">全部月份</option>
-      <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
-      </option>
-    </select>
-    <div id="typePieChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
+      <el-tab-pane label="案发地区统计直方图" name="3">
+        <h4>案件总数：{{ numCases }}</h4>
+        <div id="zhuChart" style="width: 800px; height: 500px; margin-left: auto; margin-right: auto"></div>
+      </el-tab-pane>
 
-    <h2 style="text-align: center; margin-top: 100px">城市案件统计</h2>
-    <div id="zhuChart" style="width: 800px; height: 500px; margin-left: auto; margin-right: auto"></div>
-    <!-- <div>{{ cityTypeStatistics }}</div> -->
-
-    <h2 style="text-align: center; margin-top: 100px">分时间和城市的案件统计</h2>
-    <select v-model="selectedCity3">
-      <option value="全部" selected>全部城市</option>
-      <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
-    </select>
-    <select v-model="selectedMethod">
-      <option selected value="年份">年份统计</option>
-      <option selected value="月份">月份统计</option>
-    </select>
-    <select v-if="selectedMethod === '月份'" v-model="selectedYear3">
-      <option selected value="全部">全部年份</option>
-      <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
-    </select>
-    <div id="zheChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
-
-
-    <!-- <button @click="getCityDateStatistics">基于城市的时间统计</button> -->
-    <!-- <div>{{ cityDateStatistics }}</div> -->
+      <el-tab-pane label="案件时间统计折线图" name="4">
+        <h4>案件总数：{{ numCases }}</h4>
+        <h2 style="text-align: center">案件时间统计折线图</h2>
+        <select v-model="selectedCity3">
+          <option value="全部" selected>全部城市</option>
+          <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
+        </select>
+        <select v-model="selectedMethod">
+          <option selected value="年份">年份统计</option>
+          <option selected value="月份">月份统计</option>
+        </select>
+        <select v-if="selectedMethod === '月份'" v-model="selectedYear3">
+          <option selected value="全部">全部年份</option>
+          <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
+        </select>
+        <div id="zheChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -71,6 +77,7 @@ import * as echarts from 'echarts';
 export default {
   data() {
     return {
+      anv: "1",
       numCases: 0,
       statusStatistics: "默认",
       typeStatistics: "默认",
@@ -157,6 +164,7 @@ export default {
           trigger: 'item'
         },
         legend: {
+          // orient: 'vertical',
           top: '5%',
           left: 'center'
         },
@@ -529,7 +537,31 @@ export default {
         await this.getCityDateStatistics();
         this.drawZheChart();
       }
-    }
+    },
+    async anv() {
+      if (this.anv == "1") {
+        await this.getStatusCityDateStatistics();
+        this.drawStatusPieChart();
+      }
+      else if (this.anv == "2") {
+        await this.getTypeCityDateStatistics();
+        this.drawTypePieChart();
+      }
+      else if (this.anv == "3") {
+        await this.getCityTypeStatistics();
+        this.drawTypeZhuChart();
+      }
+      else if (this.anv == "4") {
+        await this.getCityDateStatistics();
+        if (this.selectedMethod === "年份") {
+          this.drawZheChart();
+        }
+        else {
+          await this.getCityDateStatistics();
+          this.drawZheChart();
+        }
+      }
+    },
   },
   async created() {
     await this.getCityStatistics();           // 获取城市及其总的案件数，其内接口返回数据形如{"西安":10,"上海":20,...}
@@ -541,16 +573,18 @@ export default {
 
     // 获取案件总数
     this.numCases = this.statusStatistics["立案"] + this.statusStatistics["调查"] + this.statusStatistics["结案"];
-
     this.drawStatusPieChart(); // 画总案件状态圆饼图
-    this.drawTypePieChart(); // 画总案件类型圆饼图
-    this.drawZheChart(); // 画折线图
+    console.log(11111);
+    // this.drawTypePieChart(); // 画总案件类型圆饼图
+    // this.drawZheChart(); // 画折线图
 
     await this.getCityTypeStatistics();
-    this.drawTypeZhuChart();
+    // this.drawTypeZhuChart();
   },
-};
+}
 </script>
+
+
 
 
 

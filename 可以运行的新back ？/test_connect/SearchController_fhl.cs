@@ -40,7 +40,8 @@ public class SearchController_fhl : ControllerBase
                         police_number = reader.GetString(reader.GetOrdinal("police_number")),
                         police_name = reader.GetString(reader.GetOrdinal("police_name")),
                         ID_number = reader.GetString(reader.GetOrdinal("ID_number")),
-                        phone_number = reader.GetString(reader.GetOrdinal("phone_number"))
+                        phone_number = reader.GetString(reader.GetOrdinal("phone_number")),
+                        position = reader.GetString(reader.GetOrdinal("position"))
                     };
                     return Ok(police);
                 }

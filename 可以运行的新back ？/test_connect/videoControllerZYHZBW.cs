@@ -7,7 +7,7 @@ using System.Text;
 
 
 [ApiController]
-[Route("api/videoInfo")]
+[Route("/")]
 public class videoInfoControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
@@ -17,7 +17,7 @@ public class videoInfoControllerZYH : ControllerBase
         _connection = connection;
     }
 
-    [HttpPost]
+    [HttpPost("api/videoInfo")]
     public IActionResult HandleEndpoint(inputVideoInfoZYH inputInfo) //接收前端的数据
     {
         List<videoInfoZYH> videos = new List<videoInfoZYH>();
@@ -87,4 +87,81 @@ public class videoInfoControllerZYH : ControllerBase
             _connection.Close();
         }
     }
+    [HttpPost("api/delvideoinfo")]
+    public IActionResult DeleteVideo(string videoID)
+    {
+        try
+        {
+            _connection.Open();
+
+            using (var command = _connection.CreateCommand())
+            {
+                command.Connection = _connection;
+                command.CommandText = "DELETE FROM VIDEOS WHERE VIDEO_ID = :videoID";
+
+                command.Parameters.Add(":videoID", OracleDbType.Varchar2).Value = videoID;
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    _connection.Close();
+                    return Ok("Video deleted successfully");
+                }
+                else
+                {
+                    _connection.Close();
+                    return NotFound("Video not found");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting video: {ex.Message}");
+            return StatusCode(500, $"Error deleting video: {ex.Message}");
+        }
+        finally
+        {
+            _connection.Close();
+        }
+    }
+    [HttpPost("api/addvideoinfo")]
+    public IActionResult AddVideo(videoInfoZYH newVideo)
+    {
+        try
+        {
+            _connection.Open();
+
+            // Perform validation if needed before adding the video
+
+            using (var command = _connection.CreateCommand())
+            {
+                command.Connection = _connection;
+                command.CommandText = "INSERT INTO VIDEOS (VIDEO_ID, VIDEO_TYPE, RECORD_TIME, UPLOAD_TIME, PRINCIPLE_ID) " +
+                                      "VALUES (:videoID, :videoType, :recordTime, :uploadTime, :principleID)";
+
+                command.Parameters.Add(":videoID", OracleDbType.Varchar2).Value = newVideo.videoID;
+                command.Parameters.Add(":videoType", OracleDbType.Varchar2).Value = newVideo.videoType;
+                command.Parameters.Add(":recordTime", OracleDbType.Date).Value = newVideo.recordTime;
+                command.Parameters.Add(":uploadTime", OracleDbType.Date).Value = newVideo.uploadTime;
+                command.Parameters.Add(":principleID", OracleDbType.Varchar2).Value = newVideo.principleID;
+
+                command.ExecuteNonQuery();
+
+                _connection.Close();
+            }
+
+            return Ok("Video added successfully");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding video: {ex.Message}");
+            return StatusCode(500, $"Error adding video: {ex.Message}");
+        }
+        finally
+        {
+            _connection.Close();
+        }
+    }
+
 }

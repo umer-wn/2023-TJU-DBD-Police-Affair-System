@@ -552,10 +552,63 @@ public class inputVideoInfoZYH
     public string videoType { get; set; }
     public string principleID { get; set; }
 }
+// 赵勃维编写使用
+// equipControllerZBW.cs使用了本类
+// 用于储存后端返回的数据
+public class EquipInfo
+{
+    public string EquipID { get; set; }
+    public string EquipType { get; set; }
+    public string Equipstatus { get; set; }
+    public string Equipstaion { get; set; }
 
-// 赵毅辉编写使用
-// keyIndividualsControllerZYH.cs使用了本类
-// 用于实现查询重点人员的方法
+}
+// 赵勃维编写使用
+// equipControllerZBW.cs使用了本类
+// 用于储存前端传来的数据
+public class inputEquipInfo
+{
+    public string EquipID { get; set; }
+    public string EquipType { get; set; }
+    public string Equipstaion { get; set; }
+}
+// 赵勃维编写使用
+// equipControllerZBW.cs使用了本类
+// 用于储存后端使用部分的数据
+public class EquipuseInfo
+{
+    public string equipID { get; set; }
+    public string equipType { get; set; }
+    public string equipstaion { get; set; }
+    public string policenumber { get; set; }
+    public string borrowtime { get; set; }
+    public string returntime { get; set; }
+}
+// 赵勃维编写使用
+// vehicleControllerZBW.cs使用了本类
+// 用于储存后端使用部分的数据
+public class inputVehicleinfo
+{
+    public string VID { get; set; }
+    public string VTYPE { get; set; }
+    public string VST { get; set; }
+}
+// 赵勃维编写使用
+// vehicleControllerZBW.cs使用了本类
+// 用于储存后端使用部分的数据
+public class Vehicleinfo
+{
+    public string Vehicle_ID { get; set; }
+    public string Vehicle_Type { get; set; }
+    public string Status { get; set; }
+}
+public class Vehicleuseinfo
+{
+    public string VehicleID { get; set; }
+    public string StationID { get; set; }
+    public string borrowtime { get; set; }
+    public string returntime { get; set; }
+}
 
 // 赵毅辉编写使用
 // keyIndividualsControllerZYH.cs使用了本类
@@ -824,4 +877,3 @@ public class keyIndividualsZYH
     }
 
 }
-

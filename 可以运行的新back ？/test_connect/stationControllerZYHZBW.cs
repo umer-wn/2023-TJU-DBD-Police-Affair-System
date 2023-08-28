@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.Text;
 
 [ApiController]
-[Route("api/stationInfo")]
+[Route("/")]
 public class StationInfoControllerZYH : ControllerBase
 {
     private OracleConnection _connection;
@@ -15,7 +15,7 @@ public class StationInfoControllerZYH : ControllerBase
         _connection = connection;
     }
 
-    [HttpPost]
+    [HttpPost("api/stationInfo")]
     public IActionResult HandleEndpoint(StationInfoZYH inputStation)
     {
         List<StationInfoZYH> stations = new List<StationInfoZYH>();
@@ -90,6 +90,102 @@ public class StationInfoControllerZYH : ControllerBase
         {
             Console.WriteLine($"查询数据时发生错误:{ex.Message}");
             return StatusCode(499, $"查询数据时发生错误: {ex.Message}");
+        }
+        finally
+        {
+            _connection.Close();
+        }
+    }
+    [HttpPost("api/addStationInfo")]
+    public IActionResult AddStation(StationInfoZYH newStation)
+    {
+        try
+        {
+            _connection.Open();
+
+            // Check if the station with the given ID already exists
+            using (var checkCommand = _connection.CreateCommand())
+            {
+                checkCommand.Connection = _connection;
+                checkCommand.CommandText = "SELECT COUNT(*) FROM police_station WHERE station_ID = :stationID";
+                checkCommand.Parameters.Add(":stationID", OracleDbType.Varchar2).Value = newStation.stationID;
+
+                int existingStationCount = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                if (existingStationCount > 0)
+                {
+                    return StatusCode(400, $"Station with ID {newStation.stationID} already exists.");
+                }
+            }
+
+            // Insert the new station into the database
+            using (var insertCommand = _connection.CreateCommand())
+            {
+                insertCommand.Connection = _connection;
+                insertCommand.CommandText = "INSERT INTO police_station (station_ID, station_Name, city, address, budget) " +
+                    "VALUES (:stationID, :stationName, :city, :address, :budget)";
+
+                insertCommand.Parameters.Add(":stationID", OracleDbType.Varchar2).Value = newStation.stationID;
+                insertCommand.Parameters.Add(":stationName", OracleDbType.Varchar2).Value = newStation.stationName;
+                insertCommand.Parameters.Add(":city", OracleDbType.Varchar2).Value = newStation.city;
+                insertCommand.Parameters.Add(":address", OracleDbType.Varchar2).Value = newStation.address;
+                insertCommand.Parameters.Add(":budget", OracleDbType.Int32).Value = newStation.budget;
+
+                insertCommand.ExecuteNonQuery();
+            }
+
+            _connection.Close();
+            return Ok($"Station with ID {newStation.stationID} has been added.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding station: {ex.Message}");
+            return StatusCode(500, $"Error adding station: {ex.Message}");
+        }
+        finally
+        {
+            _connection.Close();
+        }
+    }
+    [HttpPost("api/delStationInfo")]
+    public IActionResult DeleteStation(StationInfoZYH stationToDelete)
+    {
+        try
+        {
+            _connection.Open();
+
+            // Check if the station with the given ID exists
+            using (var checkCommand = _connection.CreateCommand())
+            {
+                checkCommand.Connection = _connection;
+                checkCommand.CommandText = "SELECT COUNT(*) FROM police_station WHERE station_ID = :stationID";
+                checkCommand.Parameters.Add(":stationID", OracleDbType.Varchar2).Value = stationToDelete.stationID;
+
+                int existingStationCount = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                if (existingStationCount == 0)
+                {
+                    return StatusCode(400, $"Station with ID {stationToDelete.stationID} does not exist.");
+                }
+            }
+
+            // Delete the station from the database
+            using (var deleteCommand = _connection.CreateCommand())
+            {
+                deleteCommand.Connection = _connection;
+                deleteCommand.CommandText = "DELETE FROM police_station WHERE station_ID = :stationID";
+                deleteCommand.Parameters.Add(":stationID", OracleDbType.Varchar2).Value = stationToDelete.stationID;
+
+                deleteCommand.ExecuteNonQuery();
+            }
+
+            _connection.Close();
+            return Ok($"Station with ID {stationToDelete.stationID} has been deleted.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting station: {ex.Message}");
+            return StatusCode(500, $"Error deleting station: {ex.Message}");
         }
         finally
         {
