@@ -133,6 +133,7 @@ export default {
   }
 
 .main {
+  margin-top:10vh;
   display: flex;
   justify-content: center;
   align-content: center;

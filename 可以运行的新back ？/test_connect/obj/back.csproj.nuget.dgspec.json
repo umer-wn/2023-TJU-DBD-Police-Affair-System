@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\96172\\Desktop\\可以运行的新back ？\\test_connect\\back.csproj": {}
+    "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\可以运行的新back ？\\test_connect\\back.csproj": {}
   },
   "projects": {
-    "C:\\Users\\96172\\Desktop\\可以运行的新back ？\\test_connect\\back.csproj": {
+    "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\可以运行的新back ？\\test_connect\\back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\96172\\Desktop\\可以运行的新back ？\\test_connect\\back.csproj",
+        "projectUniqueName": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\可以运行的新back ？\\test_connect\\back.csproj",
         "projectName": "back",
-        "projectPath": "C:\\Users\\96172\\Desktop\\可以运行的新back ？\\test_connect\\back.csproj",
+        "projectPath": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\可以运行的新back ？\\test_connect\\back.csproj",
         "packagesPath": "C:\\Users\\96172\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\96172\\Desktop\\可以运行的新back ？\\test_connect\\obj\\",
+        "outputPath": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\可以运行的新back ？\\test_connect\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\96172\\AppData\\Roaming\\NuGet\\NuGet.Config",
