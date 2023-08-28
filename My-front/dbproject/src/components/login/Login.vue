@@ -81,6 +81,7 @@
 <script>
 import axios from "axios";
 import SIdentify from "./Identify.vue";
+import jwt_decode from 'jwt-decode';
 
 export default {
   components: {
@@ -184,6 +185,10 @@ export default {
             //     username: this.username,
             //   },
             // });
+            const police_number = jwt_decode(token)['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+            const authority = jwt_decode(token)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            localStorage.setItem('policeNumber', police_number);
+            localStorage.setItem('authority', authority);
             this.$router.push('/mainMenu');
           } else {
             // 登录失败，显示错误提示

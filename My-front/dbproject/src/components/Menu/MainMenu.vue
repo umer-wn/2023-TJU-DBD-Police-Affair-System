@@ -39,11 +39,24 @@
         <el-menu
           router
           class="el-menu-vertical-demo"
-          default-active="/mainMenu/Register"
+          default-active="/mainMenu/MainPage"
           background-color="transparent"
           text-color="#ffffff"
           active-text-color="#ffd04b"
         >
+
+
+<el-menu-item v-if="myAuthority >= 0" index="/mainMenu/MainPage"  @click="scrollToTop">
+              <img
+                class="nav-icon-for-menu-item"
+                src="../../assets/logos/MainPage.png"
+                alt="Icon"
+              />
+              &nbsp;主&nbsp;页
+            </el-menu-item>
+
+
+
           <el-sub-menu index="1-1">
             <!-- 警员管理 -->
             <template #title>
@@ -56,15 +69,15 @@
                 警员管理</span
               >
             </template>
-            <el-menu-item index="/mainMenu/Register"  @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 1" index="/mainMenu/Register"  @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/Register.png"
                 alt="Icon"
               />
-              注册
+              注&nbsp;册
             </el-menu-item>
-            <el-menu-item index="/mainMenu/ChangePermission" @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 2" index="/mainMenu/ChangePermission" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/ChangePermission.png"
@@ -72,7 +85,7 @@
               />
               警员权限修改
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PoliceAssessment" @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 1" index="/mainMenu/PoliceAssessment" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PoliceAssessment.png"
@@ -80,7 +93,7 @@
               />
               警员考核管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PoliceStationInfoManagement" @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 4" index="/mainMenu/PoliceStationInfoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PoliceStationInfoManagement.png"
@@ -88,7 +101,7 @@
               />
               警局信息管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PoliceOfficerInfoManagement" @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 0" index="/mainMenu/PoliceOfficerInfoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PoliceOfficerInfoManagement.png"
@@ -96,7 +109,7 @@
               />
               警员信息管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/AttendanceManagement" @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 1" index="/mainMenu/AttendanceManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/AttendanceManagement.png"
@@ -104,7 +117,7 @@
               />
               警员出勤管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/VideoManagement" @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 1" index="/mainMenu/VideoManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/VideoManagement.png"
@@ -112,7 +125,7 @@
               />
               执法录像管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/AlarmResponseRecordManagement" @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 1" index="/mainMenu/AlarmResponseRecordManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/AlarmResponseRecordManagement.png"
@@ -120,7 +133,7 @@
               />
               接警记录管理
             </el-menu-item>
-            <el-menu-item index="/mainMenu/PayrollManagement" @click="scrollToTop">
+            <el-menu-item v-if="myAuthority >= 4" index="/mainMenu/PayrollManagement" @click="scrollToTop">
               <img
                 class="nav-icon-for-menu-item"
                 src="../../assets/logos/PayrollManagement.png"
@@ -131,7 +144,7 @@
           </el-sub-menu>
 
           <!-- 案件管理 -->
-          <el-sub-menu index="1-2">
+          <el-sub-menu v-if="myAuthority >= 1" index="1-2">
             <template #title>
               <span>
                 <img
@@ -201,7 +214,7 @@
           </el-sub-menu>
 
           <!-- 装备管理 -->
-          <el-sub-menu index="1-3">
+          <el-sub-menu v-if="myAuthority >= 1" index="1-3">
             <template #title>
               <img
                 class="nav-icon-for-menu-item"
@@ -230,7 +243,7 @@
 
           <!-- 城区和居民管理 -->
 
-          <el-sub-menu index="1-4">
+          <el-sub-menu v-if="myAuthority >= 1" index="1-4">
             <template #title>
               <img
                 class="nav-icon-for-menu-item"
@@ -274,7 +287,7 @@
             </el-menu-item>
           </el-sub-menu>
 
-          <el-menu-item index="/mainMenu/DataQualityManagement" @click="scrollToTop">
+          <el-menu-item v-if="myAuthority >= 1" index="/mainMenu/DataQualityManagement" @click="scrollToTop">
             <img
               class="nav-icon-for-menu-item"
               src="../../assets/logos/DataQualityManagement.png"
@@ -282,7 +295,7 @@
             />
             数据质量管理
           </el-menu-item>
-          <el-menu-item index="/mainMenu/CaseInvestigation" @click="scrollToTop">
+          <el-menu-item v-if="myAuthority >= 1" index="/mainMenu/CaseInvestigation" @click="scrollToTop">
             <img
               class="nav-icon-for-menu-item"
               src="../../assets/logos/CaseInvestigation.png"
@@ -293,7 +306,7 @@
 
           <!-- 系统日志 -->
 
-          <el-menu-item index="/mainMenu/SystemLogManagement" @click="scrollToTop">
+          <el-menu-item v-if="myAuthority >= 1" index="/mainMenu/SystemLogManagement" @click="scrollToTop">
             <img
               class="nav-icon-for-menu-item"
               src="../../assets/logos/SystemLogManagement.png"
@@ -327,6 +340,7 @@
 <script lang="js" setup>
 import { ref } from "vue";
 
+
 const containerHeight= ref(1500) // 初始化容器高度
 const minHeight= ref(1500) // 最小高度
 const maxScrollHeight= ref(3000) // 最大滚动高度，控制界面的延伸
@@ -336,6 +350,9 @@ const drawer2 = ref(false);
 const direction = ref("rtl");
 const username = ref("1234567");
 const password = ref("44554");
+
+const myPoliceNumber = localStorage.getItem('policeNumber');
+const myAuthority = localStorage.getItem('authority');
 
 
 function handleScroll(event) {

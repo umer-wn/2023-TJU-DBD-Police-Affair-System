@@ -22,9 +22,14 @@ const routes = [
     {
         path: '/mainMenu',
         component: () => import('../components/Menu/MainMenu.vue'),
-        redirect: '/mainMenu/Register',
+        redirect: '/mainMenu/MainPage',
         
         children: [
+            {
+                path: 'MainPage',
+                component: () => import('../components/Menu/MainPage.vue')
+
+            },
             {
                 path: 'Register',
                 component: () => import('../components/PoliceManagement/MyRegister.vue')

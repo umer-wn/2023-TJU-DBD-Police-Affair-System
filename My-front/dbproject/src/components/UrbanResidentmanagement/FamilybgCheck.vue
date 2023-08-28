@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-header class="sub-header" v-if="showHeader">
+    <el-header class="sub-header" v-if="showHeader" @mousemove="handleMouseMove">
       <div>&nbsp;&nbsp;城区和居民管理&nbsp;>&nbsp;家族背景调查</div>
     </el-header>
     <!-- main window -->
@@ -83,6 +83,13 @@ export default {
     },
   },
   methods: {
+    handleMouseMove(event) {
+      const x = event.pageX - event.target.offsetLeft;
+      const y = event.pageY - event.target.offsetTop;
+
+      event.target.style.setProperty("--x", `${x}px`);
+      event.target.style.setProperty("--y", `${y}px`);
+    },
     getPos(index) {
       let width = this.$el.offsetWidth;
       let height = this.$el.offsetHeight;
@@ -156,21 +163,37 @@ export default {
 </script>
 
 <style scoped>
+
 .sub-header {
-  overflow: hidden;
-  display: flex;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 7vh;
-  min-height: 40px;
-  align-items: center; /* 文字竖直方向居中对齐 */
-  background-color: #f2dccacf;
-  color: #000;
-  font-size: 30px;
-  font-weight: bold;
-}
+    overflow: hidden;
+    display: flex;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 7vh;
+    min-height: 40px;
+    align-items: center; /* 文字竖直方向居中对齐 */
+    background-color: #1f2cdf;
+    box-shadow: inset -500px 0px 200px 0px rgba(4, 0, 113, 0.856);
+    color: #ffffff;
+    font-size: 28px;
+  }
+  .sub-header::before {
+    --size: 0;
+    content: '';
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--size);
+    height: var(--size);
+    background: radial-gradient(circle closest-side, #5a65ff, transparent);
+    transform: translate(-100%, -50%);
+    transition: width .2s ease, height .2s ease;
+  }
+  .sub-header:hover::before {
+    --size: 400px;
+  }
 .queryBox {
   width: 100%;
   height: 100px;

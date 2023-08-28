@@ -1,7 +1,8 @@
 <template>
-<el-header class="sub-header">
+<el-header class="sub-header"  @mousemove="handleMouseMove">
     <div>&nbsp;&nbsp;案件管理&nbsp;>&nbsp;重点人员统计</div>
   </el-header>
+
 <div class="main">
   <el-page-header class="headText" :icon="ArrowLeft" title="返回" @back="goBack">
     <template #content>
@@ -10,7 +11,7 @@
   </el-page-header>
 
   <!-- 表格 -->
-  <el-table v-if="!isDetail" :data="repeatOffenderInfo" stripe style="width: 100%">
+  <el-table v-if="!isDetail" :data="repeatOffenderInfo" height="450" @wheel.passive.stop stripe style="width: 100%">
     <el-table-column label="身份证号码" prop="身份证号" />
     <el-table-column label="姓名" prop="姓名" />
     <el-table-column label="性别" prop="性别" />
@@ -73,6 +74,13 @@ export default {
     };
   },
   methods: {
+     handleMouseMove(event) {
+      const x = event.pageX - event.target.offsetLeft;
+      const y = event.pageY - event.target.offsetTop;
+
+      event.target.style.setProperty("--x", `${x}px`);
+      event.target.style.setProperty("--y", `${y}px`);
+    },
     async getRepeatOffenderInfo() {
       try {
         const response = await axios.get("http://localhost:7078/api/keyIndividualsStatistics/repeatOffenderInfoStatistics");
@@ -137,21 +145,36 @@ export default {
 </script>
 
 <style>
-.sub-header {
-  overflow: hidden;
-  display: flex;
-  position: absolute;
-  top: 70px;
-  left: 199px;
-  width: calc(100% - 199px);
-  height: 7vh;
-  min-height: 40px;
-  align-items: center; /* 文字竖直方向居中对齐 */
- background-color: #f2dccacf;
-  color: #000;
-  font-size: 30px;
-  font-weight: bold;
-}
+ .sub-header {
+    overflow: hidden;
+    display: flex;
+    position: absolute;
+    top: 70px;
+    left: 199px;
+    width: calc(100% - 199px);
+    height: 7vh;
+    min-height: 40px;
+    align-items: center; /* 文字竖直方向居中对齐 */
+    background-color: #1f2cdf;
+    box-shadow: inset -500px 0px 200px 0px rgba(4, 0, 113, 0.856);
+    color: #ffffff;
+    font-size: 28px;
+  }
+  .sub-header::before {
+    --size: 0;
+    content: '';
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--size);
+    height: var(--size);
+    background: radial-gradient(circle closest-side, #5a65ff, transparent);
+    transform: translate(-50%, -50%);
+    transition: width .2s ease, height .2s ease;
+  }
+  .sub-header:hover::before {
+    --size: 400px;
+  }
 .main
 {
   margin-top:10vh;

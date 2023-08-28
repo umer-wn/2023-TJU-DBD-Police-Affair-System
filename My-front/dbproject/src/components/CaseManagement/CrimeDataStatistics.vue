@@ -1,6 +1,6 @@
 <!-- zyh -->
 <template>
-<el-header class="sub-header">
+<el-header class="sub-header"  @mousemove="handleMouseMove">
     <div>&nbsp;&nbsp;案件管理&nbsp;>&nbsp;犯罪数据统计</div>
   </el-header>
 
@@ -10,9 +10,7 @@
     <h2 style="text-align: center">案件状态统计</h2>
     <select v-model="selectedCity1">
       <option value="全部" selected>全部城市</option>
-      <option v-for="city in cityName" :value="city" :key="city">
-        {{ city }}
-      </option>
+      <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
     </select>
     <select v-model="selectedYear1">
       <option selected value="全部">全部年份</option>
@@ -20,38 +18,15 @@
     </select>
     <select v-model="selectedMonth1">
       <option selected value="全部">全部月份</option>
-      <option
-        v-for="i in [
-          '1',
-          '2',
-          '3',
-          '4',
-          '5',
-          '6',
-          '7',
-          '8',
-          '9',
-          '10',
-          '11',
-          '12',
-        ]"
-        :value="i"
-        :key="i"
-      >
-        {{ i }}
+      <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
       </option>
     </select>
-    <div
-      id="statusPieChart"
-      style="width: 400px; height: 400px; margin-left: auto; margin-right: auto"
-    ></div>
+    <div id="statusPieChart" style="width: 400px; height: 400px; margin-left: auto; margin-right: auto"></div>
 
-    <h2 style="text-align: center">案件类型统计</h2>
+    <h2 style="text-align: center; margin-top: 120px">案件类型统计</h2>
     <select v-model="selectedCity2">
       <option value="全部" selected>全部城市</option>
-      <option v-for="city in cityName" :value="city" :key="city">
-        {{ city }}
-      </option>
+      <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
     </select>
     <select v-model="selectedYear2">
       <option selected value="全部">全部年份</option>
@@ -59,57 +34,19 @@
     </select>
     <select v-model="selectedMonth2">
       <option selected value="全部">全部月份</option>
-      <option
-        v-for="i in [
-          '1',
-          '2',
-          '3',
-          '4',
-          '5',
-          '6',
-          '7',
-          '8',
-          '9',
-          '10',
-          '11',
-          '12',
-        ]"
-        :value="i"
-        :key="i"
-      >
-        {{ i }}
+      <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
       </option>
     </select>
-    <div
-      id="typePieChart"
-      style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"
-    ></div>
+    <div id="typePieChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
 
-    <h2 style="text-align: center">城市案件统计</h2>
-    <table
-      border="1px solid black"
-      style="margin-left: auto; margin-right: auto; text-align: center"
-    >
-      <thead>
-        <tr>
-          <th>城市</th>
-          <th>数量</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(count_, city_) in cityStatistics" :key="city_">
-          <td>{{ city_ }}</td>
-          <td>{{ count_ }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2 style="text-align: center; margin-top: 100px">城市案件统计</h2>
+    <div id="zhuChart" style="width: 800px; height: 500px; margin-left: auto; margin-right: auto"></div>
+    <!-- <div>{{ cityTypeStatistics }}</div> -->
 
-    <h2 style="text-align: center">分时间和城市的案件统计</h2>
+    <h2 style="text-align: center; margin-top: 100px">分时间和城市的案件统计</h2>
     <select v-model="selectedCity3">
       <option value="全部" selected>全部城市</option>
-      <option v-for="city in cityName" :value="city" :key="city">
-        {{ city }}
-      </option>
+      <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
     </select>
     <select v-model="selectedMethod">
       <option selected value="年份">年份统计</option>
@@ -119,10 +56,8 @@
       <option selected value="全部">全部年份</option>
       <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
     </select>
-    <div
-      id="zheChart"
-      style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"
-    ></div>
+    <div id="zheChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
+
 
     <!-- <button @click="getCityDateStatistics">基于城市的时间统计</button> -->
     <!-- <div>{{ cityDateStatistics }}</div> -->
@@ -130,8 +65,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import * as echarts from "echarts";
+import axios from 'axios';
+import * as echarts from 'echarts';
 
 export default {
   data() {
@@ -140,6 +75,8 @@ export default {
       statusStatistics: "默认",
       typeStatistics: "默认",
       cityStatistics: "默认",
+      cityTypeStatistics: "默认",
+      cityYearStatistics: "默认",
       cityName: "默认",
       selectedCity1: "全部",
       selectedYear1: "全部",
@@ -155,11 +92,16 @@ export default {
     };
   },
   methods: {
+    handleMouseMove(event) {
+      const x = event.pageX - event.target.offsetLeft;
+      const y = event.pageY - event.target.offsetTop;
+
+      event.target.style.setProperty("--x", `${x}px`);
+      event.target.style.setProperty("--y", `${y}px`);
+    },
     async getCityStatistics() {
       try {
-        const response = await axios.get(
-          "http://localhost:7078/api/crimeDataStatistics/caseCityStatistics"
-        );
+        const response = await axios.get("http://localhost:7078/api/crimeDataStatistics/caseCityStatistics");
         this.cityStatistics = response.data;
       } catch (error) {
         // 请求失败时的处理逻辑
@@ -169,10 +111,7 @@ export default {
     },
     async getCityDateStatistics() {
       try {
-        const response = await axios.get(
-          "http://localhost:7078/api/crimeDataStatistics/cityDateStatistics",
-          { params: { city: this.selectedCity3 } }
-        );
+        const response = await axios.get("http://localhost:7078/api/crimeDataStatistics/cityDateStatistics", { params: { city: this.selectedCity3 } });
         this.cityDateStatistics = response.data;
       } catch (error) {
         // 请求失败时的处理逻辑
@@ -182,13 +121,7 @@ export default {
     },
     async getStatusCityDateStatistics() {
       try {
-        const response = await axios.get(
-          `http://localhost:7078/api/crimeDataStatistics/statusCityDateStatistics?city=${encodeURIComponent(
-            this.selectedCity1
-          )}&year=${encodeURIComponent(
-            this.selectedYear1
-          )}&month=${encodeURIComponent(this.selectedMonth1)}`
-        );
+        const response = await axios.get(`http://localhost:7078/api/crimeDataStatistics/statusCityDateStatistics?city=${encodeURIComponent(this.selectedCity1)}&year=${encodeURIComponent(this.selectedYear1)}&month=${encodeURIComponent(this.selectedMonth1)}`);
         this.statusStatistics = response.data;
       } catch (error) {
         // 请求失败时的处理逻辑
@@ -196,15 +129,19 @@ export default {
         console.log("getStatusCityDateStatistics出错！");
       }
     },
+    async getCityTypeStatistics() {
+      try {
+        const response = await axios.get("http://localhost:7078/api/crimeDataStatistics/cityTypeStatistics");
+        this.cityTypeStatistics = response.data;
+      } catch (error) {
+        // 请求失败时的处理逻辑
+        alert(error);
+        console.log("getCityTypeStatistics出错！");
+      }
+    },
     async getTypeCityDateStatistics() {
       try {
-        const response = await axios.get(
-          `http://localhost:7078/api/crimeDataStatistics/typeCityDateStatistics?city=${encodeURIComponent(
-            this.selectedCity2
-          )}&year=${encodeURIComponent(
-            this.selectedYear2
-          )}&month=${encodeURIComponent(this.selectedMonth2)}`
-        );
+        const response = await axios.get(`http://localhost:7078/api/crimeDataStatistics/typeCityDateStatistics?city=${encodeURIComponent(this.selectedCity2)}&year=${encodeURIComponent(this.selectedYear2)}&month=${encodeURIComponent(this.selectedMonth2)}`);
         this.typeStatistics = response.data;
       } catch (error) {
         // 请求失败时的处理逻辑
@@ -213,98 +150,98 @@ export default {
       }
     },
     drawStatusPieChart() {
-      const pieChart = echarts.init(document.getElementById("statusPieChart"));
+      const pieChart = echarts.init(document.getElementById('statusPieChart'));
 
       const option = {
         tooltip: {
-          trigger: "item",
+          trigger: 'item'
         },
         legend: {
-          top: "5%",
-          left: "center",
+          top: '5%',
+          left: 'center'
         },
         series: [
           {
-            name: "Access From",
-            type: "pie",
-            radius: ["40%", "70%"],
+            name: 'Access From',
+            type: 'pie',
+            radius: ['40%', '70%'],
             avoidLabelOverlap: false,
             itemStyle: {
               borderRadius: 10,
-              borderColor: "#fff",
-              borderWidth: 2,
+              borderColor: '#fff',
+              borderWidth: 2
             },
             label: {
               show: false,
-              position: "center",
+              position: 'center'
             },
             emphasis: {
               label: {
                 show: true,
                 fontSize: 20,
-                fontWeight: "bold",
-              },
+                fontWeight: 'bold'
+              }
             },
             labelLine: {
-              show: false,
+              show: false
             },
             data: [
-              { value: this.statusStatistics["立案"], name: "立案" },
-              { value: this.statusStatistics["调查"], name: "调查" },
-              { value: this.statusStatistics["结案"], name: "结案" },
-            ],
-          },
-        ],
+              { value: this.statusStatistics['立案'], name: '立案' },
+              { value: this.statusStatistics['调查'], name: '调查' },
+              { value: this.statusStatistics['结案'], name: '结案' }
+            ]
+          }
+        ]
       };
 
       option && pieChart.setOption(option);
     },
     drawTypePieChart() {
-      const pieChart = echarts.init(document.getElementById("typePieChart"));
+      const pieChart = echarts.init(document.getElementById('typePieChart'));
 
       const option = {
         tooltip: {
-          trigger: "item",
+          trigger: 'item'
         },
         legend: {
-          top: "5%",
-          left: "center",
+          top: '5%',
+          left: 'center'
         },
         series: [
           {
-            name: "Access From",
-            type: "pie",
-            radius: ["40%", "70%"],
+            name: 'Access From',
+            type: 'pie',
+            radius: ['40%', '70%'],
             avoidLabelOverlap: false,
             itemStyle: {
               borderRadius: 10,
-              borderColor: "#fff",
-              borderWidth: 2,
+              borderColor: '#fff',
+              borderWidth: 2
             },
             label: {
               show: false,
-              position: "center",
+              position: 'center'
             },
             emphasis: {
               label: {
                 show: true,
                 fontSize: 20,
-                fontWeight: "bold",
-              },
+                fontWeight: 'bold'
+              }
             },
             labelLine: {
-              show: false,
+              show: false
             },
             data: [
-              { value: this.typeStatistics["强奸"], name: "强奸" },
-              { value: this.typeStatistics["抢劫"], name: "抢劫" },
-              { value: this.typeStatistics["故意伤害"], name: "故意伤害" },
-              { value: this.typeStatistics["盗窃"], name: "盗窃" },
-              { value: this.typeStatistics["诈骗"], name: "诈骗" },
-              { value: this.typeStatistics["谋杀"], name: "谋杀" },
-            ],
-          },
-        ],
+              { value: this.typeStatistics['强奸'], name: '强奸' },
+              { value: this.typeStatistics['抢劫'], name: '抢劫' },
+              { value: this.typeStatistics['故意伤害'], name: '故意伤害' },
+              { value: this.typeStatistics['盗窃'], name: '盗窃' },
+              { value: this.typeStatistics['诈骗'], name: '诈骗' },
+              { value: this.typeStatistics['谋杀'], name: '谋杀' }
+            ]
+          }
+        ]
       };
 
       option && pieChart.setOption(option);
@@ -320,78 +257,57 @@ export default {
       }
       result = Object.values(result); // result: [6, 6, 7, 4, 5, 4, 78]
 
-      const zheChart = echarts.init(document.getElementById("zheChart"));
+      const zheChart = echarts.init(document.getElementById('zheChart'));
 
       const option = {
         xAxis: {
-          type: "category",
-          data: this.years,
+          type: 'category',
+          data: this.years
         },
         yAxis: {
-          type: "value",
+          type: 'value'
         },
         series: [
           {
             data: result,
-            type: "line",
-          },
-        ],
+            type: 'line'
+          }
+        ]
       };
 
       option && zheChart.setOption(option);
     },
     drawMonthZheChart() {
-      const zheChart = echarts.init(document.getElementById("zheChart"));
+      const zheChart = echarts.init(document.getElementById('zheChart'));
       var option;
 
       if (this.selectedYear3 !== "全部") {
+
         option = {
           xAxis: {
-            type: "category",
-            data: [
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec",
-            ],
+            type: 'category',
+            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
           },
           yAxis: {
-            type: "value",
+            type: 'value'
           },
           series: [
             {
-              data: [
-                this.cityDateStatistics[this.selectedYear3]["1"],
-                this.cityDateStatistics[this.selectedYear3]["2"],
-                this.cityDateStatistics[this.selectedYear3]["3"],
-                this.cityDateStatistics[this.selectedYear3]["4"],
-                this.cityDateStatistics[this.selectedYear3]["5"],
-                this.cityDateStatistics[this.selectedYear3]["6"],
-                this.cityDateStatistics[this.selectedYear3]["7"],
-                this.cityDateStatistics[this.selectedYear3]["8"],
-                this.cityDateStatistics[this.selectedYear3]["9"],
-                this.cityDateStatistics[this.selectedYear3]["10"],
-                this.cityDateStatistics[this.selectedYear3]["11"],
-                this.cityDateStatistics[this.selectedYear3]["12"],
-              ],
-              type: "line",
-            },
-          ],
+              data: [this.cityDateStatistics[this.selectedYear3]["1"], this.cityDateStatistics[this.selectedYear3]["2"],
+              this.cityDateStatistics[this.selectedYear3]["3"], this.cityDateStatistics[this.selectedYear3]["4"],
+              this.cityDateStatistics[this.selectedYear3]["5"], this.cityDateStatistics[this.selectedYear3]["6"],
+              this.cityDateStatistics[this.selectedYear3]["7"], this.cityDateStatistics[this.selectedYear3]["8"],
+              this.cityDateStatistics[this.selectedYear3]["9"], this.cityDateStatistics[this.selectedYear3]["10"],
+              this.cityDateStatistics[this.selectedYear3]["11"], this.cityDateStatistics[this.selectedYear3]["12"]],
+              type: 'line'
+            }
+          ]
         };
-      } else {
+      }
+      else {
         var result = {}; // 保存结果的对象
 
-        for (const [year, yearData] of Object.entries(
-          this.cityDateStatistics
-        )) {
+        for (const [year, yearData] of Object.entries(this.cityDateStatistics)) {
           year; // 为了取消year未使用的报错
           for (const [month, value] of Object.entries(yearData)) {
             if (!result[month]) {
@@ -405,44 +321,23 @@ export default {
 
         option = {
           xAxis: {
-            type: "category",
-            data: [
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec",
-            ],
+            type: 'category',
+            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
           },
           yAxis: {
-            type: "value",
+            type: 'value'
           },
           series: [
             {
-              data: [
-                result["1"],
-                result["2"],
-                result["3"],
-                result["4"],
-                result["5"],
-                result["6"],
-                result["7"],
-                result["8"],
-                result["9"],
-                result["10"],
-                result["11"],
-                result["12"],
-              ],
-              type: "line",
-            },
-          ],
+              data: [result["1"], result["2"],
+              result["3"], result["4"],
+              result["5"], result["6"],
+              result["7"], result["8"],
+              result["9"], result["10"],
+              result["11"], result["12"]],
+              type: 'line'
+            }
+          ]
         };
       }
 
@@ -451,9 +346,147 @@ export default {
     drawZheChart() {
       if (this.selectedMethod === "年份") {
         this.drawYearZheChart();
-      } else {
+      }
+      else {
         this.drawMonthZheChart();
       }
+    },
+    drawTypeZhuChart() {
+      var cityType = {
+        numRape: [],
+        numRobbery: [],
+        numInjury: [],
+        numTheft: [],
+        numFraud: [],
+        numMurder: []
+      };
+      for (const city in this.cityTypeStatistics) {
+        if (Object.prototype.hasOwnProperty.call(this.cityTypeStatistics, city)) {
+          const crimeCounts = this.cityTypeStatistics[city];
+          // 将对应的值添加到转换后的对象中的数组中
+          cityType.numRape.push(crimeCounts[0]);
+          cityType.numRobbery.push(crimeCounts[1]);
+          cityType.numInjury.push(crimeCounts[2]);
+          cityType.numTheft.push(crimeCounts[3]);
+          cityType.numFraud.push(crimeCounts[4]);
+          cityType.numMurder.push(crimeCounts[5]);
+        }
+      }
+
+      const values = Object.values(this.cityTypeStatistics);
+      const flattenedValues = values.reduce((acc, val) => acc.concat(val), []);
+      var max = Math.max(...flattenedValues);
+
+      // console.log(cityType);
+      const zhuChart = echarts.init(document.getElementById('zhuChart'));
+
+      const option = {
+        title: {
+          text: '城市案件统计直方图'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['强奸', '抢劫', '故意伤害', '盗窃', '诈骗', '谋杀']
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        calculable: true,
+        dataZoom: [
+          //1.横向使用滚动条
+          {
+            type: 'slider',//有单独的滑动条，用户在滑动条上进行缩放或漫游。inside是直接可以是在内部拖动显示
+            show: false,//是否显示 组件。如果设置为 false，不会显示，但是数据过滤的功能还存在。
+            start: 0,//数据窗口范围的起始百分比0-100
+            end: 50,//数据窗口范围的结束百分比0-100
+            xAxisIndex: [0],// 此处表示控制第一个xAxis，设置 dataZoom-slider 组件控制的 x轴 可是已数组[0,2]表示控制第一，三个；xAxisIndex: 2 ，表示控制第二个。yAxisIndex属性同理
+          },
+          //2.在内部可以横向拖动
+          {
+            type: 'inside',// 内置于坐标系中
+            start: 0,
+            end: 30,
+            xAxisIndex: [0],
+            zoomOnMouseWheel: false, // 关闭滚轮缩放
+            moveOnMouseWheel: true,
+            moveOnMouseMove: false,
+          }
+        ],
+        xAxis: [
+          {
+            type: 'category',
+            // prettier-ignore
+            data: Object.keys(this.cityTypeStatistics)
+          }
+        ],
+        yAxis: [
+          {
+            max: max,
+            min: 0,
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '强奸',
+            type: 'bar',
+            data: cityType.numRape,
+            barWidth: '10%'
+            // barCategoryGap: '33%',
+            // barGap: '30%',
+          },
+          {
+            name: '抢劫',
+            type: 'bar',
+            data: cityType.numRobbery,
+            barWidth: '10%'
+            // barCategoryGap: '33%',
+            // barGap: '30%',
+          },
+          {
+            name: '故意伤害',
+            type: 'bar',
+            data: cityType.numInjury,
+            barWidth: '10%'
+            // barCategoryGap: '33%',
+            // barGap: '30%',
+          },
+          {
+            name: '盗窃',
+            type: 'bar',
+            data: cityType.numTheft,
+            barWidth: '10%'
+            // barCategoryGap: '33%',
+            // barGap: '30%',
+          },
+          {
+            name: '诈骗',
+            type: 'bar',
+            data: cityType.numFraud,
+            barWidth: '10%'
+            // barCategoryGap: '33%',
+            // barGap: '30%',
+          },
+          {
+            name: '谋杀',
+            type: 'bar',
+            data: cityType.numMurder,
+            barWidth: '10%'
+            // barCategoryGap: '33%',
+            // barGap: '30%',
+          }
+        ]
+      };
+
+      option && zhuChart.setOption(option);
     },
   },
   watch: {
@@ -491,49 +524,67 @@ export default {
     async selectedMethod() {
       if (this.selectedMethod === "年份") {
         this.drawZheChart();
-      } else {
+      }
+      else {
         await this.getCityDateStatistics();
         this.drawZheChart();
       }
-    },
+    }
   },
   async created() {
-    await this.getCityStatistics(); // 获取城市及其总的案件数，其内接口返回数据形如{"西安":10,"上海":20,...}
+    await this.getCityStatistics();           // 获取城市及其总的案件数，其内接口返回数据形如{"西安":10,"上海":20,...}
     await this.getStatusCityDateStatistics(); // 获取指定城市指定年月的案件状态，其内接口返回数据形如{"立案":10,"状态":20,...}
-    await this.getTypeCityDateStatistics(); // 获取指定城市指定年月的案件类型，其内接口返回数据形如{"抢劫":10,"谋杀":20,...}
-    await this.getCityDateStatistics(); // 获取指定城市指定年月的案件数目，其内接口返回数据形如{"2017":{"1":3,"2":5,...},...}
+    await this.getTypeCityDateStatistics();   // 获取指定城市指定年月的案件类型，其内接口返回数据形如{"抢劫":10,"谋杀":20,...}
+    await this.getCityDateStatistics();       // 获取指定城市指定年月的案件数目，其内接口返回数据形如{"2017":{"1":3,"2":5,...},...}
     this.years = Object.keys(this.cityDateStatistics); // 获取年份范围,形如["2017","2018",...]
-    this.cityName = Object.keys(this.cityStatistics); // 获取年份范围,形如["西安","上海",...]
+    this.cityName = Object.keys(this.cityStatistics);  // 获取年份范围,形如["西安","上海",...]
 
     // 获取案件总数
-    this.numCases =
-      this.statusStatistics["立案"] +
-      this.statusStatistics["调查"] +
-      this.statusStatistics["结案"];
+    this.numCases = this.statusStatistics["立案"] + this.statusStatistics["调查"] + this.statusStatistics["结案"];
 
     this.drawStatusPieChart(); // 画总案件状态圆饼图
     this.drawTypePieChart(); // 画总案件类型圆饼图
     this.drawZheChart(); // 画折线图
+
+    await this.getCityTypeStatistics();
+    this.drawTypeZhuChart();
   },
 };
 </script>
 
+
+
 <style scoped>
-.sub-header {
-  overflow: hidden;
-  display: flex;
-  position: absolute;
-  top: 70px;
-  left: 199px;
-  width: calc(100% - 199px);
-  height: 7vh;
-  min-height: 40px;
-  align-items: center; /* 文字竖直方向居中对齐 */
- background-color: #f2dccacf;
-  color: #000;
-  font-size: 30px;
-  font-weight: bold;
-}
+ .sub-header {
+    overflow: hidden;
+    display: flex;
+    position: absolute;
+    top: 70px;
+    left: 199px;
+    width: calc(100% - 199px);
+    height: 7vh;
+    min-height: 40px;
+    align-items: center; /* 文字竖直方向居中对齐 */
+    background-color: #1f2cdf;
+    box-shadow: inset -500px 0px 200px 0px rgba(4, 0, 113, 0.856);
+    color: #ffffff;
+    font-size: 28px;
+  }
+  .sub-header::before {
+    --size: 0;
+    content: '';
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--size);
+    height: var(--size);
+    background: radial-gradient(circle closest-side, #5a65ff, transparent);
+    transform: translate(-50%, -50%);
+    transition: width .2s ease, height .2s ease;
+  }
+  .sub-header:hover::before {
+    --size: 400px;
+  }
 .main
 {
   margin-top: 10vh;
