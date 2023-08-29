@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "@/components/Login.vue";
-import LoginSuccess from "@/components/LoginSuccess.vue";
 import ChangePassword from '@/components/Password/ChangePassword.vue';
 import ForPassword from '@/components/Password/ForPassword.vue';
 import MainPage from '@/components/MainPage.vue';
@@ -23,12 +22,6 @@ const routes = [
     path: '/',
     name: 'main',
     component: MainPage
-  },
-  {
-    path: "/succuss",
-    name: "success",
-    component: LoginSuccess,
-    props: true
   },
   {
     path: "/change-password",
