@@ -31,11 +31,19 @@
               <span>查询</span>
             </button>
           </div>
-          <div class="rightbtn">
-            <button class="ssqbutton1" @click="goToNewRecord" @mousemove="handleMouseMove">
+
+          <div class="middlebtn">
+            <button class="ssqbutton1" @click="addStationInfo" @mousemove="handleMouseMove">
               <span>新建记录</span>
             </button>
           </div>
+
+<div class="rightbtn">
+            <button class="ssqbutton1" @click="delStationInfo" @mousemove="handleMouseMove">
+              <span>删除记录</span>
+            </button>
+          </div>
+
         </div>
       </div>
       <div class="table">
@@ -98,7 +106,43 @@ export default {
           console.log(err);
         });
     },
+    
+  addStationInfo () {
+    axios.post('http://localhost:7078/api/addstationInfo', {
+      stationID: this.stationID,
+      stationName: this.stationName,
+      city: this.city,
+      address: this.address,
+      budget: this.budget === '' ? null : this.budget
+    })
+      .then((res) => {
+        this.stationInfo = res.data
+        console.log(res.data)
+      })
+      .catch((err) => {
+        this.boxContent = this.err
+        console.log(err)
+      })
   },
+  deleteStationInfo () {
+    axios.post('http://localhost:7078/api/delstationInfo', {
+      stationID: this.stationID,
+      stationName: this.stationName,
+      city: this.city,
+      address: this.address,
+      budget: this.budget === '' ? null : this.budget
+    })
+      .then((res) => {
+        this.stationInfo = res.data
+        console.log(res.data)
+      })
+      .catch((err) => {
+        this.boxContent = this.err
+        console.log(err)
+      })
+  }
+}
+  
 };
 </script>
 
@@ -172,7 +216,7 @@ input {
   justify-content: center;
 }
 
-.leftbtn {
+.leftbtn,.middlebtn {
   margin-right: 5vw;
 }
 

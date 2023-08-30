@@ -22,19 +22,19 @@
         <el-checkbox style="width:150px" id="cb" v-for="option in options4" :key="option.label" :label="option.label" :disabled="option.authority > myAuthority">{{ option.label }}</el-checkbox>
       </el-checkbox-group>
 
-      <h2><br>数据质量管理<br><div style="color:#d7caaa">----------------------------------------------------------------</div></h2>
+      <!-- <h2><br>数据质量管理<br><div style="color:#d7caaa">----------------------------------------------------------------</div></h2>
       <el-checkbox-group :modelValue="internalSelectedOptions" @update:modelValue="internalSelectedOptions = $event">
         <el-checkbox style="width:150px" id="cb" v-for="option in options5" :key="option.label" :label="option.label" :disabled="option.authority > myAuthority">{{ option.label }}</el-checkbox>
-      </el-checkbox-group>
+      </el-checkbox-group> -->
 
       <h2><br>案件办理<br><div style="color:#d7caaa">----------------------------------------------------------------</div></h2>
       <el-checkbox-group :modelValue="internalSelectedOptions" @update:modelValue="internalSelectedOptions = $event">
         <el-checkbox style="width:150px" id="cb" v-for="option in options6" :key="option.label" :label="option.label" :disabled="option.authority > myAuthority">{{ option.label }}</el-checkbox>
       </el-checkbox-group>
-      <h2><br>系统日志管理<br><div style="color:#d7caaa">----------------------------------------------------------------</div></h2>
+      <!-- <h2><br>系统日志管理<br><div style="color:#d7caaa">----------------------------------------------------------------</div></h2>
       <el-checkbox-group :modelValue="internalSelectedOptions" @update:modelValue="internalSelectedOptions = $event">
         <el-checkbox style="width:150px" id="cb" v-for="option in options7" :key="option.label" :label="option.label" :disabled="option.authority > myAuthority">{{ option.label }}</el-checkbox>
-      </el-checkbox-group>
+      </el-checkbox-group> -->
       <el-button @click="confirmOptions">确认</el-button>
     </el-dialog>
 
@@ -66,7 +66,7 @@ export default {
         // 其他选项
       ],
       options2: [
-        { label: '证据收纳', authority: '1', icon: 'el-icon-star-off' },
+        // { label: '证据收纳', authority: '1', icon: 'el-icon-star-off' },
         { label: '嫌疑人信息管理', authority: '1', icon: 'el-icon-star-off' },
         { label: '犯罪记录管理', authority: '1', icon: 'el-icon-star-off' },
         { label: '受害人信息管理', authority: '1', icon: 'el-icon-star-off' },

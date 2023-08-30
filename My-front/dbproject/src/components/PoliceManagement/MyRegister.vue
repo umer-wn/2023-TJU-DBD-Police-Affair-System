@@ -11,93 +11,104 @@
         <!-- police_number -->
         <div class="inputContainer">
           <div class="inputTitle">警号</div>
-          <input class="input" v-model="signinInfo.police_number" />
-          <div
-            class="message"
-            v-show="this.police_number_message !== ''"
-            :style="{ color: this.police_number_color }"
-          >
-            {{ this.police_number_message }}
+          <div>
+            <input class="input" v-model="signinInfo.police_number" />
+            <div
+              class="message"
+              v-show="this.police_number_message !== ''"
+              :style="{ color: this.police_number_color }"
+            >
+              {{ this.police_number_message }}
+            </div>
           </div>
         </div>
+
         <!-- police_name -->
         <div class="inputContainer">
           <div class="inputTitle">姓名</div>
           <input class="input" v-model="signinInfo.police_name" />
         </div>
+        
         <!-- ID_number -->
         <div class="inputContainer">
           <div class="inputTitle">身份证号</div>
-          <input class="input" v-model="signinInfo.ID_number" />
-          <div
-            class="message"
-            v-show="this.ID_number_message !== ''"
-            :style="{ color: this.ID_number_color }"
-          >
-            {{ this.ID_number_message }}
+          <div>
+            <input class="input" v-model="signinInfo.ID_number" />
+            <div class="message" v-show="this.ID_number_message !== ''" :style="{ color: this.ID_number_color }" >
+              {{ this.ID_number_message }}
+            </div>
           </div>
         </div>
+
         <!-- birthday -->
         <div class="inputContainer">
           <div class="inputTitle">出生日期</div>
-          <el-date-picker v-model="signinInfo.birthday"
-            >this.signinInfo.birthday</el-date-picker
-          >
+          <el-date-picker v-model="signinInfo.birthday" ></el-date-picker>
         </div>
+
         <!-- gender -->
         <div class="inputContainer">
-          <div class="inputTitle">性别</div>
+          <div class="inputTitle" >性别</div>
           <input class="input"  v-model="signinInfo.gender" />
         </div>
+
         <!-- nation -->
         <div class="inputContainer">
           <div class="inputTitle">民族</div>
-          <input class="input" v-model="signinInfo.nation" />
-          <div
-            class="message"
-            v-show="this.nation_message !== ''"
-            :style="{ color: this.nation_color }"
-          >
-            {{ this.nation_message }}
+          <div>
+            <input class="input" v-model="signinInfo.nation" />
+            <div
+              class="message"
+              v-show="this.nation_message !== ''"
+              :style="{ color: this.nation_color }"
+            >
+              {{ this.nation_message }}
+            </div>
           </div>
         </div>
+
         <!-- phone_number -->
         <div class="inputContainer">
           <div class="inputTitle">联系方式</div>
           <input class="input" v-model="signinInfo.phone_number" />
         </div>
+
         <!-- email -->
         <div class="inputContainer">
           <div class="inputTitle">邮箱</div>
-          <input class="input" v-model="signinInfo.email" />
-          <div
-            class="message"
-            v-show="this.email_message !== ''"
-            :style="{ color: this.email_color }"
-          >
-            {{ this.email_message }}
+          <div>
+            <input class="input" v-model="signinInfo.email" />
+            <div
+              class="message"
+              v-show="this.email_message !== ''"
+              :style="{ color: this.email_color }"
+            >
+              {{ this.email_message }}
+            </div>
           </div>
         </div>
+
         <!-- status -->
         <div class="inputContainer">
           <div class="inputTitle">状态</div>
-          <select class="select" v-model="signinInfo.status">
-            <option>在职</option>
-            <option>停职</option>
-            <option>离职</option>
-          </select>
+          <el-select placeholder="请选择状态" v-model="signinInfo.status">
+            <el-option>在职</el-option>
+            <el-option>停职</el-option>
+            <el-option>离职</el-option>
+          </el-select>
         </div>
+
         <!-- position -->
         <div class="inputContainer">
           <div class="inputTitle">职务</div>
-          <select class="select" v-model="signinInfo.position">
-            <option>学员</option>
-            <option>警员</option>
-            <option>警司</option>
-            <option>警督</option>
-            <option>警监</option>
-            <option>总警监</option>
-          </select>
+          <el-select placeholder="请选择职务" v-model="signinInfo.position">
+            <el-option>学员</el-option>
+            <el-option>警员</el-option>
+            <el-option>警司</el-option>
+            <el-option>警督</el-option>
+            <el-option>警监</el-option>
+            <el-option>总警监</el-option>
+          </el-select>
         </div>
         <!-- 确定按钮 -->
         <button class="button" @click="addNewUser">确定</button>
@@ -298,7 +309,7 @@
   }
   .ssqtitletest {
     margin:10px auto;
-    width:700px;
+    min-width:1000px;
     height:40px;
     padding:0 30px;
     line-height: 60px;
@@ -324,7 +335,7 @@
     height: 130vh; */
     /* background-color: #f4f6f9; */
     margin-top:10vh;
-     min-width: 700px;
+    min-width: 700px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -340,8 +351,8 @@
     text-shadow: #9a9a9a 0px 0px 6px;
   }
   .content {
-    width: 38%;
-    min-width: 700px;
+    width: 50%;
+    min-width: 1000px;
     height: 850px;
     position: relative;
     box-shadow: 0px 0px 10px 2px rgba(123, 103, 75, 0.427);
@@ -351,7 +362,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin: 16px;
+    margin-top: 16px;
     padding: 16px;
   
     border-radius: 5px;
@@ -389,9 +400,9 @@
     text-shadow: #ba9c51 0px 0px 1px;
   }
   .input {
-    width: 100%;
+    width: 75%;
     height: 30px;
-  
+    display:inline-block;
     outline: none;
     border: 1px solid #e3e3e3;
     border-radius: 2px;
@@ -408,28 +419,8 @@
     box-shadow: #3d4cc1 0px 0px 2px;
   }
 
-  .select {
-    width: 100%;
-    height: 30px;
-  
-    background: #fdfdff;
-    border: #ebecfd 1px solid;
-    box-shadow: #b4a078 0px 0px 2px;
-    border-radius: 5px;
-  
-    font-size: 14px;
-    padding: 6px;
-    transition: border-color 0.2s ease-in-out;
-    transition: box-shadow 0.2s ease-in-out;
-  }
-  .select:focus {
-    outline: none;
-    border: #6777ef 1px solid;
-    box-shadow: #6777ef 0px 0px 2px;
-  }
-  .select:not(:focus) {
-    outline: none;
-    box-shadow: #9a9a9a 0px 0px 1px;
+  .el-select {
+    width: 75%;
   }
   .button {
     width: 61%;
@@ -452,9 +443,10 @@
     cursor: pointer;
   }
   .message {
-    width: 100%;
     height: 8px;
-    font-size: 4px;
-    margin-left: 6px;
+    font-size: 15px;
+    margin-left: 20px;
+    display:inline-block;
+    width:20%
   }
   </style>

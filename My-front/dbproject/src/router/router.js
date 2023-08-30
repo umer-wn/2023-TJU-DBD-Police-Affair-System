@@ -76,11 +76,6 @@ const routes = [
 
             },
             {
-                path: 'EvidenceManagement',
-                component: () => import('../components/CaseManagement/EvidenceManagement.vue')
-
-            },
-            {
                 path: 'SuspectInfoManagement',
                 component: () => import('../components/CaseManagement/SuspectInfoManagement.vue')
 
@@ -134,17 +129,7 @@ const routes = [
                 path: 'RegionalDispatch',
                 component: () => import('../components/UrbanResidentmanagement/RegionalDispatch.vue')
 
-            },
-            {
-                path: 'DataQualityManagement',
-                component: () => import('../components/DataQualityManagemen.vue')
-
-            },
-            {
-                path: 'SystemLogManagement',
-                component: () => import('../components/SystemLogManagement.vue')
-
-            },
+            },            
             {
                 path: 'FamilybgCheck',
                 component: () => import('../components/UrbanResidentmanagement/FamilybgCheck.vue')

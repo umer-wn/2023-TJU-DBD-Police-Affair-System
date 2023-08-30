@@ -5,68 +5,88 @@
   </el-header>
 
   <div class="main">
-    <el-tabs v-model="anv" class="demo-tabs">
+    <div class="content">
+    <el-tabs v-model="anv" >
       <el-tab-pane label="案件状态统计饼图" name="1">
-        <h4>案件总数：{{ numCases }}</h4>
-        <h2 style="text-align: center">案件状态统计饼图</h2>
-        <select v-model="selectedCity1">
-          <option value="全部" selected>全部城市</option>
-          <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
-        </select>
-        <select v-model="selectedYear1">
-          <option selected value="全部">全部年份</option>
-          <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
-        </select>
-        <select v-model="selectedMonth1">
-          <option selected value="全部">全部月份</option>
-          <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
-          </option>
-        </select>
-        <div id="statusPieChart" style="width: 400px; height: 400px; margin-left: auto; margin-right: auto"></div>
+        <div class="top-content">
+          <h2 style="text-align: center">案件状态统计饼图</h2>
+          <div id="statusPieChart" style="width: 400px; height: 400px; margin-left: auto; margin-right: auto;"></div> 
+        </div>
+        <div class="bottom-content">
+          <div class="cdsamount"><h3>案件总数：{{ numCases }}</h3></div>
+          <select v-model="selectedCity1" class="cds-select">
+            <option value="全部" selected>全部城市</option>
+            <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
+          </select>
+          <select v-model="selectedYear1" class="cds-select">
+            <option selected value="全部">全部年份</option>
+            <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
+          </select>
+          <select v-model="selectedMonth1" class="cds-select">
+            <option selected value="全部">全部月份</option>
+            <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
+            </option>
+          </select>
+        </div>
       </el-tab-pane>
 
       <el-tab-pane label="案件类型统计饼图" name="2">
-        <h4>案件总数：{{ numCases }}</h4>
-        <h2 style="text-align: center">案件类型统计饼图</h2>
-        <select v-model="selectedCity2">
-          <option value="全部" selected>全部城市</option>
-          <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
-        </select>
-        <select v-model="selectedYear2">
-          <option selected value="全部">全部年份</option>
-          <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
-        </select>
-        <select v-model="selectedMonth2">
-          <option selected value="全部">全部月份</option>
-          <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
-          </option>
-        </select>
-        <div id="typePieChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
+        <div class="top-content">
+          <h2 style="text-align: center">案件类型统计饼图</h2>
+          <div id="typePieChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
+        </div>
+
+        <div class="bottom-content">
+          <div class="cdsamount"><h3>案件总数：{{ numCases }}</h3></div>
+          <select v-model="selectedCity2" class="cds-select">
+            <option value="全部" selected>全部城市</option>
+            <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
+          </select>
+          <select v-model="selectedYear2" class="cds-select">
+            <option selected value="全部">全部年份</option>
+            <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
+          </select>
+          <select v-model="selectedMonth2" class="cds-select">
+            <option selected value="全部">全部月份</option>
+            <option v-for="i in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']" :value="i" :key="i">{{ i }}
+            </option>
+          </select>
+        </div>
       </el-tab-pane>
 
       <el-tab-pane label="案发地区统计直方图" name="3">
-        <h4>案件总数：{{ numCases }}</h4>
-        <div id="zhuChart" style="width: 800px; height: 500px; margin-left: auto; margin-right: auto"></div>
+        <div class="top-content">
+          <h2 style="text-align: center">城市案件统计直方图</h2>
+          <div id="zhuChart" style="width: 800px; height: 500px; margin-left: auto; margin-right: auto"></div>
+        </div>
+        <div class="bottom-content">
+          <div class="cdsamount" style="margin-top:-25px"><h3>案件总数：{{ numCases }}</h3></div>
+        </div>
       </el-tab-pane>
 
       <el-tab-pane label="案件时间统计折线图" name="4">
-        <h4>案件总数：{{ numCases }}</h4>
-        <h2 style="text-align: center">案件时间统计折线图</h2>
-        <select v-model="selectedCity3">
-          <option value="全部" selected>全部城市</option>
-          <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
-        </select>
-        <select v-model="selectedMethod">
-          <option selected value="年份">年份统计</option>
-          <option selected value="月份">月份统计</option>
-        </select>
-        <select v-if="selectedMethod === '月份'" v-model="selectedYear3">
-          <option selected value="全部">全部年份</option>
-          <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
-        </select>
-        <div id="zheChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
+        <div class="top-content">
+          <h2 style="text-align: center">案件时间统计折线图</h2>
+          <div id="zheChart" style="width: 600px; height: 400px; margin-left: auto; margin-right: auto"></div>
+        </div>
+        <div class="bottom-content">
+          <div class="cdsamount"><h3>案件总数：{{ numCases }}</h3></div>
+          <select v-model="selectedCity3" class="cds-select">
+            <option value="全部" selected>全部城市</option>
+            <option v-for="city in cityName" :value="city" :key="city">{{ city }}</option>
+          </select>
+          <select v-model="selectedMethod" class="cds-select">
+            <option selected value="年份">年份统计</option>
+            <option selected value="月份">月份统计</option>
+          </select>
+          <select v-if="selectedMethod === '月份'" v-model="selectedYear3" class="cds-select">
+            <option selected value="全部">全部年份</option>
+            <option v-for="i in years" :value="i" :key="i">{{ i }}</option>
+          </select>
+        </div>
       </el-tab-pane>
     </el-tabs>
+  </div>
   </div>
 </template>
 
@@ -389,9 +409,6 @@ export default {
       const zhuChart = echarts.init(document.getElementById('zhuChart'));
 
       const option = {
-        title: {
-          text: '城市案件统计直方图'
-        },
         tooltip: {
           trigger: 'axis'
         },
@@ -585,10 +602,49 @@ export default {
 </script>
 
 
-
-
-
 <style scoped>
+.top-content{
+  margin-top: 15px;
+  display:block;
+}
+.bottom-content{
+  display:block;
+}
+.cds-select{
+  width:25%;
+  height: 35px;
+  display:inline-block;
+  margin-left:40px;
+  background-color: #f0e6cf;
+  border: #c0b7a2;
+}
+.cdsamount{
+  margin-top: 10px;
+  margin-left:40px
+}
+  .content {
+    min-width: 1000px;
+    min-height:800px;
+    position: relative;
+    box-shadow: 0px 0px 10px 2px rgba(123, 103, 75, 0.427);
+    background-color: rgba(255, 255, 255, 0.616); 
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 16px;
+    padding: 16px;
+  
+    border-radius: 5px;
+    box-shadow: #9a9a9a 0px 0px 6px;
+    box-shadow: #777777 0px 0px 3px;
+    border-top: #0051ff 3px solid;
+    border-top: solid 3px transparent;
+  }
+
+
+  
  .sub-header {
     overflow: hidden;
     display: flex;
@@ -623,4 +679,25 @@ export default {
 {
   margin-top: 10vh;
 }
+  /* 导航条下方边框阴影*/
+  .main ::v-deep .el-tabs__nav-wrap {
+    background-color: #bca77690; 
+    min-width:900px;
+    box-shadow: 0px 10px 10px 0px #e6dbc190 ;
+  }
+   .main ::v-deep .el-tabs__item.is-active{ 
+      color:#0051ff !important;
+      font-size: 20px;
+   }
+   .main ::v-deep .el-tabs__item{ 
+    margin-left:20px;  
+    color:#ffffff;
+    font-size: 20px;
+   }
+   /*下方条 */
+   .main ::v-deep .el-tabs__active-bar{
+          background-color: #0051ff !important;
+   }
+
+
 </style>

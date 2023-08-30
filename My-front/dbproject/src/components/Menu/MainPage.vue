@@ -83,8 +83,6 @@
           this.$router.push('/mainMenu/AlarmResponseRecordManagement');
         } else if (funcName == '薪水管理') {
           this.$router.push('/mainMenu/PayrollManagement');
-        } else if (funcName == '证据收纳') {
-          this.$router.push('/mainMenu/EvidenceManagement');
         } else if (funcName == '嫌疑人信息管理') {
           this.$router.push('/mainMenu/SuspectInfoManagement');
         } else if (funcName == '犯罪记录管理') {
@@ -109,13 +107,9 @@
           this.$router.push('/mainMenu/RegionalDispatch');
         } else if (funcName == '家族背景调查') {
           this.$router.push('/mainMenu/FamilybgCheck');
-        } else if (funcName == '数据质量管理') {
-          this.$router.push('/mainMenu/DataQualityManagement');
         } else if (funcName == '案件办理') {
           this.$router.push('/mainMenu/CaseInvestigation');
-        } else if (funcName == '系统日志管理') {
-          this.$router.push('/mainMenu/SystemLogManagement');
-        }
+        } 
       },
       showMoreOptions() {
         this.$refs.moreOptionsDialog.showMoreOptions(this.selectedOptions, this.myAuthority);
