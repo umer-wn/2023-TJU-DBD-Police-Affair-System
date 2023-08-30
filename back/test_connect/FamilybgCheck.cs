@@ -5,38 +5,11 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data;
 using System.Numerics;
-using web.DTO_group2;
+using web.DTO_group4;
 
 namespace FamilybgCheck
 {
-    public struct Info
-    {
-        public string name { get; set; }
-        public string gender { get; set; }
-        public string ID { get; set; }
-        public List<string> crimeType { get; set; }
-        public Info()
-        {
-            name = "";
-            gender = "";
-            ID = "";
-            crimeType = new List<string>();
-        }
-    }
-    public struct result
-    {
-        public List<Info> people { get; set; } // 每个人
-        public List<string> relationship { get; set; } // 每个人和中心人的关系
-        public result()
-        {
-            people = new List<Info>();
-            relationship = new List<string>();
-        }
-    }
-    public struct MyRequestData
-    {
-        public string InputText { get; set; }
-    }
+
     [Route("api/FamilybgCheck")]
     [ApiController]
     public class FamilybgCheck : ControllerBase
