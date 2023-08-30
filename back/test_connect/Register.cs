@@ -5,7 +5,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data;
 using System.Numerics;
-using web.DTO_group2;
+using web.DTO_group4;
 
 
 
@@ -15,24 +15,6 @@ namespace Register
     
     public class Register : ControllerBase
     {
-        public struct RequestData
-        {
-            public string ID_number { get; set; }
-            public string birthday { get; set; }
-            public string email { get; set; }
-            public string gender { get; set; }
-            public string nation { get; set; }
-            public string phone_number { get; set; }
-            public string police_name { get; set; }
-            public string police_number { get; set; }
-            public string position { get; set; }
-            public string status { get; set; }
-        }
-        public struct LegalJudgeMessage
-        {
-            public string queryType { get; set; }
-            public string queryContent { get; set; }
-        }
         private readonly OracleConnection _connection;
         public Register(OracleConnection connection)
         {

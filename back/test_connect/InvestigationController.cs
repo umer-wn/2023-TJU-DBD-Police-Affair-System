@@ -4,21 +4,9 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data;
 using System.Numerics;
+using web.DTO_group4;
 
-public class CaseRequestData
-{
-    public string inputTextCase { get; set; }
-}
 
-public class PoliceRequestData
-{
-    public string inputTextPolice { get; set; }
-}
-
-public class ModifyRequestData
-{
-    public string inputCase { get; set; }
-}
 
 [Route("api/queryCase")]
 [ApiController]
