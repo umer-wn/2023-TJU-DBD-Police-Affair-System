@@ -75,6 +75,20 @@ public class statusCityDateStatisticsControllerZYH : ControllerBase
 
 
 [ApiController]
+[Route("api/crimeDataStatistics/cityTypeStatistics")]
+public class cityTypeStatisticsControllerZYH : ControllerBase
+{
+    [HttpGet]
+    public IActionResult HandleEndpoint()
+    {
+        CaseStatisticsZYH statistics = new CaseStatisticsZYH();
+        statistics.getCityTypeStatistics();
+        return Ok(statistics.cityType);
+    }
+}
+
+
+[ApiController]
 [Route("api/crimeDataStatistics/typeCityDateStatistics")]
 public class typeCityDateStatisticsControllerZYH : ControllerBase
 {

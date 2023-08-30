@@ -1,7 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 
 // 赵毅辉编写使用
-// crimeDataStatisticsController.cs使用了本类
+// crimeDataStatisticsControllerZYH.cs使用了本类
 // 用于统计各项犯罪数据
 public class CaseStatisticsZYH
 {
@@ -31,6 +31,7 @@ public class CaseStatisticsZYH
     public Dictionary<int, Dictionary<int, int>> numYearMonth { get; set; }
     // 存储城市名和对应次数的字典
     public Dictionary<string, int> cityCount { get; set; }
+    public Dictionary<string, List<int>> cityType;
     // 每年每月案件数量
     public Dictionary<int, Dictionary<int, int>> numCityYearMonth { get; set; }
 
@@ -41,6 +42,7 @@ public class CaseStatisticsZYH
         numYearMonth = new Dictionary<int, Dictionary<int, int>>();
         cityCount = new Dictionary<string, int>();
         numCityYearMonth = new Dictionary<int, Dictionary<int, int>>();
+        cityType = new Dictionary<string, List<int>>();
     }
     public void getStatusCityDateStatistics(string city, string year, string month)
     {
@@ -314,6 +316,62 @@ public class CaseStatisticsZYH
             throw;
         }
     }
+    public void getCityTypeStatistics()
+    {
+        try
+        {
+            cityType = new Dictionary<string, List<int>>();
+            // 配置数据库连接字符串
+            string connectionString = "User ID=C##police;Password=police;Data Source=(DESCRIPTION = (ADDRESS_LIST= (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT =1521))) (CONNECT_DATA = (SERVICE_NAME = orcl)))";
+
+            using (OracleConnection connection = new OracleConnection(connectionString))
+            {
+                connection.Open();
+
+                // 查询所有城市
+                using (OracleCommand command = new OracleCommand("SELECT DISTINCT SUBSTR(ADDRESS, 1, INSTR(ADDRESS,'市')-1) AS City FROM CASES", connection))
+                {
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string city = reader["City"].ToString();
+                            cityType.Add(city, new List<int>());
+                        }
+                    }
+                }
+
+                // 查询每个城市的每种案件数量
+                foreach (string city in cityType.Keys)
+                {
+                    using (OracleCommand command = new OracleCommand("SELECT COUNT(*) FROM CASES WHERE ADDRESS LIKE '%' || :city || '%' AND CASE_TYPE = :caseType", connection))
+                    {
+                        command.Parameters.Add(new OracleParameter("city", OracleDbType.Varchar2) { Value = city });
+
+                        command.Parameters.Add(new OracleParameter("caseType", OracleDbType.Varchar2));
+
+                        // 统计每种案件的数量
+                        foreach (string caseType in new List<string> { "强奸", "抢劫", "故意伤害", "盗窃", "诈骗", "谋杀" })
+                        {
+                            command.Parameters["caseType"].Value = caseType;
+
+                            int count = Convert.ToInt32(command.ExecuteScalar());
+
+                            cityType[city].Add(count);
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+        }
+        catch (Exception ex)
+        {
+            // 处理异常
+            Console.WriteLine("CaseStatisticsZYH类的getCityTypeStatistics函数发生异常：" + ex.Message);
+            throw;
+        }
+    }
     public void getCityYearMonthStatistics(string cityName)
     {
         try
@@ -353,7 +411,6 @@ public class CaseStatisticsZYH
         }
     }
 }
-
 // 赵毅辉编写使用
 // caseControllerZYHZBW.cs使用了本类
 // 用于储存返回给前端的CASES表的查询数据
@@ -494,6 +551,66 @@ public class inputVideoInfoZYH
     public string videoType { get; set; }
     public string principleID { get; set; }
 }
+// 赵勃维编写使用
+// equipControllerZBW.cs使用了本类
+// 用于储存后端返回的数据
+public class EquipInfo
+{
+    public string EquipID { get; set; }
+    public string EquipType { get; set; }
+    public string EquipStatus { get; set; }
+    public string EquipStation { get; set; }
+
+}
+// 赵勃维编写使用
+// equipControllerZBW.cs使用了本类
+// 用于储存前端传来的数据
+public class inputEquipInfo
+{
+    public string EquipID { get; set; }
+    public string EquipType { get; set; }
+    public string Equipstaion { get; set; }
+}
+// 赵勃维编写使用
+// equipControllerZBW.cs使用了本类
+// 用于储存后端使用部分的数据
+public class EquipUseInfo
+{
+    public string equipID { get; set; }
+    public string policemenID { get; set; }
+    public DateTime borrowtime { get; set; }
+    public DateTime? returntime { get; set; }
+}
+// 赵勃维编写使用
+// vehicleControllerZBW.cs使用了本类
+// 用于储存后端使用部分的数据
+public class inputVehicleinfo
+{
+    public string VID { get; set; }
+    public string VTYPE { get; set; }
+    public string VST { get; set; }
+}
+// 赵勃维编写使用
+// vehicleControllerZBW.cs使用了本类
+// 用于储存后端使用部分的数据
+public class Vehicleinfo
+{
+    public string Vehicle_ID { get; set; }
+    public string Vehicle_Type { get; set; }
+    public string Status { get; set; }
+}
+public class Vehicleuseinfo
+{
+    public string VehicleID { get; set; }
+    public string StationID { get; set; }
+    public DateTime borrowtime { get; set; }
+    public DateTime? returntime { get; set; }
+}
+
+
+// 赵毅辉编写使用
+// keyIndividualsControllerZYH.cs使用了本类
+// 用于实现查询重点人员的方法
 
 // 赵毅辉编写使用
 // keyIndividualsControllerZYH.cs使用了本类
@@ -532,7 +649,7 @@ public class keyIndividualsZYH
                 }
             }
             connection.Close();
-        }              
+        }
     }
     public void getRepeatOffenderInfoStatistics()
     {
@@ -762,3 +879,4 @@ public class keyIndividualsZYH
     }
 
 }
+
