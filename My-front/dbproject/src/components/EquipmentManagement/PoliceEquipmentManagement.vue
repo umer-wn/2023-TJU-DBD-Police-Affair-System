@@ -6,30 +6,42 @@
   <el-tabs v-model="anv" type="border-card" style="margin-top: 10vh;">
     <!-- 查询警械栏 -->
     <el-tab-pane label="查询装备" name="1">
-      <div>
-        <el-text class="noteText" type="primary">警械编号：</el-text>
-        <el-input class="inputBox" v-model="equipId" placeholder="请输入警械编号" clearable maxlength="7" show-word-limit />
-
-        <el-text class="noteText" type="primary">警械类型：</el-text>
-        <el-select class="inputBox" v-model="equipType" placeholder="请选择">
-          <el-option selected label="全部类型" value=""></el-option>
-          <el-option label="催泪弹" value="催泪弹"></el-option>
-          <el-option label="手枪" value="手枪"></el-option>
-          <el-option label="手铐" value="手铐"></el-option>
-          <el-option label="警棍" value="警棍"></el-option>
-          <el-option label="防弹背心" value="防弹背心"></el-option>
-        </el-select>
-
-        <el-text class="noteText" type="primary">警局编号：</el-text>
-        <el-input class="inputBox" v-model="equipStation" placeholder="请输入警局编号" clearable maxlength="9" show-word-limit />
-
-        <el-text class="noteText" type="primary">使用状态：</el-text>
-        <el-select class="inputBox" v-model="equipStatus" placeholder="请选择">
-          <el-option selected label="全部状态" value=""></el-option>
-          <el-option label="使用中" value="1"></el-option>
-          <el-option label="空闲" value="0"></el-option>
-        </el-select>
-
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">警械编号：</el-text>
+              <el-input class="inputBox" v-model="equipId" placeholder="请输入警械编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="7" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">警械类型：</el-text>
+              <el-select class="inputBox" v-model="equipType" placeholder="请选择">
+                <el-option selected label="全部类型" value=""></el-option>
+                <el-option label="催泪弹" value="催泪弹"></el-option>
+                <el-option label="手枪" value="手枪"></el-option>
+                <el-option label="手铐" value="手铐"></el-option>
+                <el-option label="警棍" value="警棍"></el-option>
+                <el-option label="防弹背心" value="防弹背心"></el-option>
+              </el-select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">警局编号：</el-text>
+              <el-input class="inputBox" v-model="equipStation" placeholder="请输入警局编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="9" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">使用状态：</el-text>
+              <el-select class="inputBox" v-model="equipStatus" placeholder="请选择">
+                <el-option selected label="全部状态" value=""></el-option>
+                <el-option label="使用中" value="1"></el-option>
+                <el-option label="空闲" value="0"></el-option>
+              </el-select>
+            </td>
+          </tr>
+        </table>
         <div class="seaButton">
           <el-button type="primary" @click="fetchEquipInfo">查询</el-button>
         </div>
@@ -68,23 +80,35 @@
 
     <!-- 新增警械栏 -->
     <el-tab-pane label="新增警械" name="2">
-      <div>
-        <el-text class="noteText" type="primary">警械编号：</el-text>
-        <el-input class="inputBox" v-model="addEquipID" placeholder="请输入警械编号" clearable maxlength="7" show-word-limit />
-
-        <el-text class="noteText" type="primary">警械类型：</el-text>
-        <el-select class="inputBox" v-model="addEquipType" placeholder="请选择">
-          <el-option selected label="请选择" value=""></el-option>
-          <el-option label="催泪弹" value="催泪弹"></el-option>
-          <el-option label="手枪" value="手枪"></el-option>
-          <el-option label="手铐" value="手铐"></el-option>
-          <el-option label="警棍" value="警棍"></el-option>
-          <el-option label="防弹背心" value="防弹背心"></el-option>
-        </el-select>
-
-        <el-text class="noteText" type="primary">警局编号：</el-text>
-        <el-input class="inputBox" v-model="addEquipStation" placeholder="请输入警局编号" clearable maxlength="9"
-          show-word-limit />
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">警械编号：</el-text>
+              <el-input class="inputBox" v-model="addEquipID" placeholder="请输入警械编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="7" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">警械类型：</el-text>
+              <el-select class="inputBox" v-model="addEquipType" placeholder="请选择">
+                <el-option selected label="请选择" value=""></el-option>
+                <el-option label="催泪弹" value="催泪弹"></el-option>
+                <el-option label="手枪" value="手枪"></el-option>
+                <el-option label="手铐" value="手铐"></el-option>
+                <el-option label="警棍" value="警棍"></el-option>
+                <el-option label="防弹背心" value="防弹背心"></el-option>
+              </el-select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">警局编号：</el-text>
+              <el-input class="inputBox" v-model="addEquipStation" placeholder="请输入警局编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="9" show-word-limit />
+            </td>
+            <td></td>
+          </tr>
+        </table>
 
         <div class="seaButton">
           <el-button type="primary" @click="addEquipInfo">上传</el-button>
@@ -94,24 +118,39 @@
 
     <!-- 删除警车栏 -->
     <el-tab-pane label="删除警械" name="3">
-      <div>
-        <el-text class="noteText" type="primary">警械编号：</el-text>
-        <el-input class="inputBox" v-model="delEquipID" placeholder="请输入警械编号" clearable maxlength="7" show-word-limit />
-
-        <el-button type="primary" @click="delEquipInfo" style="margin-left: 20px">删除</el-button>
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">警械编号：</el-text>
+              <el-input class="inputBox" v-model="delEquipID" placeholder="请输入警械编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="7" show-word-limit />
+            </td>
+            <td>
+              <el-button type="primary" @click="delEquipInfo" style="margin-left: 20px">删除</el-button>
+            </td>
+          </tr>
+        </table>
       </div>
     </el-tab-pane>
 
     <!-- 新增使用记录栏 -->
     <el-tab-pane label="使用登记" name="4">
-      <div>
-        <el-text class="noteText" type="primary">警械编号：</el-text>
-        <el-input class="inputBox" v-model="addEquipIDU" placeholder="请输入警械编号" clearable maxlength="7" show-word-limit />
-
-        <el-text class="noteText" type="primary">警员编号：</el-text>
-        <el-input class="inputBox" v-model="addPolicemenIDU" placeholder="请输入警员编号" clearable maxlength="7"
-          show-word-limit />
-
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">警械编号：</el-text>
+              <el-input class="inputBox" v-model="addEquipIDU" placeholder="请输入警械编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="7" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">警员编号：</el-text>
+              <el-input class="inputBox" v-model="addPolicemenIDU" placeholder="请输入警员编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="7" show-word-limit />
+            </td>
+          </tr>
+        </table>
         <div class="seaButton">
           <el-button type="primary" @click="addEquipUseRecord">上传</el-button>
         </div>
@@ -120,14 +159,21 @@
 
     <!-- 归还栏 -->
     <el-tab-pane label="归还登记" name="5">
-      <div>
-        <el-text class="noteText" type="primary">警械编号：</el-text>
-        <el-input class="inputBox" v-model="addEquipIDR" placeholder="请输入警械编号" clearable maxlength="7" show-word-limit />
-
-        <el-text class="noteText" type="primary">警员编号：</el-text>
-        <el-input class="inputBox" v-model="addPolicemenIDR" placeholder="请输入警员编号" clearable maxlength="7"
-          show-word-limit />
-
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">警械编号：</el-text>
+              <el-input class="inputBox" v-model="addEquipIDR" placeholder="请输入警械编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="7" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">警员编号：</el-text>
+              <el-input class="inputBox" v-model="addPolicemenIDR" placeholder="请输入警员编号"
+                oninput="value=value.replace(/[^\d.]/g,'')" clearable maxlength="7" show-word-limit />
+            </td>
+          </tr>
+        </table>
         <div class="seaButton">
           <el-button type="primary" @click="returnEquip">归还</el-button>
         </div>
@@ -386,78 +432,25 @@ export default {
   --size: 400px;
 }
 
-.noteText {
-  font-size: 18px;
-  text-align: center;
-  margin-top: 7vh;
-  margin-left: 5vw;
-  margin-right: 2vw;
-  width: 10vw;
-  display: inline-block;
-}
-
-.btncontainer {
-  display: flex;
-  justify-content: center;
-}
-
-.leftbtn,
-.middlebtn {
-  margin-right: 5vw;
-}
-
-.ssqbutton1 {
-  margin-top: 5vh;
-  margin-bottom: 5vh;
-  width: 150px;
-  height: 40px;
-  padding: 0 30px;
-  line-height: 60px;
-  text-align: center;
-  position: relative;
-  appearance: none;
-  background: #dfd8c8;
-  border: none;
-  color: white;
-  font-size: 1.2em;
-  cursor: pointer;
-  outline: none;
-  overflow: hidden;
-  border-radius: 100px;
-}
-
-.ssqbutton1 span {
-  position: relative;
-  top: -20%;
-}
-
-.ssqbutton1::before {
-  --size: 0;
-  content: "";
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--size);
-  height: var(--size);
-  background: radial-gradient(circle closest-side, #0b72bbb2, transparent);
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease;
-}
-
-.ssqbutton1:hover::before {
-  --size: 400px;
-}
-
 .seaButton {
   display: block;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 15px;
   margin-bottom: 10px;
+}
+
+.noteText {
+  font-size: 18px;
+  text-align: center;
+  margin: 20px 0px;
+  width: 10vw;
+  display: inline-block;
 }
 
 .inputBox {
   display: inline-block;
   width: 200px;
   height: 32px;
+  margin: 20px 10px;
 }
 </style>

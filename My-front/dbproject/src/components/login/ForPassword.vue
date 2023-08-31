@@ -1,8 +1,10 @@
 <template>
   <div class="body">
     <div class="headpic">
-      <img class="logo" src="../../assets/image-2.png" />
-      <div class="title">&nbsp;&nbsp;警务处理系统</div>
+      <div class="header1">
+        <img class="logo" src="../../assets/police-logo.png" />
+        <div class="title">&nbsp;&nbsp;警务处理系统</div>
+      </div>
     </div>
 
     <div class="change-password-page">
@@ -20,7 +22,9 @@
               @blur="handleBlur1"
               required
             />
-            <div class="Tip" :class="{ TipA: isFocused1 }">手机号:</div>
+            <div class="Tip" :class="{ TipA: isFocused1 }">
+              手机号:
+            </div>
           </div>
           <div class="input-container">
             <input
@@ -32,7 +36,9 @@
               @blur="handleBlur2"
               required
             />
-            <div class="Tip" :class="{ TipA: isFocused2 }">手机验证码:</div>
+            <div class="Tip" :class="{ TipA: isFocused2 }">
+              手机验证码:
+            </div>
           </div>
           <div>
             <button
@@ -53,7 +59,9 @@
               @blur="handleBlur3"
               required
             />
-            <div class="Tip" :class="{ TipA: isFocused3 }">新密码:</div>
+            <div class="Tip" :class="{ TipA: isFocused3 }">
+              新密码:
+            </div>
           </div>
           <div class="input-container">
             <input
@@ -65,7 +73,9 @@
               @blur="handleBlur4"
               required
             />
-            <div class="Tip" :class="{ TipA: isFocused4 }">确认密码:</div>
+            <div class="Tip" :class="{ TipA: isFocused4 }">
+              确认密码:
+            </div>
           </div>
           <button type="submit" class="confirm-button">确认</button>
         </form>
@@ -75,9 +85,12 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
+      policeNumber:"",
       phoneNumber: "",
       verificationCode: "",
       newPassword: "",
@@ -86,7 +99,7 @@ export default {
       isFocused1: false,
       isFocused2: false,
       isFocused3: false,
-      isFocused4: false,
+      isFocused4: false
     };
   },
   methods: {
@@ -131,34 +144,71 @@ export default {
       }
     },
     submitForm() {
-      // 提交表单逻辑
+      // 提交表单逻辑  检查新密码和确认密码是否一致
+      if (this.newPassword !== this.confirmPassword) {
+        console.error('新密码和确认密码不一致');
+        return;
+      }
+
+      const data = {
+        police_number: this.policeNumber, // 获取警号
+        phone_number: this.phoneNumber,
+        verificationCode: this.verificationCode,
+        newPassword: this.newPassword
+      };
+
+      // 发送密码修改请求
+      const apiUrl = 'http://localhost:7078/for-password'; // 根据你的后端接口路径
+      axios.post(apiUrl, data)
+        .then(response => {
+          console.log('密码修改成功！');
+          // 密码修改成功后跳转到成功页面
+          this.$router.push('/ForPassword/success');
+        })
+        .catch(error => {
+          console.error('密码修改失败：', error);
+        });
+      
     },
     sendVerificationCode() {
       // 发送验证码逻辑
-      // 这里可以调用后端API发送验证码
-      // 设置 isSendingCode 为 true 来禁用发送按钮
       this.isSendingCode = true;
 
-      // 模拟发送验证码成功，延时2秒后恢复按钮状态
-      setTimeout(() => {
-        this.isSendingCode = false;
-      }, 2000);
-    },
-  },
-  // mounted() {
-  //   // 从 sessionStorage 中获取令牌
-  //   const token = sessionStorage.getItem("token");
+      const apiUrl = 'http://localhost:7078/for-passsword/verification';
+      const phoneNumber = this.phoneNumber; // 获取用户输入的手机号
 
-  //   if (!token) {
-  //     // 令牌不存在，说明未经过身份验证，跳转回登录页面或其他处理
-  //     this.$router.push("/fail");
-  //     return;
-  //   }
-  // },
-};
+      axios.post(apiUrl, { phone_number: phoneNumber }) // 使用axios.post() 发起POST请求，并传递手机号
+        .then(response => {
+          console.log('验证码发送成功！');
+        })
+        .catch(error => {
+          console.error('发送验证码失败：', error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.isSendingCode = false;
+          }, 2000);
+        });
+     }, 
+    },
+    mounted() {
+      // 从 sessionStorage 中获取令牌
+      const token = sessionStorage.getItem("token");
+      // 获取传递过来的ID参数
+      this.policeNumber = this.$route.query.id;
+
+      if (!token) {
+        // 令牌不存在，说明未经过身份验证，跳转回登录页面或其他处理
+        this.$router.push("/fail");
+        return;
+      }
+    }
+}
+
 </script>
 
-<style lang="postcss" scoped>
+
+<style scoped>
 .body {
   background-image: url("../../assets/hellopolice.jpg");
   background-attachment: fixed;
@@ -170,32 +220,36 @@ export default {
 }
 
 .headpic {
-  background: #1f2cdf;
-  background-image: url("../../assets/hdtest.jpg"); /* 替换为你的背景图路径 */
-  background-size: contain;
-  background-position: right top; /* 背景图靠左上角 */
-  background-repeat: no-repeat;
+  background: #fff;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.header1 {
+  background: #0b71bb;
   width: 100%;
   height: 70px;
-  overflow: hidden;
   position: relative;
   left: 0;
   display: flex;
   align-items: center;
   padding-left: 20px;
-  .logo {
-    width: 70px;
-    height: 70px;
-    position: relative;
-    top: 2px;
-    left: 0px;
-  }
-  .title {
-    color: #ffffff;
-    text-align: left;
-    font: 400 36px "Inter", sans-serif;
-    display: inline-block;
-  }
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  top: 2px;
+  left: 0px;
+}
+
+.title {
+  color: #ffffff;
+  text-align: left;
+  font: 400 36px "Inter", sans-serif;
+  display: inline-block;
 }
 
 .change-password-container {

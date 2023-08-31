@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="headpic">
-      <img class="logo" src="@/assets/image-2.png" />
+      <img class="logo" src="../../assets/image-2.png" />
       <div class="title">&nbsp;&nbsp;警务处理系统</div>
     </div>
 

@@ -43,13 +43,13 @@
         <!-- birthday -->
         <div class="inputContainer">
           <div class="inputTitle">出生日期</div>
-          <el-date-picker v-model="signinInfo.birthday" ></el-date-picker>
+          <el-date-picker :disabled="true" v-model="signinInfo.birthday" ></el-date-picker>
         </div>
 
         <!-- gender -->
         <div class="inputContainer">
-          <div class="inputTitle" >性别</div>
-          <input class="input"  v-model="signinInfo.gender" />
+          <div class="inputTitle">性别</div>
+          <input class="input" :disabled="true" v-model="signinInfo.gender" />
         </div>
 
         <!-- nation -->
@@ -91,24 +91,24 @@
         <!-- status -->
         <div class="inputContainer">
           <div class="inputTitle">状态</div>
-          <el-select placeholder="请选择状态" v-model="signinInfo.status">
-            <el-option>在职</el-option>
-            <el-option>停职</el-option>
-            <el-option>离职</el-option>
-          </el-select>
+          <select class="select" placeholder="请选择状态" v-model="signinInfo.status">
+            <option>在职</option>
+            <option>停职</option>
+            <option>离职</option>
+          </select>
         </div>
 
         <!-- position -->
         <div class="inputContainer">
           <div class="inputTitle">职务</div>
-          <el-select placeholder="请选择职务" v-model="signinInfo.position">
-            <el-option>学员</el-option>
-            <el-option>警员</el-option>
-            <el-option>警司</el-option>
-            <el-option>警督</el-option>
-            <el-option>警监</el-option>
-            <el-option>总警监</el-option>
-          </el-select>
+          <select class="select" placeholder="请选择职务" v-model="signinInfo.position">
+            <option>学员</option>
+            <option>警员</option>
+            <option>警司</option>
+            <option>警督</option>
+            <option>警监</option>
+            <option>总警监</option>
+          </select>
         </div>
         <!-- 确定按钮 -->
         <button class="button" @click="addNewUser">确定</button>
@@ -419,8 +419,11 @@
     box-shadow: #3d4cc1 0px 0px 2px;
   }
 
-  .el-select {
+  .select {
     width: 75%;
+    height: 30px;
+    border: 1px solid #e3e3e3;
+    box-shadow: #b4a078 0px 0px 2px;
   }
   .button {
     width: 61%;

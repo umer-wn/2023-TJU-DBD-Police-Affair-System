@@ -1,8 +1,10 @@
 <template>
   <div class="body">
     <div class="headpic">
-      <img class="logo" src="../../assets/image-2.png" />
-      <div class="title">&nbsp;&nbsp;警务处理系统</div>
+      <div class="header1">
+        <img class="logo" src="../../assets/police-logo.png" />
+        <div class="title">&nbsp;&nbsp;警务处理系统</div>
+      </div>
     </div>
 
     <div class="change-password-page">
@@ -42,7 +44,9 @@
                 @focus="handleFocus2"
                 @blur="handleBlur2"
               />
-              <div class="Tip" :class="{ TipA: isFocused2 }">证件号码</div>
+              <div class="Tip" :class="{ TipA: isFocused2 }">
+                证件号码
+              </div>
             </div>
             <p v-if="!isValidIdNumber" class="error-message">
               身份证号不满足格式
@@ -60,7 +64,9 @@
                 @blur="handleBlur3"
               />
             </div>
-            <div class="Tip" :class="{ TipA: isFocused3 }">输入验证码</div>
+            <div class="Tip" :class="{ TipA: isFocused3 }">
+              输入验证码
+            </div>
             <div class="code-image" @click="refreshCode">
               <!-- 验证码组件 -->
               <SIdentify :identifyCode="identifyCode"></SIdentify>
@@ -82,7 +88,7 @@ import SIdentify from "./Identify.vue";
 
 export default {
   components: {
-    SIdentify,
+    SIdentify
   },
   data() {
     return {
@@ -97,7 +103,7 @@ export default {
       identifyCode: "",
       isFocused1: false,
       isFocused2: false,
-      isFocused3: false,
+      isFocused3: false
     };
   },
   methods: {
@@ -139,8 +145,9 @@ export default {
     },
     makeCode(o, l) {
       for (let i = 0; i < l; i++) {
-        this.identifyCode +=
-          this.identifyCodes[this.randomNum(0, this.identifyCodes.length)];
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
       }
     },
     randomNum(min, max) {
@@ -148,8 +155,6 @@ export default {
     },
     //↑验证码
     submitForm() {
-      this.$router.push("/Forpassword");
-
       // 清除之前的错误信息
       this.error = "";
       //验证码进行验证
@@ -170,15 +175,19 @@ export default {
         axios
           .post("http://localhost:7078/api/reset-password", {
             PoliceNumber: this.PoliceNumber,
-            IdNumber: this.idNumber,
+            IdNumber: this.idNumber
           })
-          .then((response) => {
+          .then(response => {
             this.refreshCode();
             // 处理响应
             if (response.data.success) {
               // 身份验证成功，存储token，并跳转到下一个页面
               sessionStorage.setItem("token", response.data.token);
-              // this.$router.push("/forpassword");
+              // 传递ID到另一个页面
+              this.$router.push({
+                path: "/ForPassword",
+                query: { id: this.PoliceNumber } // 传递警号参数
+              });
             } else {
               // 身份验证失败，显示错误消息
               this.error = "身份不匹配，请重新输入";
@@ -187,7 +196,7 @@ export default {
               }, 1500);
             }
           })
-          .catch((error) => {
+          .catch(error => {
             // 处理错误
             this.refreshCode();
             console.error(error);
@@ -197,17 +206,18 @@ export default {
             }, 1500);
           });
       }
-    },
+    }
   },
   mounted() {
     // 初始化验证码
     this.identifyCode = "";
     this.makeCode(this.identifyCodes, 4);
-  },
+  }
 };
 </script>
 
-<style lang="postcss" scoped>
+
+<style scoped>
 .body {
   background-image: url("../../assets/hellopolice.jpg");
   background-attachment: fixed;
@@ -219,32 +229,36 @@ export default {
 }
 
 .headpic {
-  background: #1f2cdf;
-  background-image: url("../../assets/hdtest.jpg"); /* 替换为你的背景图路径 */
-  background-size: contain;
-  background-position: right top; /* 背景图靠左上角 */
-  background-repeat: no-repeat;
+  background: #fff;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.header1 {
+  background: #0b71bb;
   width: 100%;
   height: 70px;
-  overflow: hidden;
   position: relative;
   left: 0;
   display: flex;
   align-items: center;
   padding-left: 20px;
-  .logo {
-    width: 70px;
-    height: 70px;
-    position: relative;
-    top: 2px;
-    left: 0px;
-  }
-  .title {
-    color: #ffffff;
-    text-align: left;
-    font: 400 36px "Inter", sans-serif;
-    display: inline-block;
-  }
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  top: 2px;
+  left: 0px;
+}
+
+.title {
+  color: #ffffff;
+  text-align: left;
+  font: 400 36px "Inter", sans-serif;
+  display: inline-block;
 }
 
 .change-password-container {

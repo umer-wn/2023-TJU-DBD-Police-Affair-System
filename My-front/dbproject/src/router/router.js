@@ -20,6 +20,10 @@ const routes = [
         component: () => import('../components/login/ForPassword.vue')
     },
     {
+        path: '/ForPassword/success',
+        component: () => import('../components/login/CPSuccess.vue')
+    },
+    {
         path: '/mainMenu',
         component: () => import('../components/Menu/MainMenu.vue'),
         redirect: '/mainMenu/MainPage',
@@ -37,8 +41,8 @@ const routes = [
             },
             {
                 path: 'ChangePermission',
-                component: () => import('../components/PoliceManagement/ChangePermission.vue')
-
+                component: () => import('../components/PoliceManagement/ChangePermission.vue'),
+                props:true,
             },
             {
                 path: 'PayrollManagement',
@@ -74,6 +78,21 @@ const routes = [
                 path: 'AlarmResponseRecordManagement',
                 component: () => import('../components/PoliceManagement/AlarmResponseRecordManagement.vue')
 
+            },
+            {
+                path: 'ApplyForPermission',
+                component: () => import('../components/PoliceManagement/ApplyForPermission.vue'),
+                props:true,
+            },
+            {
+                path: 'PermissionManage',
+                component: () => import('../components/PoliceManagement/PermissionManage.vue'),
+                props:true,
+            },
+            {
+                path: 'PositionManage',
+                component: () => import('../components/PoliceManagement/PositionManage.vue'),
+                props:true,
             },
             {
                 path: 'SuspectInfoManagement',
