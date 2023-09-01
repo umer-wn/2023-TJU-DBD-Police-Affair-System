@@ -29,7 +29,8 @@
   </template>
 
 <script>
-import axios from 'axios'
+import axios from '../../api/request';
+
 export default {
   data() {
     return {

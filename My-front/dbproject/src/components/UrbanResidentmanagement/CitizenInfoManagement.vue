@@ -1,69 +1,203 @@
 <template>
- <el-header class="sub-header" @mousemove="handleMouseMove">
+  <el-header class="sub-header" @mousemove="handleMouseMove">
     <div>&nbsp;&nbsp;城区和居民管理&nbsp;>&nbsp;公民户籍管理</div>
   </el-header>
 
-  <main class="main">
-    <section>
-      <div class="inputcontainer">
-        <label style="position: relative; display: block">
-          <div class="ssqinputtext">输入身份证号码</div>
-          <input class="ssqinputinfobox" type="text" v-model="IDNum" placeholder="身份证号码" />
-        </label>
+  <el-tabs v-model="anv" type="border-card" style="margin-top: 10vh;">
+    <!-- 查询栏 -->
+    <el-tab-pane label="查询公民信息" name="1">
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">身份证号:</el-text>
+              <el-input class="inputBox" v-model="citizenID" placeholder="请输入身份证号" clearable maxlength="18"
+                oninput="value=value.replace(/[^\d.]/g,'')" style="width: 250px;" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">姓名:</el-text>
+              <el-input class="inputBox" v-model="citizenName" placeholder="请输入姓名" clearable />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">性别:</el-text>
+              <el-select class="inputBox" v-model="citizenSex" style="width: 231px;" placeholder="请选择">
+                <el-option label="全部性别" selected value=""></el-option>
+                <el-option label="男" value="M"></el-option>
+                <el-option label="女" value="F"></el-option>
+              </el-select>
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">住址:</el-text>
+              <el-input class="inputBox" v-model="citizenAddress" placeholder="请输入地址" clearable />
+            </td>
+          </tr>
+        </table>
 
-        <label style="position: relative; display: block">
-          <div class="ssqinputtext">输入姓名</div>
-          <input class="ssqinputinfobox" type="text" v-model="citizenName" placeholder="姓名" />
-        </label>
-
-
-        <div class="ssqinputtext">选择性别</div>
-        <select class="zyhselect" v-model="gender">
-          <option selected value="全部">全部性别</option>
-          <option value="M">男</option>
-          <option value="F">女</option>
-        </select>
-
-      </div>
-      <div class="btncontainer">
-        <div class="leftbtn">
-          <button class="ssqbutton1" @click="fetchCitizenInfo" @mousemove="handleMouseMove">
-            <span>查询</span>
-          </button>
+        <div class="seaButton">
+          <el-button type="primary" @click="fetchCitizenInfo">查询</el-button>
         </div>
-        <div class="rightbtn">
-          <button class="ssqbutton1" @click="goToNewRecord" @mousemove="handleMouseMove">
-            <span>新建记录</span>
-          </button>
+      </div>
+
+      <el-divider />
+
+      <div>
+        <!-- 表格显示获取的公民信息 -->
+        <el-table :data="citizenInfo" stripe height="450" @wheel.passive.stop>
+          <el-table-column prop="id" label="身份证号" sortable />
+          <el-table-column prop="name" label="公民名称" sortable width="120px" />
+          <el-table-column prop="sex" label="性别" sortable width="80px" />
+          <el-table-column prop="address" label="住址" sortable />
+          <el-table-column prop="motherid" label="母亲身份证号" sortable />
+          <el-table-column prop="fatherid" label="父亲身份证号" sortable />
+        </el-table>
+      </div>
+    </el-tab-pane>
+
+    <!-- 新增栏 -->
+    <el-tab-pane label="公民信息登记" name="2">
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">身份证号:</el-text>
+              <el-input class="inputBox" v-model="addCitizenID" placeholder="请输入身份证号" clearable maxlength="18"
+                oninput="value=value.replace(/[^\d.]/g,'')" style="width: 250px;" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">姓名:</el-text>
+              <el-input class="inputBox" v-model="addCitizenName" placeholder="请输入姓名" clearable />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">母亲身份证号:</el-text>
+              <el-input class="inputBox" v-model="addMotherCitizenID" placeholder="请输入身份证号" clearable maxlength="18"
+                oninput="value=value.replace(/[^\d.]/g,'')" style="width: 250px;" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">住址:</el-text>
+              <el-input class="inputBox" v-model="addCitizenAddress" placeholder="请输入地址" clearable />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">父亲身份证号:</el-text>
+              <el-input class="inputBox" v-model="addFatherCitizenID" placeholder="请输入身份证号" clearable maxlength="18"
+                oninput="value=value.replace(/[^\d.]/g,'')" style="width: 250px;" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">性别:</el-text>
+              <el-select class="inputBox" v-model="addCitizenSex" placeholder="请选择" style="width: 181px;">
+                <el-option label="男" value="M"></el-option>
+                <el-option label="女" value="F"></el-option>
+              </el-select>
+            </td>
+          </tr>
+        </table>
+
+        <div class="seaButton">
+          <el-button type="primary" @click="addCitizenInfo">登记公民信息</el-button>
         </div>
       </div>
-      <!-- 表格显示获取的警员信息 -->
-      <el-table v-if="citizenInfo.length > 0" :data="citizenInfo" stripe height="450" @wheel.passive.stop>
-        <el-table-column prop="idNum" label="身份证号码" />
-        <el-table-column prop="citizenName" label="姓名" />
-        <el-table-column prop="gender" label="性别" />
-        <el-table-column prop="fatherID" label="父亲身份证号" />
-        <el-table-column prop="motherID" label="母亲身份证号" />
-      </el-table>
-      <!-- 错误提示 -->
-      <div v-else>{{ boxContent }}</div>
-    </section>
-  </main>
+    </el-tab-pane>
+
+    <!-- 删除栏 -->
+    <el-tab-pane label="删除公民信息" name="3">
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">身份证号：</el-text>
+              <el-input class="inputBox" v-model="delCitizenID" placeholder="请输入身份证号" clearable maxlength="18"
+                oninput="value=value.replace(/[^\d.]/g,'')" style="width: 250px;" show-word-limit />
+            </td>
+            <td>
+              <el-button type="primary" @click="delCitizenInfo" style="margin-left: 20px">删除公民信息</el-button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </el-tab-pane>
+
+    <!-- 修改栏 -->
+    <el-tab-pane label="修改公民信息" name="4">
+      <div style="text-align: center;">
+        <table style="display: inline-block;text-align: left;">
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">身份证号:</el-text>
+              <el-input class="inputBox" v-model="updCitizenID" placeholder="请输入身份证号" clearable maxlength="18"
+                oninput="value=value.replace(/[^\d.]/g,'')" style="width: 250px;" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">更新姓名:</el-text>
+              <el-input class="inputBox" v-model="updCitizenName" placeholder="请输入姓名" clearable />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">更新母亲身份证号:</el-text>
+              <el-input class="inputBox" v-model="updMotherCitizenID" placeholder="请输入身份证号" clearable maxlength="18"
+                oninput="value=value.replace(/[^\d.]/g,'')" style="width: 250px;" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">更新住址:</el-text>
+              <el-input class="inputBox" v-model="updCitizenAddress" placeholder="请输入地址" clearable />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-text class="noteText" type="primary">更新父亲身份证号:</el-text>
+              <el-input class="inputBox" v-model="updFatherCitizenID" placeholder="请输入身份证号" clearable maxlength="18"
+                oninput="value=value.replace(/[^\d.]/g,'')" style="width: 250px;" show-word-limit />
+            </td>
+            <td>
+              <el-text class="noteText" type="primary">更新性别:</el-text>
+              <el-select class="inputBox" v-model="updCitizenSex" placeholder="请选择" style="width: 181px;">
+                <el-option label="男" value="M"></el-option>
+                <el-option label="女" value="F"></el-option>
+              </el-select>
+            </td>
+          </tr>
+        </table>
+
+        <div class="seaButton">
+          <el-button type="primary" @click="updCitizenInfo">提交新的信息</el-button>
+        </div>
+      </div>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
 export default {
   data() {
     return {
-      IDNum: "",
-      citizenName: "",
-      gender: "全部",
+      anv: "1",
+      citizenID: '',
+      citizenName: '',
+      citizenAddress: '',
+      citizenSex: "",
       citizenInfo: [],
-      err: "人员不存在！",
-      boxContent:"",
-    };
+      addCitizenID: "",
+      addCitizenName: "",
+      addCitizenAddress: "",
+      addCitizenSex: "",
+      addMotherCitizenID: "",
+      addFatherCitizenID: "",
+      delCitizenID: "",
+      updCitizenID: "",
+      updCitizenName: "",
+      updCitizenAddress: "",
+      updCitizenSex: "",
+      updMotherCitizenID: "",
+      updFatherCitizenID: "",
+    }
   },
   methods: {
     handleMouseMove(event) {
@@ -73,28 +207,121 @@ export default {
       event.target.style.setProperty("--x", `${x}px`);
       event.target.style.setProperty("--y", `${y}px`);
     },
-    fetchCitizenInfo() {
-      axios
-        .post("http://localhost:7078/api/citizenInfo", {
-          IDNum: this.IDNum,
-          citizenName: this.citizenName,
-          gender: this.gender,
-        })
-        .then((res) => {
-          this.citizenInfo = res.data;
-          for (var i = 0; i < this.citizenInfo.length; i++) {
-            if (this.citizenInfo[i].gender === "F") {
-              this.citizenInfo[i].gender = "女";
-            } else if (this.citizenInfo[i].gender === "M") {
-              this.citizenInfo[i].gender = "男";
-            }
+    async fetchCitizenInfo() {
+      try {
+        const response = await axios.get(`http://localhost:7078/api/getCitizenInfo?citizenID=${encodeURIComponent(this.citizenID)}&citizenName=${encodeURIComponent(this.citizenName)}&citizenSex=${encodeURIComponent(this.citizenSex)}&citizenAddress=${encodeURIComponent(this.citizenAddress)}`);
+        this.citizenInfo = response.data.map(item => {
+          if (item.sex === 'M') {
+            return { ...item, sex: '男' };
+          } else if (item.sex === 'F') {
+            return { ...item, sex: '女' };
+          } else {
+            return item;
           }
-          // console.log(res.data);
-        })
-        .catch((err) => {
-          this.boxContent = this.err;
-          console.log(err);
         });
+      } catch (error) {
+        // 请求失败时的处理逻辑
+        ElMessage({
+          showClose: true,
+          message: "获取公民列表失败！",
+          type: 'error',
+          duration: 5000,
+        });
+      }
+    },
+    async addCitizenInfo() {
+      try {
+        const response = await axios.post(`http://localhost:7078/api/addCitizen?citizenID=${encodeURIComponent(this.addCitizenID)}&citizenName=${encodeURIComponent(this.addCitizenName)}&citizenSex=${encodeURIComponent(this.addCitizenSex)}&citizenAddress=${encodeURIComponent(this.addCitizenAddress)}&motherID=${encodeURIComponent(this.addMotherCitizenID)}&fatherID=${encodeURIComponent(this.addFatherCitizenID)}`);
+        if (typeof response.data == "string") {
+          ElMessage({
+            showClose: true,
+            message: response.data,
+            type: 'warning',
+            duration: 5000,
+          });
+        }
+        else {
+          await this.fetchCitizenInfo();
+          ElMessage({
+            showClose: true,
+            message: '新增公民成功! ',
+            type: 'success',
+            duration: 5000,
+          });
+        }
+      } catch (error) {
+        // 请求失败时的处理逻辑
+        ElMessage({
+          showClose: true,
+          message: "新增公民失败！",
+          type: 'error',
+          duration: 5000,
+        });
+      }
+    },
+    async delCitizenInfo() {
+      try {
+        const response = await axios.delete(`http://localhost:7078/api/delCitizen?citizenID=${encodeURIComponent(this.delCitizenID)}`);
+        if (typeof response.data == "string") {
+          ElMessage({
+            showClose: true,
+            message: response.data,
+            type: 'warning',
+            duration: 5000,
+          });
+        }
+        else {
+          await this.fetchCitizenInfo();
+          ElMessage({
+            showClose: true,
+            message: '删除公民成功! ',
+            type: 'success',
+            duration: 5000,
+          });
+        }
+      } catch (error) {
+        // 请求失败时的处理逻辑
+        ElMessage({
+          showClose: true,
+          message: "删除公民失败！",
+          type: 'error',
+          duration: 5000,
+        });
+      }
+    },
+    async updCitizenInfo() {
+      try {
+        const response = await axios.put(`http://localhost:7078/api/updCitizen?citizenID=${encodeURIComponent(this.updCitizenID)}&citizenName=${encodeURIComponent(this.updCitizenName)}&citizenSex=${encodeURIComponent(this.updCitizenSex)}&citizenAddress=${encodeURIComponent(this.updCitizenAddress)}&motherID=${encodeURIComponent(this.updMotherCitizenID)}&fatherID=${encodeURIComponent(this.updFatherCitizenID)}`);
+        if (typeof response.data == "string") {
+          ElMessage({
+            showClose: true,
+            message: response.data,
+            type: 'warning',
+            duration: 5000,
+          });
+        }
+        else {
+          await this.fetchCitizenInfo();
+          ElMessage({
+            showClose: true,
+            message: '修改成功! ',
+            type: 'success',
+            duration: 5000,
+          });
+        }
+      } catch (error) {
+        // 请求失败时的处理逻辑
+        ElMessage({
+          showClose: true,
+          message: "修改失败！",
+          type: 'error',
+          duration: 5000,
+        });
+      }
+    },
+    async back() {
+      this.citizenUseInfo = "";
+      this.showCitizen = true;
     },
   },
 };
@@ -102,262 +329,58 @@ export default {
 
 <style lang="postcss" scoped>
 .sub-header {
-    overflow: hidden;
-    display: flex;
-    position: absolute;
-    top: 70px;
-    left: 199px;
-    width: calc(100% - 199px);
-    height: 7vh;
-    min-height: 40px;
-    align-items: center; /* 文字竖直方向居中对齐 */
-    background-color: #1f2cdf;
-    box-shadow: inset -500px 0px 200px 0px rgba(4, 0, 113, 0.856);
-    color: #ffffff;
-    font-size: 28px;
-  }
-  .sub-header::before {
-    --size: 0;
-    content: '';
-    position: absolute;
-    left: var(--x);
-    top: var(--y);
-    width: var(--size);
-    height: var(--size);
-    background: radial-gradient(circle closest-side, #5a65ff, transparent);
-    transform: translate(-50%, -50%);
-    transition: width .2s ease, height .2s ease;
-  }
-  .sub-header:hover::before {
-    --size: 400px;
-  }
-
-.main {
-  margin-top:10vh;
+  overflow: hidden;
   display: flex;
-  justify-content: center;
-  align-content: center;
-  width: 100%;
-  height: 120vh;
-  min-width: 800px;
+  position: absolute;
+  top: 70px;
+  left: 199px;
+  width: calc(100% - 199px);
+  height: 7vh;
+  min-height: 40px;
+  align-items: center;
+  /* 文字竖直方向居中对齐 */
+  background-color: #1f2cdf;
+  box-shadow: inset -500px 0px 200px 0px rgba(4, 0, 113, 0.856);
+  color: #ffffff;
+  font-size: 28px;
 }
 
-.ssqinputinfobox {
-  position: relative;
-  width: 10vw;
+.sub-header::before {
+  --size: 0;
+  content: '';
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  background: radial-gradient(circle closest-side, #5a65ff, transparent);
+  transform: translate(-50%, -50%);
+  transition: width .2s ease, height .2s ease;
+}
+
+.sub-header:hover::before {
+  --size: 400px;
+}
+
+.noteText {
+  font-size: 18px;
+  text-align: center;
+  margin: 20px 0px;
+  width: 12vw;
   display: inline-block;
 }
 
-.ssqinputtext {
-  text-align: center;
-  margin-top: 7vh;
-  margin-left: 5vw;
-  margin-right: 2vw;
-  width: auto;
+.inputBox {
   display: inline-block;
+  width: 200px;
+  height: 32px;
+  margin: 20px 10px;
 }
 
-input {
-  margin-top: 5vh;
+.seaButton {
   display: block;
-  width: 10vw;
-  padding: 0.8em;
-  outline: none;
-  border: 1px solid #e3e3e3;
-  border-radius: 2px;
-}
-
-.zyhselect {
-  margin-top: 5vh;
-  display: block;
-  width: 10vw;
-  padding: 0.8em;
-  outline: none;
-  border: 1px solid #e3e3e3;
-  border-radius: 2px;
-  margin-left: 5vw;
-  margin-right: 2vw;
-  margin-top: 5vh;
-  margin-bottom: 8vh;
-}
-
-.inputcontainer,
-.selectcontainer {
-  display: flex;
-  align-content: center;
-}
-
-.btncontainer {
-  display: flex;
-  justify-content: center;
-}
-
-.leftbtn {
-  margin-right: 5vw;
-}
-
-.maintable {
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
   text-align: center;
-  margin: 20px auto;
-  width: 75vw;
-  height: 75vh;
-}
-
-table {
-  position: relative;
-  width: 100%;
-  border: 1px solid #ccc;
-  text-align: center;
-
-  tbody {
-    border-collapse: separate;
-    height: 100%;
-  }
-
-  td,
-  th {
-    padding: 5px;
-    border: 1px solid #ccc;
-  }
-}
-
-.rolltable {
-  top: -1px;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background: linear-gradient(#fff, transparent) top / 100% 100px,
-    radial-gradient(at 50% -15px, rgba(0, 0, 0, 0.8), transparent 70%) top / 100000% 12px;
-  background-repeat: no-repeat;
-  background-attachment: local, scroll;
-}
-
-.ssqbutton1 {
-  margin-top: 3vh;
-  margin-bottom: 5vh;
-  width: 150px;
-  height: 40px;
-  padding: 0 30px;
-  line-height: 60px;
-  text-align: center;
-  position: relative;
-  appearance: none;
-  background: #dfd8c8;
-  border: none;
-  color: white;
-  font-size: 1.2em;
-  cursor: pointer;
-  outline: none;
-  overflow: hidden;
-  border-radius: 100px;
-}
-
-.ssqbutton1 span {
-  position: relative;
-  top: -20%;
-}
-
-.ssqbutton1::before {
-  --size: 0;
-  content: "";
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--size);
-  height: var(--size);
-  background: radial-gradient(circle closest-side, #0b72bbb2, transparent);
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease;
-}
-
-.ssqbutton1:hover::before {
-  --size: 400px;
-}
-
-.ssqbutton1-1 {
-  margin: 10px auto;
-  width: 150px;
-  height: 40px;
-  padding: 0 30px;
-  line-height: 60px;
-  text-align: center;
-  position: relative;
-  appearance: none;
-  background: #0b71bb;
-  border: none;
-  color: white;
-  font-size: 1.2em;
-  cursor: pointer;
-  outline: none;
-  overflow: hidden;
-  border-radius: 0px;
-}
-
-.ssqbutton1-1 span {
-  position: relative;
-  top: -20%;
-}
-
-.ssqbutton1-1::before {
-  --size: 0;
-  content: "";
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--size);
-  height: var(--size);
-  background: radial-gradient(circle closest-side, #abc9de, transparent);
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease;
-}
-
-.ssqbutton1-1:hover::before {
-  --size: 400px;
-}
-
-.ssqbutton1-2 {
-  margin: 10px auto;
-  width: 150px;
-  height: 40px;
-  padding: 0 30px;
-  line-height: 60px;
-  text-align: center;
-  position: relative;
-  appearance: none;
-  background: #dfd8c8;
-  border: none;
-  color: white;
-  font-size: 1.2em;
-  cursor: pointer;
-  outline: none;
-  overflow: hidden;
-  border-radius: 0px;
-}
-
-.ssqbutton1-2 span {
-  position: relative;
-  top: -20%;
-}
-
-.ssqbutton1-2::before {
-  --size: 0;
-  content: "";
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--size);
-  height: var(--size);
-  background: radial-gradient(circle closest-side, #99c4e5, transparent);
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease;
-}
-
-.ssqbutton1-2:hover::before {
-  --size: 400px;
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 </style>

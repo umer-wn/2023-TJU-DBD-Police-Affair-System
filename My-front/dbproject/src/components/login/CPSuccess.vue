@@ -109,6 +109,7 @@ p {
   white-space: nowrap;
   color: transparent;
   background-color: rgba(10, 175, 230, 1);
+  background-clip: text;
   -webkit-background-clip: text;
 }
 
@@ -139,6 +140,7 @@ p::after {
     transparent 50rem,
     transparent 100%
   );
+  background-clip: text;
   -webkit-background-clip: text;
   background-size: 150% 100%;
   background-repeat: no-repeat;

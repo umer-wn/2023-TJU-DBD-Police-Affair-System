@@ -8,20 +8,34 @@
         <div class="syslog">系统日志</div>
         <button style="height:80%;position: absolute;width:50px;right:20px;background-color:#c1b598;color:white;cursor: pointer;border: none;">更多</button>
       </div>
+
+      <el-table v-if="auditInfo.length > 0" :data="auditInfo" stripe height="450" @wheel.passive.stop>
+        <el-table-column prop="username" label="用户名" />
+        <el-table-column prop="obJ_NAME" label="表名" />
+        <el-table-column prop="actioN_NAME" label="操作名称" />
+        <el-table-column prop="actioN_TIME" label="操作时间"/>
+      </el-table>
+     
     </div>
     <div style="width:31%;min-height: 100px;margin-left:5%;display:inline-block;background-color: rgba(255, 255, 255, 0.733);vertical-align: top;">
       <div class="syslogtitle">
         <div class="syslog">常用功能</div>
         <button style="height:80%;position: absolute;width:100px;right:10px;background-color:#c1b598;color:white;cursor: pointer;border: none;" @click="showMoreOptions">更多功能</button>
       </div>
+      
+
       <div style="min-width:100%">
         <el-button class="ssqfuncbutton" v-for="option in selectedOptions" :key="option" :label="option" @click="goTo(option)">{{ option }}</el-button>
       </div>
+
+     
     </div>
     <more-options-dialog @options-selected="handleOptionsSelected" ref="moreOptionsDialog"></more-options-dialog>
+    <el-calendar class="calendar"></el-calendar> 
   </template>
   
   <script>
+  import axios from "axios";
   import { ref } from "vue";
   import MoreOptionsDialog from '@/components/Menu/MoreOptionsDialog.vue';
   
@@ -30,7 +44,7 @@
       const containerHeight = ref(1500); // 初始化容器高度
       const minHeight= ref(1500);// 最小高度
       const maxScrollHeight= ref(3000)// 最大滚动高度，控制界面的延伸
-  
+
       const handleScroll = (event) => {
         if (event.deltaY > 0) {
           // 向下滚动
@@ -58,6 +72,8 @@
       myAuthority: localStorage.getItem('authority'),
       myPoliceNumber: localStorage.getItem('policeNumber'),
       dialogVisible: false,
+
+      auditInfo:[],
       };
     },
     components: {
@@ -135,12 +151,25 @@
       console.log(savedOptions)
       this.selectedOptions = JSON.parse(savedOptions);
       }
+  
+      axios.post(`http://localhost:7078/api/audit`,{
+          myAuthority: localStorage.getItem('authority'),
+          myPoliceNumber: localStorage.getItem('policeNumber'), 
+      })
+      .then((response) => {
+        this.auditInfo = response.data;
+      })
+      .catch ((error) =>  {
+        // 请求失败时的处理逻辑
+        alert(error);
+        console.log("函数出错：" + error);
+      } )
+    
     },
   };
   </script>
   
   <style scoped>
-  
   .syslogtitle {
         width: 100%;
         height: 30px;
@@ -164,6 +193,15 @@
         margin-top:5px;
         margin-left:28px;
         width:100px;
+      }
+      .calendar 
+      {
+        display: float;
+        position: absolute;
+        top:40vh; /* 顶部距离为0，即页面上边缘 */
+        right: 1vw; /* 右侧距离为0，即页面右边缘 */
+        overflow: auto;
+        width: 31%;
       }
   </style>
   

@@ -36,7 +36,8 @@
   </template>
 
 <script>
-import axios from 'axios'
+import axios from '../../api/request';
+
 export default {
   data() {
     return {
@@ -168,6 +169,8 @@ export default {
   .reasoninput{
     margin-left: 120px;
     width:200px;
+    max-height: 400px;
+    overflow: auto;
     border: 1px solid #0051ff;
     box-shadow: #0051ff3a 0px 4px 4px;
   }
