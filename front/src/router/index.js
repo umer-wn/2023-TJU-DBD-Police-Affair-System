@@ -15,7 +15,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path:'/',
+    path:'/register',
     name:"register",
     component:register
   },
@@ -30,7 +30,7 @@ const routes = [
     component: MainPage
   },
   {
-    path:'/familybgcheck',
+    path:'/',
     name:'FamilybgCheck',
     component:FamilybgCheck
   },

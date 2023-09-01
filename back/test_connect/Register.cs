@@ -12,7 +12,7 @@ using web.DTO_group4;
 namespace Register
 {
     [ApiController]
-    
+
     public class Register : ControllerBase
     {
         private readonly OracleConnection _connection;

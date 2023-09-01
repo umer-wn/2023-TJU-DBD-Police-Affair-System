@@ -17,6 +17,7 @@
     "axios": "^1.4.0",
     "echarts": "^5.4.3",
     "element-ui": "^2.15.14",
+    "leader-line": "^1.0.7",
     "vue": "^2.5.2",
     "vue-router": "^3.6.5",
     "vue-svg-map": "^1.2.0"
