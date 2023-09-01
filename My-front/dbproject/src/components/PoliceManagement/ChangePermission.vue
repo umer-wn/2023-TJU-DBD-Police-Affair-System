@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import axios from '../../api/request';
+import axios from '../../api/request'
 
 export default {
   data() {
@@ -149,7 +149,6 @@ export default {
   .content {
     width: 50%;
     min-width: 1000px;
-    height: 850px;
     box-shadow: 0px 0px 10px 2px rgba(123, 103, 75, 0.427);
     background-color: rgba(255, 255, 255, 0.616); 
     margin-bottom: 30px;

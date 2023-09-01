@@ -5,7 +5,6 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Drawing;
-using System.Security.Claims;
 using web.DTO_group2;
 
 
@@ -23,42 +22,33 @@ namespace WebApplication3
         {
             _connection = connection;
         }
-
+        
         [HttpPost]
         public ActionResult<string> ChangePoaition(Police p)
         {
-            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
-            // 检查用户权限，如果权限代码为"4"或以上，则允许查询
-            if (userRole != null && int.TryParse(userRole, out int roleCode) && roleCode >= 4)
+            try
             {
-                try
-                {
-                    _connection.Open();
-                    string sql = "UPDATE POLICEMEN SET POSITION = :temp1 WHERE POLICE_NUMBER = :tmep2";
-                    OracleCommand command = new OracleCommand(sql, _connection);
-                    command.Parameters.Add(new OracleParameter("temp1", p.position));
-                    command.Parameters.Add(new OracleParameter("temp2", p.police_number));
-                    int i = command.ExecuteNonQuery();
-                }
-
-
-                catch (Exception ex)
-                {
-                    // 处理异常或记录错误日志
-                    return BadRequest("权限修改失败：" + ex.Message);
-                }
-                finally
-                {
-                    _connection.Close();
-                }
-
-                return Ok("123");
+                _connection.Open();
+                string sql = "UPDATE POLICEMEN SET POSITION = :temp1 WHERE POLICE_NUMBER = :tmep2";
+                OracleCommand command = new OracleCommand(sql, _connection);
+                command.Parameters.Add(new OracleParameter("temp1", p.position));
+                command.Parameters.Add(new OracleParameter("temp2", p.police_number));
+                int i = command.ExecuteNonQuery();
             }
-            else
+
+
+            catch (Exception ex)
             {
-                return Unauthorized(); // 权限不足
+                // 处理异常或记录错误日志
+                return BadRequest("权限修改失败：" + ex.Message);
             }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return Ok("123");
         }
+
     }
 }

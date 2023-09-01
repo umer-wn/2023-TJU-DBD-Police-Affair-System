@@ -95,7 +95,7 @@ namespace WebApplication1
             }
             else if (n == 1)
                 return ("已存在该申请");
-            return Ok("权限修改成功");
+            return Ok("申请提交成功");
         }
     }
 }

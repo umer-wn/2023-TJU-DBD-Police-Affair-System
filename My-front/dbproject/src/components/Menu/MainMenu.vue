@@ -86,6 +86,18 @@
               警员权限修改
             </el-menu-item>
             <el-menu-item
+              v-if="myAuthority >= 2"
+              index="/mainMenu/PermissionManage"
+              @click="scrollToTop"
+            >
+              <img
+                class="nav-icon-for-menu-item"
+                src="../../assets/logos/PermissionManage.png"
+                alt="Icon"
+              />
+              修改申请管理
+            </el-menu-item>
+            <el-menu-item
               v-if="myAuthority >= 1"
               index="/mainMenu/PoliceAssessment"
               @click="scrollToTop"

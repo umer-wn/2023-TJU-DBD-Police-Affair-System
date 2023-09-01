@@ -31,13 +31,15 @@
       </div>
       <el-button class="cpbutton" style="line-height: 40px;" @click="submitPermission" :disabled="disablesubmit"><span>提交申请</span></el-button>
       <button class="cpbutton" style="margin-top:20px;" @click="returntoCP"><span>返回上一级</span></button>
+      <el-dialog title="提示" v-model="submittedSucessfully" @close="handleClose">{{ this.returnmessage }}
+        <el-button style="margin-top:20px;right:20px;display:block" @click="returntoCP"><span>返回</span></el-button>
+      </el-dialog>
     </div>
   </div>
   </template>
 
 <script>
-import axios from '../../api/request';
-
+import axios from "../../api/request"
 export default {
   data() {
     return {
@@ -47,7 +49,9 @@ export default {
       selectedLevel: '0', // 默认选择的权限级别为0
       reason: '', // 申请修改权限的理由
       disablesubmit: true,
-      status: '待处理'
+      status: '待处理',
+      submittedSucessfully: false,
+      returnmessage:'',
     }
   },
   watch: {
@@ -61,7 +65,10 @@ export default {
       // 在这里处理提交权限的逻辑
       axios.post('http://localhost:7078/api/permit', {h_number: this.my_number, s_number: this.parameter1, F_level: '0', L_level: this.selectedLevel, status: this.status, reason: this.reason})
         .then(response => {
-          this.searchResult = response.data
+          console.log(response);
+          this.searchResult = response.data;
+          this.returnmessage=response.data;
+          this.submittedSucessfully = true;
         })
     },
     handleMouseMove(event) {
@@ -72,8 +79,15 @@ export default {
       event.target.style.setProperty('--y', `${y}px`);
     },
     returntoCP(){
-      this.$router.push('/mainMenu/ChangePermission');
-    }
+      if(this.returnmessage=='申请提交成功'){
+        this.$router.push('/mainMenu/ChangePermission');
+      }else{
+        this.submittedSucessfully = false;
+      }
+    },
+    handleClose() {
+      this.submittedSucessfully = false;
+    },
   }
 }
 </script>
@@ -169,8 +183,6 @@ export default {
   .reasoninput{
     margin-left: 120px;
     width:200px;
-    max-height: 400px;
-    overflow: auto;
     border: 1px solid #0051ff;
     box-shadow: #0051ff3a 0px 4px 4px;
   }

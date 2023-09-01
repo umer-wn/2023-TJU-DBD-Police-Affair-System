@@ -12,7 +12,7 @@
         <div class="inputContainer">
           <div class="inputTitle">警号</div>
           <div>
-            <input class="input" v-model="signinInfo.police_number" />
+            <input class="input" v-model="signinInfo.police_number" /><span class="ssqpoptip">请输入7位警号</span>
             <div
               class="message"
               v-show="this.police_number_message !== ''"
@@ -33,7 +33,7 @@
         <div class="inputContainer">
           <div class="inputTitle">身份证号</div>
           <div>
-            <input class="input" v-model="signinInfo.ID_number" />
+            <input class="input" v-model="signinInfo.ID_number" /><span class="ssqpoptip">请输入正确的身份证号</span>
             <div class="message" v-show="this.ID_number_message !== ''" :style="{ color: this.ID_number_color }" >
               {{ this.ID_number_message }}
             </div>
@@ -56,7 +56,7 @@
         <div class="inputContainer">
           <div class="inputTitle">民族</div>
           <div>
-            <input class="input" v-model="signinInfo.nation" />
+            <input class="input" v-model="signinInfo.nation" /><span class="ssqpoptip">请以“族”结尾!</span>
             <div
               class="message"
               v-show="this.nation_message !== ''"
@@ -77,7 +77,7 @@
         <div class="inputContainer">
           <div class="inputTitle">邮箱</div>
           <div>
-            <input class="input" v-model="signinInfo.email" />
+            <input class="input" v-model="signinInfo.email" /><span class="ssqpoptip">请输入正确的邮箱地址</span>
             <div
               class="message"
               v-show="this.email_message !== ''"
@@ -353,7 +353,6 @@
   .content {
     width: 50%;
     min-width: 1000px;
-    height: 850px;
     position: relative;
     box-shadow: 0px 0px 10px 2px rgba(123, 103, 75, 0.427);
     background-color: rgba(255, 255, 255, 0.616); 
@@ -400,7 +399,7 @@
     text-shadow: #ba9c51 0px 0px 1px;
   }
   .input {
-    width: 75%;
+    width: 70%;
     height: 30px;
     display:inline-block;
     outline: none;
@@ -419,8 +418,63 @@
     box-shadow: #3d4cc1 0px 0px 2px;
   }
 
+  input:not(:focus) + .ssqpoptip {
+    transform: scale(0);
+    animation: elastic-dec .25s;
+  }
+
+  input:focus + .ssqpoptip {
+    transform: scale(1);
+    animation: elastic-grow .45s;
+  }
+  .ssqpoptip {
+    display: inline-block;
+    width: 150px;
+    font-size: 13px;
+    color:#867656;
+    padding: .6em;
+    background: #fafafa;
+    position: relative;
+    margin-left: -140px;
+    margin-top: 3px;
+    border-radius: 2px;
+    filter: drop-shadow(0 0 1px #c9bb9e);
+    transform-origin: 15px -6px;
+  }
+  .ssqpoptip::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    border: 9px solid transparent;
+    border-bottom-color: #fafafa;
+    border-top-width: 0;
+    padding: 3px;
+  }
+  @keyframes elastic-grow {
+    from {
+        transform: scale(0);
+    }
+    70% {
+        transform: scale(1.1);
+        animation-timing-function: cubic-bezier(.1, .25, .1, .25);
+    }
+  }
+  @keyframes elastic-dec {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(0);
+        animation-timing-function: cubic-bezier(.25, .1, .25, .1);
+    }
+  }
+
+* {
+    box-sizing: border-box;
+}
   .select {
-    width: 75%;
+    width: 70%;
     height: 30px;
     border: 1px solid #e3e3e3;
     box-shadow: #b4a078 0px 0px 2px;
