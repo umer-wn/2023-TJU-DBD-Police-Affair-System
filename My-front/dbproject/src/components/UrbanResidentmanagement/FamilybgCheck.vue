@@ -45,7 +45,7 @@
           @click="restart(index)"
         >
           <CriminalInfo
-            :imgUrl="imageUrl"
+            :imgUrl="item.gender==='F'?femaleUrl:maleUrl"
             :content="item"
           />
         </div>
@@ -67,7 +67,8 @@ export default {
     return {
       inputID: "",
       content: [],
-      imageUrl: require("@/assets/criminal.png"),
+      maleUrl: require("@/assets/male.png"),
+      femaleUrl:require("@/assets/female.png"),
       placeholder: "请输入居民身份证号",
       isGraphContainerVisible: false,
       readyToRenderGraph: false,
@@ -225,7 +226,7 @@ export default {
       }
     },
     flushLine() {
-      for (let i = 0; i < this.lineList.length; i++) this.lineList[i].remove();
+      this.lineList.forEach(line=>(line.remove()));
       this.lineList = [];
     },
     setLineObvious(id){

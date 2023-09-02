@@ -30,9 +30,10 @@ namespace FamilybgCheck
         }
         private void searchParent(ref result output, string targetID)
         {
-            string sql = "select ID_num,citizen_name,gender,case_type " +
-                "from citizen natural join related natural join cases " +
-                "where ID_num in (" +
+            string sql = "select citizen.ID_num,citizen_name,gender,case_type " +
+                "from citizen inner join related on citizen.ID_num=related.ID_num " +
+                "inner join cases on related.case_ID=cases.case_ID " +
+                "where citizen.ID_num in (" +
                 "select father_ID " +
                 "from citizen " +
                 "where ID_num=:temp) " +
@@ -62,9 +63,10 @@ namespace FamilybgCheck
             {
                 return;
             }
-            sql = "select ID_num,citizen_name,gender,case_type " +
-                "from citizen natural join related natural join cases " +
-                "where ID_num in (" +
+            sql = "select citizen.ID_num,citizen_name,gender,case_type " +
+                "from citizen inner join related on citizen.ID_num=related.ID_num " +
+                "inner join cases on related.case_ID=cases.case_ID " +
+                "where citizen.ID_num in (" +
                 "select mother_ID " +
                 "from citizen " +
                 "where ID_num=:temp) " +
@@ -97,10 +99,11 @@ namespace FamilybgCheck
         }
         private void searchChild(ref result output, string targetID)
         {
-            string sql = "select ID_num,citizen_name,gender,case_type " +
-                "from citizen natural join related natural join cases " +
+            string sql = "select citizen.ID_num,citizen_name,gender,case_type " +
+                "from citizen inner join related on citizen.ID_num=related.ID_num "+
+                "inner join cases on related.case_ID=cases.case_ID  " +
                 "where mother_ID=:target or " + "father_ID=:target " +
-                "order by ID_num,case_type";
+                "order by citizen.ID_num,case_type";
 
             try
             {
@@ -161,9 +164,10 @@ namespace FamilybgCheck
             string inputText = requestData.InputText; // 从请求的JSON数据中获取输入的字符串                                
             result queryResult = new result();
 
-            string query = "select ID_num,citizen_name,gender,case_type " +
-                "from citizen natural join related natural join cases " +
-                "where ID_num=:temp and related_type='犯人' " +
+            string query = "select citizen.ID_num,citizen_name,gender,case_type " +
+                "from citizen inner join related on citizen.ID_num=related.ID_num " +
+                "inner join cases on related.case_ID=cases.case_ID " +
+                "where citizen.ID_num=:temp and related_type='犯人' " +
                 "order by case_type";
 
             try
