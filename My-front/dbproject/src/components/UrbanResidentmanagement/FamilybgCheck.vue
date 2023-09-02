@@ -77,6 +77,7 @@ export default {
       curInfo: 0, // 当前加载位置
       infoList: [], // 用于存储渲染的信息
       lineList: [], // 用于渲染线条
+      hasFlushed:false,
     };
   },
   watch: {
@@ -93,15 +94,14 @@ export default {
           if (this.curInfo < this.content.people.length) {
             this.infoList.push(this.content.people[this.curInfo]);
             this.curInfo++;
-          } else if (this.lineList.length === 0) {
+          } else if (this.lineList.length === 0 && !this.hasFlushed) {
             // 此时人物已全部添加
             for (
               var index = 1;
               index < this.infoList.length && index <= 2;
               index++
-            )
-              this.lineList.push(
-                new LeaderLine(
+            ){
+              const myline=new LeaderLine(
                   document.getElementById("" + 0),
                   document.getElementById("" + index),
                   {
@@ -117,15 +117,15 @@ export default {
                     },
                     endPlugColor:"#1df3f9"
                   }
-                )
-              );
+                );
+              this.lineList.push(myline);
+            }
             for (
               var childIndex = 3;
               childIndex < this.infoList.length;
               childIndex++
-            )
-              this.lineList.push(
-                new LeaderLine(
+            ){
+              const myline=new LeaderLine(
                   document.getElementById("" + 0),
                   document.getElementById("" + childIndex),
                   {
@@ -140,8 +140,9 @@ export default {
                     },
                     endPlugColor:"#1df3f9"
                   }
-                )
-              );
+                );
+              this.lineList.push(myline);
+            }
           }
         }, 400);
       },
@@ -204,6 +205,7 @@ export default {
         .then((response) => {
           if (response.data.people.length !== 0) {
             // 有数据
+            this.hasFlushed=false;
             this.content = response.data;
             this.isGraphContainerVisible = true;
             this.isError = false;
@@ -228,6 +230,7 @@ export default {
     flushLine() {
       this.lineList.forEach(line=>(line.remove()));
       this.lineList = [];
+      this.hasFlushed=true;
     },
     setLineObvious(id){
       if (id>this.lineList.length || id==0)
@@ -241,7 +244,8 @@ export default {
     }
   },
   beforeRouteLeave(){
-    this.lineList.forEach(line => line.remove());
+    console.log("end");
+    this.flushLine();
   }
 };
 </script>
