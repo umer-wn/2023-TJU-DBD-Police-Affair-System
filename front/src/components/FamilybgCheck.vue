@@ -15,10 +15,12 @@
         @keydown.enter="query"
         class="inputBox"
         :class="{ errorAnime: isError }"
+        :id="10"
       />
       <button
         @click="query"
         class="button"
+        :id="20"
       >查询</button>
     </div>
     <!-- element:family graph container -->
@@ -30,12 +32,19 @@
       <!-- this part is for info render,
      step1: calc position and sequential for each info
      step2: render by sequential -->
-      <transitionGroup name="fade" tag="ul">
+      <transitionGroup
+        name="fade"
+        tag="ul"
+      >
         <div
           class="imgCtrl"
           v-for="(item, index) in this.infoList"
           :style="getPos(index)"
           :key="index"
+          :id="index"
+          @mouseenter="setLineObvious(index)"
+          @mouseleave="setLineDefault(index)"
+          @click="restart(index)"
         >
           <CriminalInfo
             :imgUrl="imageUrl"
@@ -51,15 +60,15 @@
 <script>
 import CriminalInfo from "./CriminalInfo.vue";
 import axios from "axios";
+import LeaderLine from "leader-line";
 export default {
   components: {
     CriminalInfo,
   },
-  data () {
+  data() {
     return {
       inputID: "",
       content: [],
-      curLevel: -1,
       imageUrl: require("@/assets/criminal.png"),
       placeholder: "请输入居民身份证号",
       isGraphContainerVisible: false,
@@ -68,30 +77,91 @@ export default {
       // 以下为渲染信息相关
       curInfo: 0, // 当前加载位置
       infoList: [], // 用于存储渲染的信息
+      lineList: [], // 用于渲染线条
     };
   },
   watch: {
     content: {
       handler() {
         this.infoList = [];
+        this.lineList = [];
         this.curInfo = 0;
         setTimeout(() => {
           this.readyToRenderGraph = true;
-          setInterval(() => {
-            if (this.curLevel < 2) this.curLevel++;
-          }, 500);
         }, 500);
         // 设置infoList
         setInterval(() => {
           if (this.curInfo < this.content.people.length) {
             this.infoList.push(this.content.people[this.curInfo]);
             this.curInfo++;
+          } else if (this.lineList.length === 0) {
+            // 此时人物已全部添加
+            for (
+              var index = 1;
+              index < this.infoList.length && index <= 2;
+              index++
+            )
+              this.lineList.push(
+                new LeaderLine(
+                  document.getElementById("" + 0),
+                  document.getElementById("" + index),
+                  {
+                    startSocket: "top",
+                    endSocket: "bottom",
+                    path: "magnet",
+                    size:3,
+                    dash:{animation:false},
+                    gradient: {
+                      startColor: "#2e17c3",
+                      endColor: "#1df3f9",
+                      animation:"true"
+                    },
+                    endPlugColor:"#1df3f9"
+                  }
+                )
+              );
+            for (
+              var childIndex = 3;
+              childIndex < this.infoList.length;
+              childIndex++
+            )
+              this.lineList.push(
+                new LeaderLine(
+                  document.getElementById("" + 0),
+                  document.getElementById("" + childIndex),
+                  {
+                    startSocket: "bottom",
+                    endSocket: "top",
+                    path: "magnet",
+                    size:3,
+                    dash:{animation:false},
+                    gradient: {
+                      startColor: "#2e17c3",
+                      endColor: "#1df3f9",
+                    },
+                    endPlugColor:"#1df3f9"
+                  }
+                )
+              );
           }
-        }, 300);
+        }, 400);
       },
     },
   },
   methods: {
+    restart(index){
+      if (index==0 || this.infoList[index].name=="")
+        return;
+      // 换中心人物的处理函数
+      /* 准备工作区 */
+      this.flushLine(); // 清空指示线
+      this.inputID=this.infoList[index].id;
+
+      /*************/
+      /* 重置工作区 */
+      this.query();
+      /*************/
+    },
     getPos(index) {
       let width = this.$el.offsetWidth;
       let height = this.$el.offsetHeight;
@@ -109,8 +179,7 @@ export default {
         // 孩子关系
         let leftChild = this.content.people.length - 3;
         top = `${(height / 4) * 3 - 80}px`;
-        left = `${width/(leftChild+1)*(index-2) - 200}px`;
-        console.log(leftChild,index,left);
+        left = `${(width / (leftChild + 1)) * (index - 2) - 200}px`;
       }
       return {
         top,
@@ -129,7 +198,6 @@ export default {
       }, 500);
     },
     query() {
-      this.curLevel = -1;
       axios
         .post("http://localhost:7078/api/FamilybgCheck", {
           InputText: this.inputID,
@@ -142,12 +210,13 @@ export default {
             this.isError = false;
           } else {
             this.startErrorAnime();
+            this.flushLine();
             this.readyToRenderGraph = false;
           }
         })
         .catch((error) => {
           console.error(error);
-          this.startErrorAnime();
+          alert("网络错误，请重试");
         });
     },
     changeInputStatus() {
@@ -157,8 +226,20 @@ export default {
         this.placeholder = "";
       }
     },
+    flushLine() {
+      for (let i = 0; i < this.lineList.length; i++) this.lineList[i].remove();
+      this.lineList = [];
+    },
+    setLineObvious(id){
+      this.lineList[id-1].setOptions({size:6,dash:{animation:true}});
+    },
+    setLineDefault(id){
+      this.lineList[id-1].setOptions({size:3,dash:{animation:false}});
+    }
   },
-  mounted() {},
+  unmounted() {
+    flushLine();
+  },
 };
 </script>
 
@@ -282,7 +363,7 @@ export default {
 /* animation for info show */
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  transition: all 0.4s ease;
 }
 
 /* 2. 声明进入和离开的状态 */
@@ -292,5 +373,11 @@ export default {
   transform: scaleY(0.01) translate(30px, 0);
 }
 
-
+.slash {
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-left: 100px solid black;
+}
 </style>

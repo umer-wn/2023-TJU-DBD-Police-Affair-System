@@ -6,22 +6,33 @@ import ForPassword from '@/components/Password/ForPassword.vue';
 import MainPage from '@/components/MainPage.vue';
 import CPSuccess from '@/components/Password/CPSuccess.vue'  // 修改密码成功后的界面
 import civilianInfoRequest from '@/components/CivilianInfo/civilianInfoRequest.vue'
-
+import FamilybgCheck from '@/components/FamilybgCheck.vue'
 import searchWagesRecord from '@/components/salary/searchWagesRecord.vue'
 import newRecord from '@/components/salary/newRecord.vue'
 import dataStatistics from '@/components/salary/dataStatistics.vue'
+import register from '@/components/Register.vue'
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path:'/register',
+    name:"register",
+    component:register
+  },
   {
     path: "/login",
     name: "login",
     component: Login
   },
   {
-    path: '/',
+    path: '/main',
     name: 'main',
     component: MainPage
+  },
+  {
+    path:'/',
+    name:'FamilybgCheck',
+    component:FamilybgCheck
   },
   {
     path: "/change-password",

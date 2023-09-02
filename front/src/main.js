@@ -10,6 +10,7 @@ import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
 import axios from 'axios'
+import ElementUI from 'element-ui'
 Vue.prototype.$http = axios
 
 Vue.use(ElementUI)

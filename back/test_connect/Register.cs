@@ -12,7 +12,7 @@ using web.DTO_group4;
 namespace Register
 {
     [ApiController]
-    
+
     public class Register : ControllerBase
     {
         private readonly OracleConnection _connection;
@@ -24,9 +24,8 @@ namespace Register
         [Route("api/Register")]
         public ActionResult<string> InsertRegister(RequestData requestData)
         {
-           
             string result = "success";
-            string pwd = requestData.police_number;
+            string pwd = requestData.police_number; // 密码默认警号
             string query = "insert into policemen " +
                 "values(:police_number," +
                 ":police_name," +
@@ -37,9 +36,20 @@ namespace Register
                 ":phone_number," +
                 ":email," +
                 ":status," +
-                ":position," +
-                ":pwd)";
-
+                ":position)";
+            decimal author = 0;
+            if (requestData.position=="学员")
+                author = 0;
+            else if (requestData.position=="警员")
+                author = 1;
+            else if (requestData.position == "警司")
+                author = 2;
+            else if (requestData.position == "警督")
+                author = 3;
+            else if (requestData.position == "警监")
+                author = 4;
+            else if (requestData.position == "总警监")
+                author = 5;
             try
             {
                 _connection.Open();
@@ -55,7 +65,6 @@ namespace Register
                 command.Parameters.Add(new OracleParameter("email", requestData.email));
                 command.Parameters.Add(new OracleParameter("status", requestData.status));
                 command.Parameters.Add(new OracleParameter("position", requestData.position));
-                command.Parameters.Add(new OracleParameter("pwd", pwd));
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -68,8 +77,33 @@ namespace Register
             {
                 _connection.Close();
             }
+            // 设置初始密码
+            string pwdInsert = "insert into police_account " +
+                "values(:police_number, " +
+                ":key, " +
+                ":authority)";
+            try
+            {
+                _connection.Open();
+                OracleCommand orclcmd= new OracleCommand(pwdInsert, _connection);
+                orclcmd.Parameters.Add(new OracleParameter("police_number", requestData.police_number));
+                orclcmd.Parameters.Add(new OracleParameter("key", pwd));
+                orclcmd.Parameters.Add(new OracleParameter("authority", OracleDbType.Decimal));
+                orclcmd.Parameters["authority"].Value = author;
+                orclcmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result = "fail";
+                return Ok(result);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        
             return Ok(result);
-
         }
 
         [HttpPost]
