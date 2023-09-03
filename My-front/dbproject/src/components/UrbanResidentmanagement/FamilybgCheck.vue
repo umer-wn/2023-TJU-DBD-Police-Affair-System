@@ -1,12 +1,8 @@
 <template>
-
   <div class="container">
     <!-- main window -->
     <!-- element:query inputbox and confirm button-->
-    <div
-      class="queryBox"
-      :class="{ upBox: isGraphContainerVisible}"
-    >
+    <div class="queryBox" :class="{ upBox: isGraphContainerVisible }">
       <input
         type="text"
         v-model="inputID"
@@ -17,24 +13,15 @@
         class="inputBox"
         :class="{ errorAnime: isError }"
       />
-      <button
-        @click="query"
-        class="button"
-      >查询</button>
+      <button @click="query" class="button">查询</button>
     </div>
     <!-- element:family graph container -->
     <!-- graph is where criminal info is shown -->
-    <div
-      v-if="readyToRenderGraph"
-      class="graphContainer"
-    >
+    <div v-if="readyToRenderGraph" class="graphContainer">
       <!-- this part is for info render,
      step1: calc position and sequential for each info
      step2: render by sequential -->
-      <transitionGroup
-        name="fade"
-        tag="ul"
-      >
+      <transitionGroup name="fade" tag="ul">
         <div
           class="imgCtrl"
           v-for="(item, index) in this.infoList"
@@ -46,12 +33,11 @@
           @click="restart(index)"
         >
           <CriminalInfo
-            :imgUrl="imageUrl"
+            :imgUrl="item.gender === 'F' ? femaleUrl : maleUrl"
             :content="item"
           />
         </div>
       </transitionGroup>
-
     </div>
   </div>
 </template>
@@ -68,8 +54,9 @@ export default {
     return {
       inputID: "",
       content: [],
-      imageUrl: require("@/assets/criminal.png"),
-      placeholder: "请输入居民身份证号",
+      maleUrl: require("@/assets/male.png"),
+      femaleUrl: require("@/assets/female.png"),
+      placeholder: "请输入居民身份证号以进行家族背景调查",
       isGraphContainerVisible: false,
       readyToRenderGraph: false,
       isError: false, // 控制错误动画
@@ -77,6 +64,7 @@ export default {
       curInfo: 0, // 当前加载位置
       infoList: [], // 用于存储渲染的信息
       lineList: [], // 用于渲染线条
+      hasFlushed: false,
     };
   },
   watch: {
@@ -93,68 +81,67 @@ export default {
           if (this.curInfo < this.content.people.length) {
             this.infoList.push(this.content.people[this.curInfo]);
             this.curInfo++;
-          } else if (this.lineList.length === 0) {
+          } else if (this.lineList.length === 0 && !this.hasFlushed) {
             // 此时人物已全部添加
             for (
               var index = 1;
               index < this.infoList.length && index <= 2;
               index++
-            )
-              this.lineList.push(
-                new LeaderLine(
-                  document.getElementById("" + 0),
-                  document.getElementById("" + index),
-                  {
-                    startSocket: "top",
-                    endSocket: "bottom",
-                    path: "magnet",
-                    size:3,
-                    dash:{animation:false},
-                    gradient: {
-                      startColor: "#2e17c3",
-                      endColor: "#1df3f9",
-                      animation:"true"
-                    },
-                    endPlugColor:"#1df3f9"
-                  }
-                )
+            ) {
+              const myline = new LeaderLine(
+                document.getElementById("" + 0),
+                document.getElementById("" + index),
+                {
+                  startSocket: "top",
+                  endSocket: "bottom",
+                  path: "magnet",
+                  size: 3,
+                  dash: { animation: false },
+                  gradient: {
+                    startColor: "#2e17c3",
+                    endColor: "#1df3f9",
+                    animation: "true",
+                  },
+                  endPlugColor: "#1df3f9",
+                }
               );
+              this.lineList.push(myline);
+            }
             for (
               var childIndex = 3;
               childIndex < this.infoList.length;
               childIndex++
-            )
-              this.lineList.push(
-                new LeaderLine(
-                  document.getElementById("" + 0),
-                  document.getElementById("" + childIndex),
-                  {
-                    startSocket: "bottom",
-                    endSocket: "top",
-                    path: "magnet",
-                    size:3,
-                    dash:{animation:false},
-                    gradient: {
-                      startColor: "#2e17c3",
-                      endColor: "#1df3f9",
-                    },
-                    endPlugColor:"#1df3f9"
-                  }
-                )
+            ) {
+              const myline = new LeaderLine(
+                document.getElementById("" + 0),
+                document.getElementById("" + childIndex),
+                {
+                  startSocket: "bottom",
+                  endSocket: "top",
+                  path: "magnet",
+                  size: 3,
+                  dash: { animation: false },
+                  gradient: {
+                    startColor: "#2e17c3",
+                    endColor: "#1df3f9",
+                  },
+                  endPlugColor: "#1df3f9",
+                }
               );
+              this.lineList.push(myline);
+            }
           }
         }, 400);
       },
     },
   },
   methods: {
-    restart(index){
-      if (index==0 || this.infoList[index].name=="")
-        return;
+    restart(index) {
+      if (index == 0 || this.infoList[index].name == "") return;
       // 换中心人物的处理函数
       /* 准备工作区 */
       this.flushLine(); // 清空指示线
-      this.inputID=this.infoList[index].id;
+      this.inputID = this.infoList[index].id;
 
       /*************/
       /* 重置工作区 */
@@ -198,18 +185,21 @@ export default {
     },
     query() {
       axios
-        .post("http://localhost:7078/api/FamilybgCheck", {
+        .post(`http://localhost:7078/api/FamilybgCheck`, {
           InputText: this.inputID,
         })
         .then((response) => {
           if (response.data.people.length !== 0) {
             // 有数据
+            this.flushLine();  //2023.9.3 测试一下效果
+            this.hasFlushed = false;
             this.content = response.data;
             this.isGraphContainerVisible = true;
             this.isError = false;
           } else {
             this.startErrorAnime();
             this.flushLine();
+            location.reload(); //2023.9.3 刷新界面
             this.readyToRenderGraph = false;
           }
         })
@@ -220,63 +210,33 @@ export default {
     },
     changeInputStatus() {
       if (this.placeholder === "") {
-        this.placeholder = "请输入居民身份证号";
+        this.placeholder = "请输入居民身份证号以进行家族背景调查";
       } else {
         this.placeholder = "";
       }
     },
     flushLine() {
-      for (let i = 0; i < this.lineList.length; i++) this.lineList[i].remove();
+      this.lineList.forEach((line) => line.remove());
       this.lineList = [];
+      this.hasFlushed = true;
     },
-    setLineObvious(id){
-      if (id>this.lineList.length || id==0)
-        return;
-      this.lineList[id-1].setOptions({size:6,dash:{animation:true}});
+    setLineObvious(id) {
+      if (id > this.lineList.length || id == 0) return;
+      this.lineList[id - 1].setOptions({ size: 6, dash: { animation: true } });
     },
-    setLineDefault(id){
-      if (id>this.lineList.length || id==0)
-        return;
-      this.lineList[id-1].setOptions({size:3,dash:{animation:false}});
-    }
+    setLineDefault(id) {
+      if (id > this.lineList.length || id == 0) return;
+      this.lineList[id - 1].setOptions({ size: 3, dash: { animation: false } });
+    },
   },
-  beforeRouteLeave(){
-    this.lineList.forEach(line => line.remove());
-  }
+  beforeRouteLeave() {
+    console.log("end");
+    this.flushLine();
+  },
 };
 </script>
 
 <style scoped>
-.sub-header {
-    overflow: hidden;
-    display: flex;
-    position: absolute;
-    top: 70px;
-    left: 199px;
-    width: calc(100% - 199px);
-    height: 7vh;
-    min-height: 40px;
-    align-items: center; /* 文字竖直方向居中对齐 */
-    background-color: #1f2cdf;
-    box-shadow: inset -500px 0px 200px 0px rgba(4, 0, 113, 0.856);
-    color: #ffffff;
-    font-size: 28px;
-  }
-  .sub-header::before {
-    --size: 0;
-    content: '';
-    position: absolute;
-    left: var(--x);
-    top: var(--y);
-    width: var(--size);
-    height: var(--size);
-    background: radial-gradient(circle closest-side, #5a65ff, transparent);
-    transform: translate(-50%, -50%);
-    transition: width .2s ease, height .2s ease;
-  }
-  .sub-header:hover::before {
-    --size: 400px;
-  }
 .queryBox {
   width: 100%;
   height: 100px;
@@ -305,7 +265,7 @@ export default {
   align-items: center;
 }
 .inputBox {
-  width: 250px;
+  width: 350px;
   height: 50px;
   text-align: center;
   border-radius: 16px;

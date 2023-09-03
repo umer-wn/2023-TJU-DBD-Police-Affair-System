@@ -1,18 +1,18 @@
 <template>
-  <div style="width:60%;display:inline-block;margin-left:20px">
+  <div class="main" style="width:60%;display:inline-block;margin-left:20px">
       <div style="height:200px;font: 400 25px Inter, sans-serif;vertical-align: top;">
         <div><br>欢迎回来，{{ myPoliceNumber }}<br></div>
         <div style="font: 400 20px Inter, sans-serif;"><br>开始愉快的一天</div>
       </div>
       <div class="syslogtitle">
-        <div class="syslog">系统日志</div>
-        <button style="height:80%;position: absolute;width:50px;right:20px;background-color:#c1b598;color:white;cursor: pointer;border: none;">更多</button>
+        <div class="syslog">系统日志</div>      
       </div>
 
       <el-table v-if="auditInfo.length > 0" :data="auditInfo" stripe height="450" @wheel.passive.stop>
-        <el-table-column prop="username" label="用户名" />
+        <el-table-column prop="oS_USERNAME" label="操作系统用户名" width="150" />
+        <el-table-column prop="username" label="用户名"  width="120" />
         <el-table-column prop="obJ_NAME" label="表名" />
-        <el-table-column prop="actioN_NAME" label="操作名称" />
+        <el-table-column prop="actioN_NAME" label="操作名称" width="100"/>
         <el-table-column prop="actioN_TIME" label="操作时间"/>
       </el-table>
      

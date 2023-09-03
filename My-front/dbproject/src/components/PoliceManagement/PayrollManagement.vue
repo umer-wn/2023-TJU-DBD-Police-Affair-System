@@ -22,7 +22,7 @@
               <el-form-item size="large" label="年份">
                 <el-select
                   v-model="searchData.year"
-                  placeholder="please select year"
+                  placeholder="请选择年份"
                 >
                   <el-option value="">全部</el-option>
                   <el-option v-for="year in years" :value="year">{{
@@ -34,7 +34,7 @@
               <el-form-item size="large" label="月份">
                 <el-select
                   v-model="searchData.month"
-                  placeholder="please select month"
+                  placeholder="请选择月份"
                 >
                   <el-option value="">全部</el-option>
                   <el-option v-for="month in months" :value="month.value">{{
@@ -46,7 +46,7 @@
               <el-form-item size="large" label="警局">
                 <el-select
                   v-model="searchData.station"
-                  placeholder="please select station"
+                  placeholder="请选择警局"
                 >
                   <el-option value="">全部</el-option>
 
@@ -67,7 +67,7 @@
           <div>
             <div class="spacer"></div>
             <el-table
-              :data="searchData.searchResults"
+              :data="mysearchResults"
               style="width: 100%"
               height="300px"
             >
@@ -84,6 +84,8 @@
               <el-table-column prop="SALARY" label="薪水" width="120" />
               <el-table-column prop="SUBSIDY" label="补贴" width="120" />
               <el-table-column prop="DESCRIPTION" label="描述" width="120" />
+              <el-table-column prop="ISSUE_ID" label="发放人ID" width="120" />
+              <el-table-column prop="ISSUE_NAME" label="发放人" width="120" />
             </el-table>
           </div>
         </div>
@@ -96,7 +98,7 @@
             :model="searchData"
             style="width: 450px; height: 100%"
           >
-            <el-form-item label="ID:">
+            <el-form-item label="警号:">
               <el-input v-model="employeeData.police_number_receive" required />
             </el-form-item>
             <el-form-item label="基本工资:">
@@ -139,6 +141,7 @@
 </template>
 
 <script>
+// import axios from "../../api/request";
 import axios from "../../api/request";
 
 export default {
@@ -151,81 +154,8 @@ export default {
         month: "", // 存储月份
         station: "",
         showResults: false, // 控制是否显示搜索结果
-        searchResults: [
-          // {
-          //   PAYROLL_NUMBER: "001",
-          //   POLICE_NUMBER: "P001",
-          //   POLICE_NAME: "张三",
-          //   STATION_ID: "S001",
-          //   PAY_DAY: "2023-08-01",
-          //   SALARY: 5000,
-          //   SUBSIDY: 1000,
-          //   DESCRIPTION: "工资发放",
-          //   ISSUE_ID: "ISSUE001",
-          //   ISSUE_NAME: "ISSUE001",
-          // },
-          // {
-          //   PAYROLL_NUMBER: "002",
-          //   POLICE_NUMBER: "P002",
-          //   POLICE_NAME: "李四",
-          //   STATION_ID: "S002",
-          //   PAY_DAY: "2023-08-01",
-          //   SALARY: 6000,
-          //   SUBSIDY: 1200,
-          //   DESCRIPTION: "工资发放",
-          //   ISSUE_ID: "ISSUE002",
-          //   ISSUE_NAME: "ISSUE001",
-          // },
-          // {
-          //   PAYROLL_NUMBER: "001",
-          //   POLICE_NUMBER: "P001",
-          //   POLICE_NAME: "张三",
-          //   STATION_ID: "S001",
-          //   PAY_DAY: "2023-08-01",
-          //   SALARY: 5000,
-          //   SUBSIDY: 1000,
-          //   DESCRIPTION: "工资发放",
-          //   ISSUE_ID: "ISSUE001",
-          //   ISSUE_NAME: "ISSUE001",
-          // },
-          // {
-          //   PAYROLL_NUMBER: "002",
-          //   POLICE_NUMBER: "P002",
-          //   POLICE_NAME: "李四",
-          //   STATION_ID: "S002",
-          //   PAY_DAY: "2023-08-01",
-          //   SALARY: 6000,
-          //   SUBSIDY: 1200,
-          //   DESCRIPTION: "工资发放",
-          //   ISSUE_ID: "ISSUE002",
-          //   ISSUE_NAME: "ISSUE001",
-          // },
-          // {
-          //   PAYROLL_NUMBER: "001",
-          //   POLICE_NUMBER: "P001",
-          //   POLICE_NAME: "张三",
-          //   STATION_ID: "S001",
-          //   PAY_DAY: "2023-08-01",
-          //   SALARY: 5000,
-          //   SUBSIDY: 1000,
-          //   DESCRIPTION: "工资发放",
-          //   ISSUE_ID: "ISSUE001",
-          //   ISSUE_NAME: "ISSUE001",
-          // },
-          // {
-          //   PAYROLL_NUMBER: "002",
-          //   POLICE_NUMBER: "P002",
-          //   POLICE_NAME: "李四",
-          //   STATION_ID: "S002",
-          //   PAY_DAY: "2023-08-01",
-          //   SALARY: 6000,
-          //   SUBSIDY: 1200,
-          //   DESCRIPTION: "工资发放",
-          //   ISSUE_ID: "ISSUE002",
-          //   ISSUE_NAME: "ISSUE001",
-          // },
-        ], // 存储搜索结果
       },
+      mysearchResults: [],
       years: ["2023", "2022", "2021"], // 年份选项
       months: [
         { value: "01", label: "一月" },
@@ -278,7 +208,7 @@ export default {
         .then((response) => {
           // 处理后端返回的数据
 
-          this.searchResults = response.data.map((result) => {
+          this.mysearchResults = response.data.map((result) => {
             let newResult = {};
             for (let key in result) {
               newResult[key.toUpperCase()] = result[key];
@@ -304,6 +234,9 @@ export default {
         .then((response) => {
           // 处理响应
           console.log(response.data);
+          alert("插入成功！");
+          location.reload();//刷新界面
+          //this.$router.push('/mainMenu/PayrollManagement');
         })
         .catch((error) => {
           // 处理错误

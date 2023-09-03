@@ -48,15 +48,20 @@
           <el-input class="reasoninput" type="textarea" v-model="reason" />
         </div>
         <button class="cpbutton" style="line-height: 40px;width:200px;" @click="updatePosition"><span>确认修改</span></button>
+        
+        <!--提示窗口-->
         <el-dialog title="申请成功" v-model="updateSuccess" class="success-message">
           修改成功
+          <el-button style="display:block;margin-top:20px;" @click="handleClose">确认</el-button>
         </el-dialog>
         <el-dialog title="申请失败" v-model="updateFailed" class="error-message">
           申请失败!
+          <el-button style="display:block;margin-top:20px;" @click="handleClose">确认</el-button>
         </el-dialog>
-      </div>
-      <div v-else>
-        <p>未找到警员信息</p>
+        <el-dialog title="提示" v-model="policeNotFound" class="error-message">
+          未找到警员信息!
+          <el-button style="display:block;margin-top:20px;" @click="handleClose">确认</el-button>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -72,21 +77,28 @@ data() {
     selectedPosition: '',
     reason: '',
     updateSuccess: false,
-    updateFailed: false
+    updateFailed: false,
+    policeNotFound: false,
   }
 },
 methods: {
   searchPolice() {
     this.policeInfo = axios.post('http://localhost:7078/api/search', {temp: this.policeNumber})
       .then(response => {
-        this.policeInfo = response.data
-        console.log(this.policeInfo)
+        console.log(response.data)
+        if(response.data=='未找到警员信息'){
+          this.policeNotFound=true;
+        }
+        else{
+          this.policeInfo = response.data;
+        }
+        
       //   this.updateSuccess = false
       //   this.updateFailed = false
       })
       .catch(error => {
-        console.error(error)
-        this.policeInfo = null
+        console.error(error);
+        this.policeInfo = null;       
       })
   },
   async updatePosition() {
@@ -129,7 +141,13 @@ methods: {
 
       event.target.style.setProperty("--x", `${x}px`);
       event.target.style.setProperty("--y", `${y}px`);
-    },
+  },
+  handleClose() {
+    this.updateSuccess = false;
+    this.updateFailed = false;
+    this. policeNotFound = false;
+    location.reload();
+  }
 }
 }
 </script>

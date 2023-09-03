@@ -177,6 +177,10 @@ export default {
             this.refreshCode();
             // 获取JWT令牌
             const token = response.data.token;
+       
+            localStorage.clear();
+          
+
             // 将JWT令牌存储在浏览器的本地存储中
             localStorage.setItem("token", token);
             // this.$router.push({
@@ -189,6 +193,7 @@ export default {
             const authority = jwt_decode(token)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
             localStorage.setItem('policeNumber', police_number);
             localStorage.setItem('authority', authority);
+            localStorage.setItem('loginErr','false');
             this.$router.push('/mainMenu');
           } else {
             // 登录失败，显示错误提示

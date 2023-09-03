@@ -13,7 +13,7 @@
     <option value="警监">警监</option>
     <option value="总警监">总警监</option>
     </select>
-    <input v-model="reason" placeholder="输入修改原因">
+    <input  v-model="reason" placeholder="输入修改原因">
     <button @click="updatePosition">确认修改</button>
       <div v-if="updateSuccess" class="success-message">
       修改成功
@@ -92,7 +92,7 @@ methods: {
 }
 </script>
 
-<style>
+<style scoped>
 .success-message {
   color: green;
   margin-top: 10px;

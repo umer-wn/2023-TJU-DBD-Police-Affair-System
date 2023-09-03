@@ -82,6 +82,7 @@ export default {
       if(this.returnmessage=='申请提交成功'){
         this.$router.push('/mainMenu/ChangePermission');
       }else{
+        this.$router.push('/mainMenu/ChangePermission');
         this.submittedSucessfully = false;
       }
     },
@@ -181,6 +182,8 @@ export default {
     margin-left: 60px;
   }
   .reasoninput{
+    max-height: 400px;
+    overflow: auto;
     margin-left: 120px;
     width:200px;
     border: 1px solid #0051ff;

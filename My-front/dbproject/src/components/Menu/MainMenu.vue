@@ -19,6 +19,7 @@
             <el-button type="primary" @click="handleSelfInfoClick">
               个人信息
             </el-button>
+            <el-button type="primary" @click="Exit"> 退出账号 </el-button>
           </div>
         </div>
       </div>
@@ -196,7 +197,7 @@
                 案件管理</span
               >
             </template>
-           
+
             <el-menu-item
               index="/mainMenu/SuspectInfoManagement"
               @click="scrollToTop"
@@ -354,7 +355,6 @@
             </el-menu-item>
           </el-sub-menu>
 
-          
           <el-menu-item
             v-if="myAuthority >= 1"
             index="/mainMenu/CaseInvestigation"
@@ -367,13 +367,21 @@
             />
             案件办理
           </el-menu-item>
-
-      
         </el-menu>
       </el-aside>
 
       <!-- 页面主体 -->
       <el-main class="background">
+        <!-- 无登录权限提示框 -->
+        <el-dialog v-model="loginErr" @close="handleClose" title="提示"
+          >没有登录权限，请重新登录！
+          <el-button
+            style="display: block; margin-top: 20px"
+            @click="handleClose"
+            >确认</el-button
+          >
+        </el-dialog>
+
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -383,39 +391,38 @@
   <el-drawer v-model="drawer2" :direction="direction">
     <template #header> </template>
     <template #default>
-   
       <div class="myInfo">
         <span>警号：{{ myPoliceNumber }}</span>
       </div>
-   
+
       <div class="myInfo">
         <span>姓名：{{ myName }}</span>
       </div>
-    
+
       <div class="myInfo">
         <span>性别：{{ mySex }}</span>
       </div>
-      
+
       <div class="myInfo">
         <span>出生日期：{{ myBirthday }}</span>
       </div>
-     
+
       <div class="myInfo">
         <span>民族：{{ myPeoples }}</span>
       </div>
-      
+
       <div class="myInfo">
         <span>联系电话：{{ myPhone }}</span>
       </div>
-     
+
       <div class="myInfo">
         <span>状态：{{ myStatus }}</span>
       </div>
-      
+
       <div class="myInfo">
         <span>职务：{{ myPosition }}</span>
       </div>
-      
+
       <div class="myInfo">
         <span>权限等级：{{ myAuthority }}</span>
       </div>
@@ -440,6 +447,7 @@ const password = ref("44554");
 
 const myPoliceNumber = localStorage.getItem('policeNumber');
 const myAuthority = localStorage.getItem('authority');
+var loginErr = localStorage.getItem('loginErr') === 'true';
 const err= ref("警员不存在！");
 const policemenInfo=ref([]);
 
@@ -450,37 +458,9 @@ const myPeoples =ref("");
 const myPhone=ref("");
 const myStatus=ref("");
 const myPosition=ref("");
-
 function handleSelfInfoClick(event)
 {
       drawer2.value = true;
-      axios.post("http://localhost:7078/api/policemenInfo", {
-          policemenNumber: myPoliceNumber,
-          policemenName: "",
-          policemenStatus: "全部",
-          policemenPosition: "全部",
-        })
-        .then((res) => {
-          policemenInfo.value = res.data;
-
-            if (policemenInfo.value[0].gender === "F") {
-              policemenInfo.value[0].gender = "女";
-            } else if (policemenInfo[0].value.gender === "M") {
-              policemenInfo.value[0].gender = "男";
-            }
-            if (Array.isArray(policemenInfo.value) && policemenInfo.value.length > 0) {
-        myName.value=policemenInfo.value[0].policemenName;
-        mySex.value=policemenInfo.value[0].gender;
-        myBirthday.value=policemenInfo.value[0].birthday;
-        myPeoples.value =policemenInfo.value[0].nation;
-        myPhone.value=policemenInfo.value[0].phoneNumber;
-        myStatus.value=policemenInfo.value[0].policemenStatus;
-        myPosition.value=policemenInfo.value[0].policemenPosition;
-        } 
-        })
-        .catch((err) => {
-          console.log(err);
-        });
 }
 function handleScroll(event) {
       if (event.deltaY > 0) {
@@ -494,21 +474,64 @@ function handleScroll(event) {
           containerHeight.value -= 50;
         }
       }
-    }
-    function scrollToTop() {
-      containerHeight.value = 1500;
-      window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-      })
-    }
+}
+
+  axios.get("http://localhost:7078/api/policemenInfo", {
+          policemenNumber: myPoliceNumber,
+          policemenName: "",
+          policemenStatus: "全部",
+          policemenPosition: "全部",
+        })
+        .then((res) => {
+          policemenInfo.value = res.data;
+          //console.log(policemenInfo.value);
+            if (policemenInfo.value[0].gender === "F") {
+              policemenInfo.value[0].gender = "女";
+            } else if (policemenInfo.value[0].gender === "M") {
+              policemenInfo.value[0].gender = "男";
+            }
+            if (Array.isArray(policemenInfo.value) && policemenInfo.value.length > 0) {
+        myName.value=policemenInfo.value[0].name;
+        mySex.value=policemenInfo.value[0].gender;
+        myBirthday.value=policemenInfo.value[0].birthday;
+        myPeoples.value =policemenInfo.value[0].nation;
+        myPhone.value=policemenInfo.value[0].phone;
+        myStatus.value=policemenInfo.value[0].status;
+        myPosition.value=policemenInfo.value[0].position;
+        console.log(myBirthday.value)
+
+        localStorage.setItem("name",  myName.value);
+        localStorage.setItem("policeNumber", myPoliceNumber);
+
+        }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+function scrollToTop() {
+  containerHeight.value = 1500;
+  window.scrollTo({
+  top: 0,
+  behavior: 'smooth'
+  })
+}
+function Exit() {
+  localStorage.setItem('loginErr','true');
+  localStorage.setItem('policeNumber', '');
+  localStorage.setItem('authority', 0);
+  window.location.href="http://localhost:8080/";
+}
+function handleClose() {
+  window.location.href="http://localhost:8080/";
+  loginErr = false;
+}
 </script>
 
 <style scoped>
-.myInfo
-{
-  margin-left:15%;
-  margin-top:10%;
+.myInfo {
+  margin-left: 15%;
+  margin-top: 10%;
 }
 .nav-icon-for-sub-menu {
   max-width: 30%;
@@ -525,6 +548,7 @@ function handleScroll(event) {
 
 .home-container {
   width: 100%;
+  min-width:100%;
   overflow: hidden;
   background-color: #f0f0f0;
   transition: height 0.3s ease; /* 添加过渡效果 */

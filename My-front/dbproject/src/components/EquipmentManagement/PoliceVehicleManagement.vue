@@ -192,8 +192,9 @@ export default {
       err: '警车不存在！',
     }
   },
+  
   methods: {
-    handleMouseMove(event) {
+    handleMouseMove(event) {    
       const x = event.pageX - event.target.offsetLeft;
       const y = event.pageY - event.target.offsetTop;
 
