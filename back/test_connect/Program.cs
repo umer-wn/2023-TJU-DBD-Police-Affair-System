@@ -1,6 +1,9 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Oracle.ManagedDataAccess.Client;
+using System.Text;
+using web.Helpers;
 
 public class Program
 {
@@ -20,32 +23,102 @@ public class Program
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    // »ñÈ¡Êý¾Ý¿âÁ¬½Ó×Ö·û´®
+                    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
                     string connectionString = hostContext.Configuration.GetConnectionString("OracleConnection");
 
-                    // ×¢²áOracleÁ¬½Ó¶ÔÏóµ½ÒÀÀµ×¢ÈëÈÝÆ÷
+                    // ×¢ï¿½ï¿½Oracleï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     services.AddScoped<OracleConnection>(_ => new OracleConnection(connectionString));
 
-                    // Ìí¼Ó¿ØÖÆÆ÷
+                    // ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½
                     services.AddControllers();
 
-                    // Ìí¼ÓCORS²ßÂÔ
+                    // ï¿½ï¿½ï¿½ï¿½ CORS ï¿½ï¿½ï¿½ï¿½
                     services.AddCors(options =>
                     {
-                        options.AddPolicy("AllowCors", builder =>
+                        options.AddDefaultPolicy(builder =>
                         {
-                            builder.AllowAnyOrigin()
+                            builder.WithOrigins("http://localhost:8080") // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ó¦ï¿½Ãµï¿½Ö·
                                 .AllowAnyMethod()
                                 .AllowAnyHeader();
                         });
                     });
+
+                    SerialnumHelper.FormSeqTest_Load();
+                    // ï¿½ï¿½ï¿½ï¿½JWT
+                    services.AddAuthentication(options =>
+                    {
+                        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    }).AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = "PoliceApp",
+                            ValidateAudience = true,
+                            ValidAudience = "PoliceAppUser",
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                                    "123cdefefefeasd14a5445411sds65d4asw65f4e")),
+                            ValidateLifetime = true,
+                            ClockSkew = TimeSpan.FromMinutes(10),
+                            RequireExpirationTime = true,
+                        };
+                    });
+                    services.AddHttpContextAccessor();
+                    services.AddSwaggerGen(options =>
+                    {
+                        options.SwaggerDoc("v1", new OpenApiInfo
+                        {
+                            Version = "v1",
+                            Title = "APIï¿½ï¿½ï¿½ï¿½",
+                            Description = "APIï¿½ï¿½ï¿½ï¿½"
+                        });
+                    });
+                    services.AddSwaggerGen(c =>
+                    {
+                        //ï¿½ï¿½ï¿½ï¿½Jwtï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Ï¢
+                        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                        {
+                            {
+                                new OpenApiSecurityScheme
+                                {
+                                    Reference = new OpenApiReference
+                                    {
+                                        Id = "Bearer",
+                                        Type = ReferenceType.SecurityScheme
+                                    }
+                                },
+                                new List<string>()
+                            }
+                        });
+
+                        //ï¿½ï¿½ï¿½Ã½Ó¿ï¿½Authï¿½ï¿½È¨ï¿½ï¿½Å¥
+                        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                        {
+                            Description = "Value Bearer {token}",
+                            Name = "Authorization",//jwtÄ¬ï¿½ÏµÄ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                            In = ParameterLocation.Header,//jwtÄ¬ï¿½Ï´ï¿½ï¿½Authorizationï¿½ï¿½Ï¢ï¿½ï¿½Î»ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½)
+                            Type = SecuritySchemeType.ApiKey
+                        });
+                    });
+
                 })
                 .Configure(app =>
                 {
                     app.UseRouting();
 
-                    // ÆôÓÃCORSÖÐ¼ä¼þ
-                    app.UseCors("AllowCors");
+                    // ï¿½ï¿½ï¿½ï¿½ CORS ï¿½Ð¼ï¿½ï¿½
+                    app.UseCors();
+
+                    app.UseAuthentication();
+                    app.UseAuthorization();
+
+
+                    app.UseSwagger();
+                    app.UseSwaggerUI(c =>
+                    {
+                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web1");
+                    });
 
                     app.UseEndpoints(endpoints =>
                     {
