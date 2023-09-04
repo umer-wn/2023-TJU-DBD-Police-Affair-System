@@ -5,7 +5,7 @@
 
   <div class="main">
     <!-- 表格 -->
-    <el-table v-if="!isDetail" :data="repeatOffenderInfo" height="450" @wheel.passive.stop stripe style="width: 100%">
+    <el-table v-if="!isDetail" :data="repeatOffenderInfo" height="90vh" @wheel.passive.stop stripe style="width: 100%">
       <el-table-column label="身份证号码" prop="身份证号" sortable width="180px" />
       <el-table-column label="姓名" prop="姓名" sortable width="100px" />
       <el-table-column label="性别" prop="性别" sortable width="80px" />
@@ -48,7 +48,7 @@
       </el-table-column>
     </el-table>
 
-    <el-table v-if="isDetail" :data="caseRecord" height="450" @wheel.passive.stop stripe style="width: 100%">
+    <el-table v-if="isDetail" :data="caseRecord" height="90vh" @wheel.passive.stop stripe style="width: 100%">
       <el-table-column label="案件编号" prop="案件编号" sortable width="110px" />
       <el-table-column label="案件类型" prop="案件类型" sortable width="110px" />
       <el-table-column label="案件状态" prop="案件状态" sortable width="110px" />

@@ -10,7 +10,7 @@
 
     <div class="inputbox">
       <el-text class="noteText" type="primary">城市全称：</el-text>
-      <el-input class="inputBox" v-model="CityName" placeholder="请输入城市全称如:上海市" show-word-limit />
+      <el-input class="inputBox" v-model="CityName" placeholder="请输入城市全称，如：上海市" show-word-limit />
       <el-button type="primary" @click="fetchDistrictInfo">查询</el-button>
     </div>
 

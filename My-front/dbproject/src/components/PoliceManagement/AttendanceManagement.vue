@@ -198,8 +198,8 @@ export default {
     },
     async delAttendInfo() {
       try {
-        this.addAttendTime = new Date(this.addAttendTime).toISOString();
-        const response = await axios.delete(`http://localhost:7078/api/delAttend?attendID=${encodeURIComponent(this.addAttendID)}&attendAddress=${encodeURIComponent(this.addAttendAddress)}&attendTime=${encodeURIComponent(this.addAttendTime)}`);
+        this.delAttendTime = new Date(this.delAttendTime).toISOString();
+        const response = await axios.delete(`http://localhost:7078/api/delAttend?attendID=${encodeURIComponent(this.delAttendID)}&attendAddress=${encodeURIComponent(this.delAttendAddress)}&attendTime=${encodeURIComponent(this.delAttendTime)}`);
         if (typeof response.data == "string") {
           ElMessage({
             showClose: true,

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.2back\\test_connect\\back.csproj": {}
+    "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.4back\\test_connect\\back.csproj": {}
   },
   "projects": {
-    "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.2back\\test_connect\\back.csproj": {
+    "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.4back\\test_connect\\back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.2back\\test_connect\\back.csproj",
+        "projectUniqueName": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.4back\\test_connect\\back.csproj",
         "projectName": "back",
-        "projectPath": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.2back\\test_connect\\back.csproj",
+        "projectPath": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.4back\\test_connect\\back.csproj",
         "packagesPath": "C:\\Users\\96172\\.nuget\\packages\\",
-        "outputPath": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.2back\\test_connect\\obj\\",
+        "outputPath": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.4back\\test_connect\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\96172\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -98,7 +98,7 @@ public class CityCrimeData: ControllerBase
             foreach (string districtName in districtNames)
             {
                 string query2 = "SELECT COUNT(*) FROM citizen JOIN related ON citizen.ID_NUM = related.ID_NUM " +
-                    "WHERE citizen.address LIKE  '%' || :temp2 || '%'  AND related.RELATED_TYPE = 'œ”“…»À'";
+                    "WHERE citizen.address LIKE  '%' || :temp2 || '%'  AND related.RELATED_TYPE = '∑∏»À'";
                 OracleCommand command2 = new OracleCommand(query2, _connection);
                 command2.Parameters.Add(new OracleParameter("temp2", districtName));
                 crimeNumDecimal = (decimal)command2.ExecuteScalar();

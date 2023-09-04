@@ -3,7 +3,7 @@
     <div>&nbsp;&nbsp;警务处理系统&nbsp;>&nbsp;案件办理</div>
   </el-header>
 
-  <el-table v-if="process === '待调查案件'" :data="cases" height="450" @wheel.passive.stop stripe
+  <el-table v-if="process === '待调查案件'" :data="cases" height="90vh" @wheel.passive.stop stripe
     style="width: 100%; margin-top: 10vh">
     <el-table-column label="案件编号" prop="案件编号" sortable width="105px" />
     <el-table-column label="案件类型" prop="案件类型" sortable width="105px" />
@@ -28,7 +28,7 @@
   </el-table>
 
   <div v-if="process === '选择办案人员'" style="text-align: center">
-    <el-table :data="policemen" height="400" @selection-change="selectPolicemen" @wheel.passive.stop stripe
+    <el-table :data="policemen" height="90vh" @selection-change="selectPolicemen" @wheel.passive.stop stripe
       style="width: 100%; margin-top: 10vh">
       <el-table-column type="selection" />
       <el-table-column label="警员编号" prop="警员编号" sortable />
@@ -41,7 +41,7 @@
         <template #header>
           <table>
             <tr>
-              <td><el-text type="primary" style="display: inline-block; width: 130px">当前选择{{ selectCaseID }}</el-text>
+              <td><el-text type="primary" style="display: inline-block; width: 140px">当前选择{{ selectCaseID }}</el-text>
               </td>
               <td><el-button size="small" type="primary" @click="goBack">重选案件</el-button></td>
             </tr>

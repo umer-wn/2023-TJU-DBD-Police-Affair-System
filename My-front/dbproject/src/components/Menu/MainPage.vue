@@ -136,7 +136,6 @@
         this.selectedOptions = selectedOptions;
         localStorage.setItem('selectedOptions_' + this.myPoliceNumber, JSON.stringify(selectedOptions));
       },
-  
       handleMouseMove(event) {
         const x = event.pageX - event.target.offsetLeft;
         const y = event.pageY - event.target.offsetTop; 
@@ -145,6 +144,15 @@
       },
     },
     created() {
+
+      setTimeout(() => {
+        if(location.href.indexOf("?reload=true")<0){
+            location.href+="?reload=true";  
+            location.reload();
+        }   
+    },100); //2023.9.4 每次进入页面时刷新一次
+      
+     
       const myPoliceNumber = localStorage.getItem('policeNumber');
       const savedOptions = localStorage.getItem('selectedOptions_' + myPoliceNumber);
       if (savedOptions) {
@@ -157,6 +165,7 @@
           myPoliceNumber: localStorage.getItem('policeNumber'), 
       })
       .then((response) => {
+        
         this.auditInfo = response.data;
       })
       .catch ((error) =>  {

@@ -5,7 +5,7 @@ import router from './router/router'
 import main from './components/MyMain.vue'
 import Antd from 'ant-design-vue';
 
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'  //el日历设置中文地区语言
 import 'ant-design-vue/dist/reset.css';
 
 const debounce = (fn, delay) => {
@@ -26,6 +26,6 @@ const debounce = (fn, delay) => {
       callback = debounce(callback, 16);
       super(callback);
     }
-  }
+  } //2023.9.3 上面两个函数 解决页面缩小时el-table引起ResizeObserver报错问题
  
 createApp(main).use(ElementPlus,{locale: zhCn}).use(Antd).use(router).mount('#app')

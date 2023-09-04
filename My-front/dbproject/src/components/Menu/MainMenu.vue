@@ -38,7 +38,7 @@
           active-text-color="#ffd04b"
         >
           <el-menu-item
-            v-if="myAuthority >= 0"
+            v-if="myAuthority >= 1"
             index="/mainMenu/MainPage"
             @click="scrollToTop"
           >
@@ -435,9 +435,9 @@
 import { ref } from "vue";
 import axios from "axios";
 
-const containerHeight= ref(1500) // 初始化容器高度
-const minHeight= ref(1500) // 最小高度
-const maxScrollHeight= ref(3000) // 最大滚动高度，控制界面的延伸
+const containerHeight= ref(2000) // 初始化容器高度
+const minHeight= ref(2000) // 最小高度
+const maxScrollHeight= ref(3500) // 最大滚动高度，控制界面的延伸
 // const mytitle= "注册"
 
 const drawer2 = ref(false);

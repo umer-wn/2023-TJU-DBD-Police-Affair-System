@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "U4f6o5mfpQg8l3baQk5/5V0yTUJ34wn5rb2NQe+mPFh0V5x56iisIRmsIQfqXE/W7Az3aiizcVfHxUecqdirvw==",
+  "dgSpecHash": "DeUn0FzKVmtCzE45DCsDN6d8Xb+rjg7UcmcvfA5mDmFm7bUQdKh1+STJ4HuFl8SaDV9ImfhJUD7N7M7pz0/7GA==",
   "success": true,
-  "projectFilePath": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.2back\\test_connect\\back.csproj",
+  "projectFilePath": "C:\\GitHubWarehouse\\2023-TJU-DBD-Police-Affair-System\\9.4back\\test_connect\\back.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\96172\\.nuget\\packages\\hslcommunication\\11.6.2\\hslcommunication.11.6.2.nupkg.sha512",
     "C:\\Users\\96172\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.19\\microsoft.aspnetcore.authentication.jwtbearer.6.0.19.nupkg.sha512",
