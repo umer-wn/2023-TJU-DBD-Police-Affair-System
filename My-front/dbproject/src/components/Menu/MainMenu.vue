@@ -452,6 +452,8 @@ const err= ref("警员不存在！");
 const policemenInfo=ref([]);
 
 const myName=ref("");
+const mypolicemenIDNum=ref("");
+const mypolicemenYear=ref("");
 const mySex=ref("");
 const myBirthday=ref("");
 const myPeoples =ref("");
@@ -475,13 +477,23 @@ function handleScroll(event) {
         }
       }
 }
-
-  axios.get("http://localhost:7078/api/policemenInfo", {
-          policemenNumber: myPoliceNumber,
-          policemenName: "",
-          policemenStatus: "全部",
-          policemenPosition: "全部",
-        })
+axios.get(
+          `http://localhost:7078/api/policemenInfo?policemenID=${encodeURIComponent(
+            myPoliceNumber
+          )}&policemenName=${encodeURIComponent(
+            myName.value
+          )}&policemenIDNum=${encodeURIComponent(
+            mypolicemenIDNum.value
+          )}&policemenYear=${encodeURIComponent(
+            mypolicemenYear.value
+          )}&policemenSex=${encodeURIComponent(
+            mySex.value
+          )}&policemenNation=${encodeURIComponent(
+            myPeoples.value
+          )}&policemenStatus=${encodeURIComponent(
+            myStatus.value
+          )}&policemenPosition=${encodeURIComponent(myPosition.value)}`
+        )
         .then((res) => {
           policemenInfo.value = res.data;
           //console.log(policemenInfo.value);
@@ -498,7 +510,7 @@ function handleScroll(event) {
         myPhone.value=policemenInfo.value[0].phone;
         myStatus.value=policemenInfo.value[0].status;
         myPosition.value=policemenInfo.value[0].position;
-        console.log(myBirthday.value)
+        console.log(policemenInfo)
 
         localStorage.setItem("name",  myName.value);
         localStorage.setItem("policeNumber", myPoliceNumber);
