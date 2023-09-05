@@ -87,7 +87,7 @@
               警员权限修改
             </el-menu-item>
             <el-menu-item
-              v-if="myAuthority >= 2"
+              v-if="myAuthority >= 5"
               index="/mainMenu/PermissionManage"
               @click="scrollToTop"
             >
